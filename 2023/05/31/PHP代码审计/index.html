@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>PHP代码审计 | Khaz</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="BlueCMS    SeaCMS    DedeCMS    ThinkPHP   调试https:&#x2F;&#x2F;blog.csdn.net&#x2F;Xxy605&#x2F;article&#x2F;details&#x2F;120973447 思路From https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;265092#h3-5  函数集文件，通常命名包含function或者common等关键字，这些文件里面是一些公共">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP代码审计">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/05/31/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Khaz">
+<meta property="og:description" content="BlueCMS    SeaCMS    DedeCMS    ThinkPHP   调试https:&#x2F;&#x2F;blog.csdn.net&#x2F;Xxy605&#x2F;article&#x2F;details&#x2F;120973447 思路From https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;265092#h3-5  函数集文件，通常命名包含function或者common等关键字，这些文件里面是一些公共">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg">
+<meta property="article:published_time" content="2023-05-31T11:48:25.000Z">
+<meta property="article:modified_time" content="2023-06-07T14:33:18.692Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/05/31/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Khaz","link":"链接: ","source":"来源: Khaz","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PHP代码审计',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-07 22:33:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.ax1x.com/2023/05/31/p9x0Eg1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PHP代码审计</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-31T11:48:25.000Z" title="发表于 2023-05-31 19:48:25">2023-05-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-07T14:33:18.692Z" title="更新于 2023-06-07 22:33:18">2023-06-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PHP代码审计"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><ul>
+<li><p><input checked="" disabled="" type="checkbox"> 
+BlueCMS</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+SeaCMS</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+DedeCMS</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+ThinkPHP</p>
+</li>
+</ul>
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Xxy605/article/details/120973447">https://blog.csdn.net/Xxy605/article/details/120973447</a></p>
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>From <a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/265092#h3-5">https://www.anquanke.com/post/id/265092#h3-5</a></p>
+<ul>
+<li>函数集文件，通常命名包含function或者common等关键字，这些文件里面是一些公共的函数，提供其他文件统一调用，所以大多数文件都会在文件头部包含到其他文件。寻找这些文件一个非常好用的技巧就是去打开index.php或者一些功能性文件，在头部一般都能找到。</li>
+<li>配置文件，通常命名中包括config关键字，配置文件包括web程序运行必须的功能性配置选项以及数据库等配置信息。从这个文件中可以了解程序的小部分功能，另外看这个文件的时候注意观察配置文件中参数值是单引号还是用双引号括起来，如果是双引号可能就存在代码执行的问题了。</li>
+<li>安全过滤文件，安全过滤文件对代码审计至关重要，这关系到我们挖掘到的可以点能否直接利用，通常命名中带有filter、safe、check等关键字，这类文件主要是对参数进行过滤，大多数的应用其实会在参数的输入做一下addslashes()函数的过滤。</li>
+<li>index文件，index是一个程序的入口，所以通常我们只要读一读index文件就可以大致了解整个程序的架构、运行的流程、包含到的文件，其中核心的文件有哪些。而不同目录的index文件也有不同的实现方式，建议最好将几个核心目录的index文件都通读一遍。</li>
+</ul>
+<h1 id="总结大致流程"><a href="#总结大致流程" class="headerlink" title="总结大致流程"></a>总结大致流程</h1><p><strong>1、先全局总览：入口文件、路由、全局处理方式等</strong><br><strong>2、定向功能审计：黑盒(找到敏感功能)+白盒（定位到代码进行审计）</strong><br><strong>3、敏感函数回溯</strong></p>
+<p>先黑盒+白盒看敏感功能，再用自动化审计工具跑一遍并验证，最后再根据漏洞危险函数去回溯</p>
+<h3 id="自动化审计工具"><a href="#自动化审计工具" class="headerlink" title="自动化审计工具"></a>自动化审计工具</h3><p>RIPS<a target="_blank" rel="noopener" href="https://github.com/J0o1ey/rips-Chinese">https://github.com/J0o1ey/rips-Chinese</a></p>
+<p>seay</p>
+<p>Fortify</p>
+<h1 id="bluecms"><a href="#bluecms" class="headerlink" title="bluecms"></a>bluecms</h1><h2 id="黑盒测试"><a href="#黑盒测试" class="headerlink" title="黑盒测试"></a>黑盒测试</h2><h4 id="用户注册"><a href="#用户注册" class="headerlink" title="用户注册"></a>用户注册</h4><p>在注册时，邮箱插入xss代码</p>
+<p><img src="/../images/image-20221202120912126-1686141975680.png" alt="image-20221202120912126"></p>
+<p><img src="/../images/image-20221202120807928-1686141975682.png" alt="image-20221202120807928"></p>
+<p><img src="/../images/image-20221202120844185-1686141975683.png" alt="image-20221202120844185"></p>
+<h4 id="用户头像"><a href="#用户头像" class="headerlink" title="用户头像"></a>用户头像</h4><p>上传文件，只允许上传图片后缀的文件，上传后有给出图片路径，那么不能配合.htaccess，需要找到一个文件包含的点来包含文件。</p>
+<img src="E:\typora img\image-20221202121559453.png" alt="image-20221202121559453" style="zoom:80%;" />
+
+
+
+
+
+<h4 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h4><p>是否存在越权,测试了没有</p>
+<h4 id="发布新闻"><a href="#发布新闻" class="headerlink" title="发布新闻"></a>发布新闻</h4><img src="E:\typora img\image-20221202122851275.png" alt="image-20221202122851275" style="zoom:67%;" />
+
+<p>这里分类选择不了，应该是要管理员发布。</p>
+<h4 id="目录扫描"><a href="#目录扫描" class="headerlink" title="目录扫描"></a>目录扫描</h4><p>管理员</p>
+<p><img src="/../images/image-20221202123640697-1686141975683.png" alt="image-20221202123640697"></p>
+<p>其他</p>
+<p><img src="/../images/image-20221202125147298-1686141975683.png" alt="image-20221202125147298"></p>
+<h4 id="后台登录"><a href="#后台登录" class="headerlink" title="后台登录"></a>后台登录</h4><p><img src="/../images/image-20221202123831559-1686141975683.png" alt="image-20221202123831559"></p>
+<p>这里没有验证码验证，那么可以很轻松地进行爆破，得到usernmae&#x3D;admin，passwd&#x3D;admin</p>
+<img src="E:\typora img\image-20221202124055555.png" alt="image-20221202124055555" style="zoom:67%;" />
+
+
+
+<p>进去之后，可以看到一个建议，install文件夹，上面通过dirsearch也扫描出了这个文件，如果我们可以使用这个文件夹来重新安装网站，那么我们就可以直接重置管理员了，可惜是不可以的。</p>
+<p><img src="/../images/image-20221202124235008-1686141975683.png" alt="image-20221202124235008"></p>
+<h4 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h4><p>发布本地新闻这里存在一个文件上传操作，但是也只能上传图片</p>
+<p><img src="/../images/image-20221202175209000-1686141975683.png" alt="image-20221202175209000"></p>
+<h4 id="会员管理"><a href="#会员管理" class="headerlink" title="会员管理"></a>会员管理</h4><p>可以发现触发了之前的xss，那么如果我们没有登陆上后台，也可以通过这个xss来🎣获取管理员的cookie。</p>
+<p><img src="/../images/image-20221202124632258-1686141975683.png" alt="image-20221202124632258"></p>
+<p>也可以修改管理员密码，而且没有任何验证，可以直接修改。。</p>
+<p><img src="/../images/image-20221202175052927-1686141975686.png" alt="image-20221202175052927"></p>
+<h2 id="白盒审计"><a href="#白盒审计" class="headerlink" title="白盒审计"></a>白盒审计</h2><p>先看一下目录</p>
+<p><img src="/../images/image-20221202155440394-1686141975685.png" alt="image-20221202155440394"></p>
+<h3 id="前台"><a href="#前台" class="headerlink" title="前台"></a>前台</h3><p>先看一下前台的index.php，内容差不多就是渲染页面，没有用户可控的参数，所以关注其包含的其他文件。</p>
+<p><img src="/../images/image-20221202135553953-1686141975686.png" alt="image-20221202135553953"></p>
+<p>跟进common.inc.php看一下</p>
+<p>关键部分，用来验证用户身份，其中cookie中的参数是可控的。</p>
+<p><img src="/../images/image-20221202135942047-1686141975683.png" alt="image-20221202135942047"></p>
+<p>先判断cookie中是否有user_id，有的话再继续判断user_name和user_pwd是否存在，如果存在就check_cookie，如果只有user_name存在就查询名字是否只有一个，其他情况set_cookie。</p>
+<h4 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h4><p>跟进check_cookie</p>
+<p><img src="/../images/image-20221202140225964-1686141975683.png" alt="image-20221202140225964"></p>
+<p>查username对应的密码，经过散列处理判断密码是否正确。</p>
+<p>跟进getone–在include&#x2F;mysql.class.php中</p>
+<p><img src="/../images/image-20221202140336939-1686141975683.png" alt="image-20221202140336939"></p>
+<p><img src="/../images/image-20221202140349680-1686141975683.png" alt="image-20221202140349680"></p>
+<p><img src="/../images/image-20221202185616902-1686141975684.png" alt="image-20221202185616902"></p>
+<p>可以看到没有对sql语句做任何处理，直接用mysql_query进行查询，sql语句错误时，返回错误消息Query error，然后是前面加了一个@，所以不能用报错注入。</p>
+<p>再观察include&#x2F;mysql.class.php可以发现</p>
+<img src="E:\typora img\image-20221202190550614.png" alt="image-20221202190550614" style="zoom:80%;" />
+
+<p>发现存在宽字节注入，那么这个CMS就可以随便注入了。。。（因为所有的sql操作都是用这个mysql类）</p>
+<p>以ad_js.php为例</p>
+<img src="E:\typora img\image-20221202190230473.png" alt="image-20221202190230473" style="zoom:80%;" />
+
+<p><img src="/../images/image-20221202190707634-1686141975684.png" alt="image-20221202190707634"></p>
+<h4 id="文件包含-文件上传"><a href="#文件包含-文件上传" class="headerlink" title="文件包含+文件上传"></a>文件包含+文件上传</h4><p>虽然有白名单限制，只能上传图片，但是没有对文件内容进行过滤</p>
+<p><img src="/../images/image-20221202171406255-1686141975684.png" alt="image-20221202171406255"></p>
+<p>并且在user.php中，没有对$_POST[‘pay’]进行过滤，存在目录穿越，就可以包含上传的用户头像。</p>
+<p><img src="/../images/image-20221202185910243-1686141975684.png" alt="image-20221202185910243"></p>
+<h4 id="任意文件删除"><a href="#任意文件删除" class="headerlink" title="任意文件删除"></a>任意文件删除</h4><p>publish.php</p>
+<p><img src="/../images/image-20221202190938927-1686141975684.png" alt="image-20221202190938927"></p>
+<p>user.php</p>
+<p>​	<img src="/../images/image-20221202194855624-1686141975684.png" alt="image-20221202194855624"></p>
+<p>需要先插入一条新闻，新闻名为要删除的文件的路径。</p>
+<h3 id="后台–-x2F-admin"><a href="#后台–-x2F-admin" class="headerlink" title="后台–&#x2F;admin"></a>后台–&#x2F;admin</h3><p>还是先看一下index.php，也是只是输出了CMS和系统的一些信息，所以关注其包含的文件</p>
+<p><img src="/../images/image-20221202191939851-1686141975684.png" alt="image-20221202191939851"></p>
+<p>关键内容</p>
+<p><img src="/../images/image-20221202192232288-1686141975684.png" alt="image-20221202192232288"></p>
+<p>对输入的参数都使用addslashes()进行转义,不过还有<code>$SERVER</code>没有进行处理。</p>
+<img src="E:\typora img\image-20221202192459456.png" alt="image-20221202192459456" style="zoom:80%;" />
+
+<p>​	使用session来验证admin身份。还是一样的使用check_cookie来判断，</p>
+<p>​	<img src="E:\typora img\image-20221202140225964.png" alt="image-20221202140225964" style="zoom:80%;" /></p>
+<p>​	需要得到admin的pwd和cookie_hash，这两个都在数据库中，可以利用前台的sql注入获得，所以可以通过这个来登录admin用户。</p>
+<h4 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h4><p><img src="/../images/image-20221202195311948-1686141975684.png" alt="image-20221202195311948"></p>
+<p><img src="/../images/image-20221202195409112-1686141975684.png" alt="image-20221202195409112"></p>
+<h4 id="任意文件上传"><a href="#任意文件上传" class="headerlink" title="任意文件上传"></a>任意文件上传</h4><img src="E:\typora img\image-20221202191243192.png" alt="image-20221202191243192" style="zoom:80%;" />
+
+<img src="E:\typora img\image-20221202191403061.png" alt="image-20221202191403061" style="zoom: 80%;" />
+
+<p>文件路径只作了去除头尾空格的处理，存在目录穿越；文件内容实际上是调用了stripslashes，并没有过滤。</p>
+<p>测试</p>
+<img src="E:\typora img\image-20221202194248639.png" alt="image-20221202194248639" style="zoom:80%;" />
+
+<img src="E:\typora img\image-20221202194300861.png" alt="image-20221202194300861" style="zoom:80%;" />
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个CMS还是比较简单的，因为几乎没有过滤。</p>
+<h1 id="SeaCMS"><a href="#SeaCMS" class="headerlink" title="SeaCMS"></a>SeaCMS</h1><p>网站架构，无框架，目录结构如下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">├─admin   <span class="comment"># 后台</span></span><br><span class="line">├─css	  <span class="comment"># 存放css文件</span></span><br><span class="line">├─files	  <span class="comment"># 存放页面</span></span><br><span class="line">├─images  <span class="comment"># 存放图片</span></span><br><span class="line">├─inc	  <span class="comment"># 存放网站配置，校验，过滤文件</span></span><br><span class="line">├─install <span class="comment"># 网站安装</span></span><br><span class="line">├─seacmseditor <span class="comment"># 网站编辑器</span></span><br><span class="line">├─template <span class="comment"># 网站模板</span></span><br><span class="line">└─upload   <span class="comment"># 存放上传文件</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="查看入口文件"><a href="#查看入口文件" class="headerlink" title="查看入口文件"></a>查看入口文件</h2><p>所有的入口都是通过传递r参数来分发路由，对应files目录中的文件</p>
+<p><img src="/../images/image-20230525134023397-1686141975684.png" alt="image-20230525134023397"></p>
+<p><img src="/../images/image-20230525141822013-1686141975684.png" alt="image-20230525141822013"></p>
+<p>这里只用<code>addslashes</code>进行了转义，明显路径穿越+文件包含</p>
+<p><img src="/../images/image-20230525134741282-1686141975685.png" alt="image-20230525134741282"></p>
+<p>其他思路</p>
+<ul>
+<li><p>如果是linux系统，也可以通过<code>pearcmd.php</code>来getshell</p>
+<blockquote>
+<p>在7.3及以前，pecl&#x2F;pear是默认安装的；在7.4及以后，需要我们在编译PHP的时候指定–with-pear才会安装</p>
+</blockquote>
+</li>
+<li><p>尝试%00截断路径，造成任意文件读取，不知道为啥失败了，环境：php5.3.29，<strong>magic_quotes_gpc</strong>&#x3D;OFF</p>
+</li>
+<li><p>如果php版本小于5.2.8，linux 需要文件名长于 4096，windows 需要长于 256，超过部分会被丢弃从而实现文件包含绕过后缀.php限制</p>
+</li>
+</ul>
+<h2 id="查看配置文件"><a href="#查看配置文件" class="headerlink" title="查看配置文件"></a>查看配置文件</h2><p>通过install目录下的InstallLock.txt是否存在来判断是否安装，如果可以删除该文件，就可以配合入口文件的文件包含漏洞来重新安装网站。</p>
+<p><img src="/../images/image-20230525135351792-1686141975685.png" alt="image-20230525135351792"></p>
+<p>数据库编码为<code>utf-8</code>，不存在宽字节注入</p>
+<p><img src="/../images/image-20230525135521039-1686141975685.png" alt="image-20230525135521039"></p>
+<h2 id="查看身份校验文件"><a href="#查看身份校验文件" class="headerlink" title="查看身份校验文件"></a>查看身份校验文件</h2><p><img src="/../images/image-20230525140710113-1686141975685.png" alt="image-20230525140710113"></p>
+<p>垂直越权，只要在cookie中加入user值</p>
+<p><img src="/../images/image-20230525140957487-1686141975685.png" alt="image-20230525140957487"></p>
+<h2 id="前台-1"><a href="#前台-1" class="headerlink" title="前台"></a>前台</h2><h3 id="about-php"><a href="#about-php" class="headerlink" title="about.php"></a><code>about.php</code></h3><p><img src="/../images/image-20230525141923350-1686141975685.png" alt="image-20230525141923350"></p>
+<p>使用<code>addslashes</code>来过滤，逃逸不了引号，所以不存在sql注入</p>
+<h3 id="concat-php"><a href="#concat-php" class="headerlink" title="concat.php"></a><code>concat.php</code></h3><p>sql都用了<code>addslashes</code>来过滤</p>
+<p>但是存在xss</p>
+<p><img src="/../images/image-20230525142829890-1686141975685.png" alt="image-20230525142829890"></p>
+<p><img src="/../images/image-20230525142841766-1686141975685.png" alt="image-20230525142841766"></p>
+<p><img src="/../images/image-20230525143133231-1686141975685.png" alt="image-20230525143133231"></p>
+<p><img src="/../images/image-20230525143813133-1686141975685.png" alt="image-20230525143813133"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">cookie:name=<span class="string">&quot;&gt;&lt;script&gt;alert(/xss/)&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230525144008677-1686141975686.png" alt="image-20230525144008677"></p>
+<h3 id="content-php"><a href="#content-php" class="headerlink" title="content.php"></a><code>content.php</code></h3><p>存在数字型终于可以注入了，配合<code>mysql_error</code>进行报错注入</p>
+<p><img src="/../images/image-20230525144109692-1686141975686.png" alt="image-20230525144109692"></p>
+<p><img src="/../images/image-20230525144251129-1686141975686.png" alt="image-20230525144251129"></p>
+<h3 id="submit-php"><a href="#submit-php" class="headerlink" title="submit.php"></a><code>submit.php</code></h3><p><img src="/../images/image-20230525145929543-1686141975686.png" alt="image-20230525145929543"></p>
+<p><img src="/../images/image-20230525151458927-1686141975686.png" alt="image-20230525151458927"></p>
+<p>因为验证码正确后也不刷新，所以可以使用同一个验证码进行注入</p>
+<p><img src="/../images/image-20230525151429571-1686141975686.png" alt="image-20230525151429571"></p>
+<p>存储xss</p>
+<p>过滤</p>
+<p><img src="/../images/image-20230525145800880-1686141975686.png" alt="image-20230525145800880"></p>
+<p>但是还是可以在name处保存</p>
+<p>输出点</p>
+<p><img src="/../images/image-20230525145901519-1686141975686.png" alt="image-20230525145901519"></p>
+<h2 id="后台"><a href="#后台" class="headerlink" title="后台"></a>后台</h2><h3 id="后台登录-1"><a href="#后台登录-1" class="headerlink" title="后台登录"></a>后台登录</h3><p><img src="/../images/image-20230525153016604-1686141975686.png" alt="image-20230525153016604"></p>
+<p>没有过滤，可以使用联合查询构造临时用户数据登录,或者报错注入拿到密码后解密登录</p>
+<p>判断字段数</p>
+<p><img src="/../images/image-20230525153002742-1686141975686.png" alt="image-20230525153002742"></p>
+<p>确定用户名，密码字段位置</p>
+<p><img src="/../images/image-20230525154135880-1686141975687.png" alt="image-20230525154135880"></p>
+<p>联合查询登陆</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">user=-<span class="number">1</span><span class="string">&#x27;+union+select+1,2,&#x27;</span>admin<span class="string">&#x27;,&#x27;</span>c4ca4238a0b923820dcc509a6f75849b<span class="string">&#x27;,5,6,7,8#&amp;password=1&amp;login=yes</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230525154322362-1686141975687.png" alt="image-20230525154322362"></p>
+<h3 id="文件上传处"><a href="#文件上传处" class="headerlink" title="文件上传处"></a>文件上传处</h3><p><code>up.class.php</code></p>
+<p>白名单，文件大小检测，文件时间戳重命名,图片裁剪生成缩略图</p>
+<p>没啥用，需要配合其他漏洞</p>
+<h1 id="DedeCMS"><a href="#DedeCMS" class="headerlink" title="DedeCMS"></a>DedeCMS</h1><p>进行功能点审计</p>
+<h2 id="全局总览"><a href="#全局总览" class="headerlink" title="全局总览"></a>全局总览</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">入口文件主要有三个</span><br><span class="line">前台</span><br><span class="line">后台：dede/</span><br><span class="line">会员：member/</span><br></pre></td></tr></table></figure>
+
+<p>全局函数<br>在项目根目录的index文件包含的&#x2F;include&#x2F;common.inc.php中<br>过滤的：</p>
+<p>检查和注册外部提交的变量，<code>CheckRequest</code></p>
+<p><img src="/../images/image-20230526102737909-1686141975687.png" alt="image-20230526102737909"></p>
+<p>文件上传的</p>
+<p><img src="/../images/image-20230526102806414-1686141975687.png" alt="image-20230526102806414"></p>
+<p>分页参数的</p>
+<p><img src="/../images/image-20230526102852980-1686141975687.png" alt="image-20230526102852980"></p>
+<p>函数集</p>
+<p><img src="/../images/image-20230526102920759-1686141975687.png" alt="image-20230526102920759"></p>
+<p><code>include/filter.inc.php</code></p>
+<p>过滤不文明内容的😅，不是为了防御漏洞的</p>
+<h2 id="文件上传功能点"><a href="#文件上传功能点" class="headerlink" title="文件上传功能点"></a>文件上传功能点</h2><h3 id="dede-archives-do-php"><a href="#dede-archives-do-php" class="headerlink" title=" /dede/archives_do.php"></a><code> /dede/archives_do.php</code></h3><p><img src="/../images/image-20230525201745708-1686141975687.png" alt="image-20230525201745708"></p>
+<p><img src="/../images/image-20230525200159854-1686141975687.png" alt="image-20230525200159854"></p>
+<p>实际上是调用了<code>upload.helper.php</code>中的<code>AdminUpload</code>方法</p>
+<p><img src="/../images/image-20230525201545164-1686141975687.png" alt="image-20230525201545164"></p>
+<p><img src="/../images/image-20230525201700590-1686141975687.png" alt="image-20230525201700590"></p>
+<p>可以看到只对文件的MIME类型进行了校验,没有对文件后缀进行校验</p>
+<p>再看一下全局防护<code>uploadsafe.inc.php</code></p>
+<p><img src="/../images/image-20230525201856657-1686141975688.png" alt="image-20230525201856657"></p>
+<p><img src="/../images/image-20230525201949967-1686141975688.png" alt="image-20230525201949967"></p>
+<p>虽然有黑名单，但是黑名单对管理员用户无效</p>
+<p><img src="/../images/image-20230525202104709-1686141975688.png" alt="image-20230525202104709"></p>
+<p>最后用<code>getimagesize</code>进行校验，可以添加文件头绕过。</p>
+<p>综上所属，是管理员身份，只需要修改MIME和文件头即可绕过过滤。</p>
+<p><img src="/../images/image-20230525191610086-1686141975688.png" alt="image-20230525191610086"></p>
+<p><img src="/../images/image-20230525191553945-1686141975688.png" alt="image-20230525191553945"></p>
+<h3 id="dede-media-add-php"><a href="#dede-media-add-php" class="headerlink" title="/dede/media_add.php"></a><code>/dede/media_add.php</code></h3><p><img src="/../images/image-20230525205532459-1686141975688.png" alt="image-20230525205532459"></p>
+<p>跟上一个差不多，只校验MIME，不校验后缀，只是多了一步加水印的，所以传一个php后缀的图片马</p>
+<p><img src="/../images/image-20230525205858924-1686141975688.png" alt="image-20230525205858924"></p>
+<h3 id="dede-file-manage-control-php"><a href="#dede-file-manage-control-php" class="headerlink" title="/dede/file_manage_control.php"></a><code>/dede/file_manage_control.php</code></h3><p><img src="/../images/image-20230525204329712-1686141975689.png" alt="image-20230525204329712"></p>
+<p><img src="/../images/image-20230525210840452-1686141975688.png" alt="image-20230525210840452"></p>
+<p><img src="/../images/image-20230525211553932-1686141975689.png" alt="image-20230525211553932"></p>
+<p>没有对内容进行过滤，这里可以写🐎</p>
+<h2 id="URL重定向"><a href="#URL重定向" class="headerlink" title="URL重定向"></a>URL重定向</h2><p><code>plus/download.php</code></p>
+<p><img src="/../images/image-20230526100708534-1686141975688.png" alt="image-20230526100708534"></p>
+<p><img src="/../images/image-20230526100724469-1686141975689.png" alt="image-20230526100724469"></p>
+<p><img src="/../images/image-20230526101319599-1686141975690.png" alt="image-20230526101319599"></p>
+<p><code>$linkinfo</code>压根不存在，没有过滤，对url先进行base64加密，再进行url加密即可</p>
+<p><img src="/../images/image-20230526101138188-1686141975689.png" alt="image-20230526101138188"></p>
+<h2 id="会员任意密码修改"><a href="#会员任意密码修改" class="headerlink" title="会员任意密码修改"></a>会员任意密码修改</h2><p>先看一下会员中心的逻辑</p>
+<p><code>member/index.php</code></p>
+<p>校验用户是否登录，登录则进入会员个人中心</p>
+<p><code>member/index_do.php</code></p>
+<p>会员操作与<code>$fmdo</code>参数匹配</p>
+<p>重置密码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">index_do.php?fmdo=user&amp;dopost=xxx</span><br></pre></td></tr></table></figure>
+
+<p>重置密码逻辑在<code>resetpassword.php</code>中,大致逻辑如下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="variable">$dopost</span> == <span class="string">&quot;&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">include</span>(<span class="title function_ invoke__">dirname</span>(<span class="keyword">__FILE__</span>).<span class="string">&quot;/templets/resetpassword.htm&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">elseif</span>(<span class="variable">$dopost</span> == <span class="string">&quot;getpwd&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="comment">// 找回密码第一步</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$dopost</span> == <span class="string">&quot;safequestion&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="comment">// 密码问题判断</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$dopost</span> == <span class="string">&quot;getpasswd&quot;</span>)</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="comment">// 找回密码第二步</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重点关注密码问题判断</p>
+<p><img src="/../images/image-20230526123219865-1686141975689.png" alt="image-20230526123219865"></p>
+<p>使用了弱比较，如果用户没有设置密码问题，默认值如下</p>
+<p><img src="/../images/image-20230526123041472-1686141975689.png" alt="image-20230526123041472"></p>
+<p>所以可以构造<code>safequestion=0.0&amp;safeanswer=</code>来进入该if语句</p>
+<p>跟进 sn，最终是重定向到修改密码页面</p>
+<p><img src="/../images/image-20230526123510601-1686141975689.png" alt="image-20230526123510601"></p>
+<h2 id="任意用户登录"><a href="#任意用户登录" class="headerlink" title="任意用户登录"></a>任意用户登录</h2><p>看一下怎么处理的</p>
+<p><code>member/config.php</code></p>
+<p><img src="/../images/image-20230526130641724-1686141975689.png" alt="image-20230526130641724"></p>
+<p>跟进</p>
+<p><img src="/../images/image-20230526130848007-1686141975689.png" alt="image-20230526130848007"></p>
+<p><img src="/../images/image-20230526132740089-1686141975689.png" alt="image-20230526132740089"></p>
+<p>对得到的<code>M_ID</code>做了<code>intval</code>处理，最后根据<code>M_ID</code>的值从数据库中取出对应用户</p>
+<p>跟进<code>getnum</code></p>
+<p><img src="/../images/image-20230526132102568-1686141975689.png" alt="image-20230526132102568"></p>
+<p>跟进<code>getcookie</code></p>
+<p><img src="/../images/image-20230526131125230-1686141975689.png" alt="image-20230526131125230"></p>
+<p>两个IF，第一个if判断Cookie中的DedeUserID和DedeUserID__ckMD5,如果都存在进入第二个if，校验cookie有效性，可以看到是通过加盐再加密的方式，所以按理说是无法伪造cookie的。</p>
+<p>但是可以从<code>/member/index.php</code>可以来获取这个加密后的值</p>
+<p>搜索<code>getcookie</code>得到</p>
+<p><img src="/../images/image-20230526131657609-1686141975689.png" alt="image-20230526131657609"></p>
+<p>跟踪<code>$last_vid</code></p>
+<p><img src="/../images/image-20230526132259147-1686141975690.png" alt="image-20230526132259147"></p>
+<p>如果<code>$last_vid</code>为空，那么将<code>$uid</code>赋值给<code>$last_vid</code>，并作为参数传递给<code>PutCookie</code>函数</p>
+<p>跟进<code>PutCookie</code>函数</p>
+<p><img src="/../images/image-20230526132158862-1686141975690.png" alt="image-20230526132158862"></p>
+<p>可以看到跟登录的<code>getcookie</code>加密方式一样。</p>
+<p>总结一下：</p>
+<p>登录</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">用户的身份由DedeUserID的值来决定</span><br><span class="line"></span><br><span class="line">校验：DedeUserID__ckMd5的值和<span class="title function_ invoke__">md5</span>(<span class="variable">$cfg_cookie_encode</span>.DedeUserID)</span><br></pre></td></tr></table></figure>
+
+<p>访问<code>member/index.php?uid=xx</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">last_vid=uid</span><br><span class="line"></span><br><span class="line">last_vid__ckMd5=<span class="title function_ invoke__">md5</span>(<span class="variable">$cfg_cookie_encode</span>.uid)</span><br></pre></td></tr></table></figure>
+
+<p>所以让</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DedeUserID=last_vid=uid</span><br><span class="line">DedeUserID__ckMd5=last_vid__ckMd5</span><br></pre></td></tr></table></figure>
+
+<p>就可以绕过getcookie的校验，但是还有一个问题是<code>uid</code>指的是用户的<code>userid</code>，<code>DedeUserID</code>指的是用户的<code>mid</code>，所以要让<code>uid</code>为<code>mid</code>才可以伪造身份</p>
+<p><img src="/../images/image-20230526134001725-1686141975691.png" alt="image-20230526134001725"></p>
+<p>还记得上面的处理吗？</p>
+<p><img src="/../images/image-20230526134147020-1686141975690.png" alt="image-20230526134147020"></p>
+<p>所以只需要构造一个含有数字1的字符串就可以伪造admin的身份。</p>
+<p>注册一个用户名为1admin的用户</p>
+<p><img src="/../images/image-20230526125711799-1686141975690.png" alt="image-20230526125711799"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DedeUserID=last_vid=uid</span><br><span class="line">DedeUserID__ckMd5=last_vid__ckMd5</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230526125702071-1686141975690.png" alt="image-20230526125702071"></p>
+<h1 id="ThinkPHP"><a href="#ThinkPHP" class="headerlink" title="ThinkPHP"></a>ThinkPHP</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">composer create<span class="literal">-project</span> <span class="literal">--prefer-dist</span> topthink/think=<span class="number">5.0</span>.<span class="number">10</span> tp5.<span class="number">0.10</span></span><br></pre></td></tr></table></figure>
+
+<p>将 <a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=composer&spm=1001.2101.3001.7020">composer</a>.json 文件的 require 字段设置成如下</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;require&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;php&quot;</span>: <span class="string">&quot;&gt;=5.4.0&quot;</span>,</span><br><span class="line">    <span class="string">&quot;topthink/framework&quot;</span>: <span class="string">&quot;5.0.10&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更新</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">composer update</span><br></pre></td></tr></table></figure>
+
+<p>将其放置到网站目录下，访问<a target="_blank" rel="noopener" href="http://127.0.0.1/tp5.0.10/public/">http://127.0.0.1/tp5.0.10/public/</a></p>
+<p><img src="/../images/image-20230529155309821-1686141975690.png" alt="image-20230529155309821"></p>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>推荐阅读<a target="_blank" rel="noopener" href="https://www.cnblogs.com/yokan/p/16102644.html">https://www.cnblogs.com/yokan/p/16102644.html</a></p>
+<h3 id="路由和参数传递"><a href="#路由和参数传递" class="headerlink" title="路由和参数传递"></a>路由和参数传递</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">http:<span class="comment">//servername/index.php/模块/控制器/操作/[参数名/参数值...] # pathinfo模式</span></span><br><span class="line"></span><br><span class="line">http:<span class="comment">//servername/index.php?s=/index/Index/index    # 兼容方式</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?name=<span class="number">213</span></span><br><span class="line">/name/<span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>如控制器Index：<code>application/index/controller/Index.php</code></p>
+<p><img src="/../images/image-20230531232416306.png" alt="image-20230531232416306"></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">http:<span class="comment">//127.0.0.1/tp5.0.10/public/index.php/index/Index/hello?name=world</span></span><br><span class="line">http:<span class="comment">//127.0.0.1/tp5.0.10/public/index.php/index/Index/hello/name/world</span></span><br><span class="line"></span><br><span class="line">http:<span class="comment">//127.0.0.1/tp5.0.10/public/index.php?s=/index/Index/hello/name/world</span></span><br><span class="line">http:<span class="comment">//127.0.0.1/tp5.0.10/public/index.php?s=/index/Index/hello&amp;name=world</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Request类任意调用-construct方法导致的rce"><a href="#Request类任意调用-construct方法导致的rce" class="headerlink" title="Request类任意调用__construct方法导致的rce"></a>Request类任意调用__construct方法导致的rce</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Request核心类**$method** 来自可控的 <strong>$_POST</strong> 数组，而且在获取之后没有进行任何检查，直接把它作为 <strong>Request</strong> 类的方法进行调用，同时，该方法传入的参数是可控数据 <strong>$_POST</strong> 。导致可以随意调用 <strong>Request</strong> 类的部分方法</p>
+<blockquote>
+<p><strong>过程：</strong></p>
+<p>让method等于 <code>__construct</code>魔术方法，然后里面的 <code>foreach</code>函数造成变量覆盖。然后通过<strong>Request</strong> 类中的 <code>param</code>方法最终又调用了<code>filterValue</code>方法，而该方法中就存在可利用的 <strong>call_user_func</strong> 函数，从而执行任意命令</p>
+</blockquote>
+<blockquote>
+<p><strong>Request</strong> 类中的 <code>param、route、get、post、put、delete、patch、request、session、server、env、cookie、input</code> 方法均调用了 <strong>filterValue</strong> 方法，而该方法中就存在可利用的 <strong>call_user_func</strong> 函数</p>
+</blockquote>
+<p>以5.0.10版本为例</p>
+<p>payload</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://127.0.0.1/tp5.0.10/public/index.php</span><br><span class="line"></span><br><span class="line"># post</span><br><span class="line">_method=__construct&amp;filter=system&amp;cmd=whoami</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230531225820851.png" alt="image-20230531225820851"></p>
+<h3 id="调试-1"><a href="#调试-1" class="headerlink" title="调试"></a>调试</h3><p>第一个断点下在<code>thinkphp/libary/think/App.php</code>文件，调用<code>routeCheck</code>进行调度解析这里</p>
+<p><img src="/../images/image-20230531221156861.png" alt="image-20230531221156861"></p>
+<p>跟进<code>routeCheck</code></p>
+<p><img src="/../images/image-20230531221218359.png" alt="image-20230531221218359"></p>
+<p>跟进<code>check</code></p>
+<p><img src="/../images/image-20230531221233596.png" alt="image-20230531221233596"></p>
+<p>跟进<code>method</code></p>
+<p><img src="/../images/image-20230531221259178.png" alt="image-20230531221259178"></p>
+<p><code>var_method</code>在<code>application/config.php</code>中</p>
+<p><img src="/../images/image-20230531222320838.png" alt="image-20230531222320838"></p>
+<p>所以这里可以控制<code>method</code>变量，从而任意调用Request类的方法。</p>
+<p>如果调用<code>__construct</code>方法</p>
+<p><img src="/../images/image-20230531221707200.png" alt="image-20230531221707200"></p>
+<p>存在一个<code>foreach</code>循环，如果传入的<code>options</code>数组的键名为该类的属性，就用键值覆盖该属性的值。</p>
+<p><img src="/../images/image-20230531222852250.png" alt="image-20230531222852250"></p>
+<p>继续往下</p>
+<p>在<code>App::run()</code>方法里面，如果我们开启了debug模式，则会调用<code>Request::param()</code>方法：</p>
+<p><img src="/../images/image-20230531223011915.png" alt="image-20230531223011915"></p>
+<p>就算没有开启debug模式，下面的exec方法也会调用</p>
+<p><img src="/../images/image-20230531230604547.png" alt="image-20230531230604547"></p>
+<p><img src="/../images/image-20230531220640414.png" alt="image-20230531220640414"></p>
+<p>跟进<code>Request::param()</code>方法</p>
+<p>将获取到的post参数用<code>array_merge</code>与get方式的参数进行合并</p>
+<p><img src="/../images/image-20230531225110758.png" alt="image-20230531225110758"></p>
+<p>最后将其传入<code>input</code>中</p>
+<p><img src="/../images/image-20230531224212939.png" alt="image-20230531224212939"></p>
+<p>跟进<code>Request::input()</code>,<code>array_walk_recursive</code>  对数组中的每个成员递归地应用用户函数</p>
+<p><img src="/../images/image-20230531224435122.png" alt="image-20230531224435122"></p>
+<p>然后<code>filterValue</code>方法中，调用了<code>call_user_func</code>造成任意命令执行</p>
+<p><img src="/../images/image-20230531223158698.png" alt="image-20230531223158698"></p>
+<h3 id="关键点总结"><a href="#关键点总结" class="headerlink" title="关键点总结"></a>关键点总结</h3><p>From：七月火师傅的一张流程图</p>
+<p><img src="/../images/1964477-20220405155310200-1040131440.png" alt="img"></p>
+<h3 id="其他版本"><a href="#其他版本" class="headerlink" title="其他版本"></a>其他版本</h3><p>流程大同小异</p>
+<p>payload总结：<a target="_blank" rel="noopener" href="https://y4er.com/posts/thinkphp5-rce/#thinkphp5-method%E4%BB%BB%E6%84%8F%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95%E5%AF%BC%E8%87%B4rce">https://y4er.com/posts/thinkphp5-rce/#thinkphp5-method%E4%BB%BB%E6%84%8F%E8%B0%83%E7%94%A8%E6%96%B9%E6%B3%95%E5%AF%BC%E8%87%B4rce</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://Fgtbnc.github.io">Khaz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fgtbnc.github.io/2023/05/31/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">http://fgtbnc.github.io/2023/05/31/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Fgtbnc.github.io" target="_blank">Khaz</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/05/31/CSRF%E5%92%8CSSRF/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSRF和SSRF</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.ax1x.com/2023/05/31/p9x0Eg1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxx" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">记录一些自己的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">1.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E5%A4%A7%E8%87%B4%E6%B5%81%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">总结大致流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7"><span class="toc-number">3.0.1.</span> <span class="toc-text">自动化审计工具</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bluecms"><span class="toc-number">4.</span> <span class="toc-text">bluecms</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95"><span class="toc-number">4.1.</span> <span class="toc-text">黑盒测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C"><span class="toc-number">4.1.0.1.</span> <span class="toc-text">用户注册</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E5%A4%B4%E5%83%8F"><span class="toc-number">4.1.0.2.</span> <span class="toc-text">用户头像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81"><span class="toc-number">4.1.0.3.</span> <span class="toc-text">修改密码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%91%E5%B8%83%E6%96%B0%E9%97%BB"><span class="toc-number">4.1.0.4.</span> <span class="toc-text">发布新闻</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F"><span class="toc-number">4.1.0.5.</span> <span class="toc-text">目录扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95"><span class="toc-number">4.1.0.6.</span> <span class="toc-text">后台登录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">4.1.0.7.</span> <span class="toc-text">常用操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%9A%E5%91%98%E7%AE%A1%E7%90%86"><span class="toc-number">4.1.0.8.</span> <span class="toc-text">会员管理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BD%E7%9B%92%E5%AE%A1%E8%AE%A1"><span class="toc-number">4.2.</span> <span class="toc-text">白盒审计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%8F%B0"><span class="toc-number">4.2.1.</span> <span class="toc-text">前台</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="toc-number">4.2.1.1.</span> <span class="toc-text">sql注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">4.2.1.2.</span> <span class="toc-text">文件包含+文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4"><span class="toc-number">4.2.1.3.</span> <span class="toc-text">任意文件删除</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E2%80%93-x2F-admin"><span class="toc-number">4.2.2.</span> <span class="toc-text">后台–&#x2F;admin</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-number">4.2.2.1.</span> <span class="toc-text">任意文件读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-number">4.2.2.2.</span> <span class="toc-text">任意文件上传</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SeaCMS"><span class="toc-number">5.</span> <span class="toc-text">SeaCMS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%85%A5%E5%8F%A3%E6%96%87%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">查看入口文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">5.2.</span> <span class="toc-text">查看配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%BA%AB%E4%BB%BD%E6%A0%A1%E9%AA%8C%E6%96%87%E4%BB%B6"><span class="toc-number">5.3.</span> <span class="toc-text">查看身份校验文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%8F%B0-1"><span class="toc-number">5.4.</span> <span class="toc-text">前台</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#about-php"><span class="toc-number">5.4.1.</span> <span class="toc-text">about.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#concat-php"><span class="toc-number">5.4.2.</span> <span class="toc-text">concat.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#content-php"><span class="toc-number">5.4.3.</span> <span class="toc-text">content.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#submit-php"><span class="toc-number">5.4.4.</span> <span class="toc-text">submit.php</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0"><span class="toc-number">5.5.</span> <span class="toc-text">后台</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95-1"><span class="toc-number">5.5.1.</span> <span class="toc-text">后台登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%A4%84"><span class="toc-number">5.5.2.</span> <span class="toc-text">文件上传处</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DedeCMS"><span class="toc-number">6.</span> <span class="toc-text">DedeCMS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E6%80%BB%E8%A7%88"><span class="toc-number">6.1.</span> <span class="toc-text">全局总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8A%9F%E8%83%BD%E7%82%B9"><span class="toc-number">6.2.</span> <span class="toc-text">文件上传功能点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#dede-archives-do-php"><span class="toc-number">6.2.1.</span> <span class="toc-text"> &#x2F;dede&#x2F;archives_do.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dede-media-add-php"><span class="toc-number">6.2.2.</span> <span class="toc-text">&#x2F;dede&#x2F;media_add.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dede-file-manage-control-php"><span class="toc-number">6.2.3.</span> <span class="toc-text">&#x2F;dede&#x2F;file_manage_control.php</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#URL%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">6.3.</span> <span class="toc-text">URL重定向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%9A%E5%91%98%E4%BB%BB%E6%84%8F%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9"><span class="toc-number">6.4.</span> <span class="toc-text">会员任意密码修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95"><span class="toc-number">6.5.</span> <span class="toc-text">任意用户登录</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ThinkPHP"><span class="toc-number">7.</span> <span class="toc-text">ThinkPHP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">7.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%A7%88"><span class="toc-number">7.2.</span> <span class="toc-text">概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E5%92%8C%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">7.2.1.</span> <span class="toc-text">路由和参数传递</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Request%E7%B1%BB%E4%BB%BB%E6%84%8F%E8%B0%83%E7%94%A8-construct%E6%96%B9%E6%B3%95%E5%AF%BC%E8%87%B4%E7%9A%84rce"><span class="toc-number">7.3.</span> <span class="toc-text">Request类任意调用__construct方法导致的rce</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">7.3.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E8%AF%95-1"><span class="toc-number">7.3.2.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-number">7.3.3.</span> <span class="toc-text">关键点总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%89%88%E6%9C%AC"><span class="toc-number">7.3.4.</span> <span class="toc-text">其他版本</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/06/01/waf%E7%BB%95%E8%BF%87%E5%AD%A6%E4%B9%A0/" title="waf绕过简单学习"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="waf绕过简单学习"/></a><div class="content"><a class="title" href="/2023/06/01/waf%E7%BB%95%E8%BF%87%E5%AD%A6%E4%B9%A0/" title="waf绕过简单学习">waf绕过简单学习</a><time datetime="2023-06-01T11:50:25.000Z" title="发表于 2023-06-01 19:50:25">2023-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/01/XXE/" title="XXE"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="XXE"/></a><div class="content"><a class="title" href="/2023/06/01/XXE/" title="XXE">XXE</a><time datetime="2023-06-01T11:50:25.000Z" title="发表于 2023-06-01 19:50:25">2023-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/01/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/" title="渗透测试流程"><img src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="渗透测试流程"/></a><div class="content"><a class="title" href="/2023/06/01/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B/" title="渗透测试流程">渗透测试流程</a><time datetime="2023-06-01T11:48:25.000Z" title="发表于 2023-06-01 19:48:25">2023-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/31/%E9%80%9A%E8%BF%87Mysql%E5%AD%A6%E4%B9%A0sql%E6%B3%A8%E5%85%A5/" title="通过mysql学习sql注入"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="通过mysql学习sql注入"/></a><div class="content"><a class="title" href="/2023/05/31/%E9%80%9A%E8%BF%87Mysql%E5%AD%A6%E4%B9%A0sql%E6%B3%A8%E5%85%A5/" title="通过mysql学习sql注入">通过mysql学习sql注入</a><time datetime="2023-05-31T11:52:40.000Z" title="发表于 2023-05-31 19:52:40">2023-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/31/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="PHP反序列化"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP反序列化"/></a><div class="content"><a class="title" href="/2023/05/31/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="PHP反序列化">PHP反序列化</a><time datetime="2023-05-31T11:48:25.000Z" title="发表于 2023-05-31 19:48:25">2023-05-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
