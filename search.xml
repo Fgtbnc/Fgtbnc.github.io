@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>群友的面试靶场--简单代码审计</title>
+      <link href="/2023/06/29/%E9%9D%A2%E8%AF%95%E9%9D%B6%E5%9C%BA/"/>
+      <url>/2023/06/29/%E9%9D%A2%E8%AF%95%E9%9D%B6%E5%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>起因是某群友在群里求助其面试需要打的靶场，正好好久没打靶场，就打打看，当然我不会把解题过程告诉他，毕竟是面试，最多给个提示。</p><h2 id="靶场"><a href="#靶场" class="headerlink" title="靶场"></a>靶场</h2><p>访问</p><p><img src="/../images/image-20230629105330610.png" alt="image-20230629105330610"></p><h3 id="目录扫描"><a href="#目录扫描" class="headerlink" title="目录扫描"></a>目录扫描</h3><ul><li>info.php：phpinfo信息</li><li>download.php：fuzz出参数为fn，存在过滤，无法目录穿越</li><li><a href="http://www.zip：源码泄露">www.zip：源码泄露</a></li></ul><h3 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h3><p>结构如下所示，无框架型的</p><p><img src="/../images/image-20230629010836352.png" alt="image-20230629010836352"></p><p>先看一下index.php文件</p><p><img src="/../images/image-20230629011023213.png" alt="image-20230629011023213"></p><p>这个包含的应该就是函数集文件，重点关注，关键函数如下</p><h4 id="admin认证"><a href="#admin认证" class="headerlink" title="admin认证"></a>admin认证</h4><p><img src="/../images/image-20230629011149349.png" alt="image-20230629011149349"></p><p>admin.php内容</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">21232f297a57a5a743894a0e4a801fc3</span><br><span class="line">1a1dc91c907325c69271ddf0c944bc72</span><br></pre></td></tr></table></figure><p>md5查询得到</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin</span><br><span class="line">pass</span><br></pre></td></tr></table></figure><p>payload</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">POST /phprusearch/index.php</span><br><span class="line"></span><br><span class="line">login=admin&amp;password=pass</span><br></pre></td></tr></table></figure><h3 id="任意内容写入"><a href="#任意内容写入" class="headerlink" title="任意内容写入"></a>任意内容写入</h3><p><img src="/../images/image-20230629110232773.png" alt="image-20230629110232773"></p><p>找一下调用了该方法的地方</p><p>index.php</p><p><img src="/../images/image-20230629110310242.png" alt="image-20230629110310242"></p><p>不行，因为<code>$_SERVER[&quot;HTTP_REFERER&quot;]</code>会把<code>&lt;?;</code>删掉，无法写入php内容</p><p>sadmin&#x2F;index.php</p><p><img src="/../images/image-20230629110516218.png" alt="image-20230629110516218"></p><p>没有进行过滤，直接将post的参数内容写入sconfig.php中</p><p>payload</p><p><img src="/../images/image-20230629011301625.png" alt="image-20230629011301625"></p><p>蚁剑连接即可</p><p><img src="/../images/image-20230629004608163.png" alt="image-20230629004608163"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 渗透测试 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Openfire身份认证绕过+插件Getshell漏洞复现</title>
       <link href="/2023/06/25/openfire/"/>
       <url>/2023/06/25/openfire/</url>
