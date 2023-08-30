@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linux命令 | Khaz</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Linux一切皆文件 没有信息就是好消息，说明命令成功了。 查看系统信息uname -a    后台运行程序 后台运行  cmd &amp;nohup cmd   查看后台程序  jobs    文件创建文件 vi &#x2F;vim filename：文本编辑器  touch filename：创建空文件  重定向符创建 echo &quot;string&quot; &gt; filenamecat &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux命令">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/05/31/Linux%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Khaz">
+<meta property="og:description" content="Linux一切皆文件 没有信息就是好消息，说明命令成功了。 查看系统信息uname -a    后台运行程序 后台运行  cmd &amp;nohup cmd   查看后台程序  jobs    文件创建文件 vi &#x2F;vim filename：文本编辑器  touch filename：创建空文件  重定向符创建 echo &quot;string&quot; &gt; filenamecat &amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg">
+<meta property="article:published_time" content="2023-05-31T11:47:25.000Z">
+<meta property="article:modified_time" content="2023-08-30T13:47:24.418Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/05/31/Linux%E5%91%BD%E4%BB%A4/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Khaz","link":"链接: ","source":"来源: Khaz","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux命令',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-08-30 21:47:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s1.ax1x.com/2023/05/31/p9x0Eg1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Linux命令</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-31T11:47:25.000Z" title="发表于 2023-05-31 19:47:25">2023-05-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-08-30T13:47:24.418Z" title="更新于 2023-08-30 21:47:24">2023-08-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux命令"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Linux一切皆文件</p>
+<p>没有信息就是好消息，说明命令成功了。</p>
+<h2 id="查看系统信息"><a href="#查看系统信息" class="headerlink" title="查看系统信息"></a>查看系统信息</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">uname -a</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="后台运行程序"><a href="#后台运行程序" class="headerlink" title="后台运行程序"></a>后台运行程序</h2><ul>
+<li>后台运行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cmd &amp;</span><br><span class="line">nohup cmd</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看后台程序</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jobs</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h2><h3 id="创建文件"><a href="#创建文件" class="headerlink" title="创建文件"></a>创建文件</h3><ul>
+<li><p><code>vi /vim filename</code>：文本编辑器</p>
+</li>
+<li><p><code>touch filename</code>：创建空文件</p>
+</li>
+<li><p>重定向符创建</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;string&quot; &gt; filename</span><br><span class="line">cat &gt; filename：输入文件内容，ctrl+d保存并退出</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="复制文件-x2F-目录"><a href="#复制文件-x2F-目录" class="headerlink" title="复制文件&#x2F;目录"></a>复制文件&#x2F;目录</h3><ul>
+<li><p><code>cp file_path xx</code></p>
+<p>当xx为文件时，即创建file的副本xx</p>
+<p>当xx为目录时，即将file复制到xx目录下</p>
+<p>可选参数：-R  复制文件夹</p>
+</li>
+</ul>
+<h3 id="文件链接"><a href="#文件链接" class="headerlink" title="文件链接"></a>文件链接</h3><p><a target="_blank" rel="noopener" href="https://www.runoob.com/note/29134">https://www.runoob.com/note/29134</a></p>
+<ul>
+<li><p>软链接&#x2F;符号链接</p>
+<p><code>ln -s 源文件名 快捷方式名</code>（软连接，只是创建了一个快捷方式）</p>
+</li>
+<li><p>硬链接</p>
+<p><code>ln  源文件名 文件名</code>（硬链接，两个文件是同步的，就是对任意一个操作，都会影响到两个）  </p>
+</li>
+<li><p>二者区别</p>
+<p>删除了源文件，软连接就失效了，而硬链接相当于副本，不受影响。</p>
+</li>
+</ul>
+<h3 id="重命名文件-x2F-目录"><a href="#重命名文件-x2F-目录" class="headerlink" title="重命名文件&#x2F;目录"></a>重命名文件&#x2F;目录</h3><blockquote>
+<p>在Linux中，重命名文件称为移动（moving）</p>
+</blockquote>
+<ul>
+<li><code>mv name1  name2</code>：更改文件名&#x2F;目录名</li>
+<li><code>mv name dir_path</code>：移动文件&#x2F;目录</li>
+<li><code>mv file_path   dir_path+file_name2</code>：移动文件并重命名</li>
+</ul>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><blockquote>
+<p>在Linux中，删除（deleting）叫作移除（removing）。</p>
+</blockquote>
+<ul>
+<li><code>rm  filename</code><ul>
+<li>-i：删除前询问</li>
+<li>-f：强制删除</li>
+</ul>
+</li>
+</ul>
+<h3 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h3><table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">作用</th>
+<th align="center">可选参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">cat&#x2F;tac</td>
+<td align="center">从头到尾显示文件内容（tac相反）</td>
+<td align="center">-n：显示行号</td>
+</tr>
+<tr>
+<td align="center">head&#x2F;tail</td>
+<td align="center">读取前&#x2F;后lines行</td>
+<td align="center">–lines&#x3D;？</td>
+</tr>
+<tr>
+<td align="center">nl</td>
+<td align="center">显示行号和内容</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">sort</td>
+<td align="center">排序文件内容并显示</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">more</td>
+<td align="center">分页显示文件内容</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">uniq</td>
+<td align="center">去重后，显示文件内容</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">less</td>
+<td align="center">一次显示一屏的文件文本</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">paste</td>
+<td align="center">可以将两个文本按列拼接到一起显示</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">strings</td>
+<td align="center">读取二进制文件（cat不能读取二进制）</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h3 id="搜索文件内容"><a href="#搜索文件内容" class="headerlink" title="搜索文件内容"></a>搜索文件内容</h3><p><code>grep string filename</code> ：在file中查找匹配string的内容</p>
+<p>参数：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">功能</th>
+<th align="center">例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-v</td>
+<td align="center">反向搜索</td>
+<td align="center">grep -v t file1</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">显示行号</td>
+<td align="center">grep -n t file1</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">多个匹配模式</td>
+<td align="center">grep -e t -e f file1：匹配t和f字符</td>
+</tr>
+<tr>
+<td align="center">正则</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h3 id="查看文件类型-x2F-状态"><a href="#查看文件类型-x2F-状态" class="headerlink" title="查看文件类型&#x2F;状态"></a>查看文件类型&#x2F;状态</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">file filename</span><br><span class="line">stat filename</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="解压缩文件"><a href="#解压缩文件" class="headerlink" title="解压缩文件"></a>解压缩文件</h3><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1404921">https://cloud.tencent.com/developer/article/1404921</a></p>
+<p>赋予文件权限</p>
+<p><code>chmod +rw filename</code></p>
+<ul>
+<li><p>tar</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">解包：tar xvf FileName.tar</span><br><span class="line">打包：tar cvf FileName.tar DirName</span><br><span class="line">（注：tar是打包，不是压缩！）</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="文件权限"><a href="#文件权限" class="headerlink" title="文件权限"></a>文件权限</h3><p>理解权限</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@izwz99bgx9y93dmv0mir0ez ~]# ls -l</span><br><span class="line">total 16</span><br><span class="line">-rwxrwxr-x 1 rich rich 4882 2010-09-18 13:58 myprog</span><br><span class="line">....</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>![image-20230225224057939](..&#x2F;..&#x2F;..&#x2F;..&#x2F;typora img&#x2F;image-20230225224057939.png)</p>
+<p>-rwxrwxr-x解读为-，rwx，rwx，r-x</p>
+<ul>
+<li><p>第一个字符</p>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-</td>
+<td align="center">代表文件</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">代表目录</td>
+</tr>
+<tr>
+<td align="center">l</td>
+<td align="center">代表链接</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">代表字符型设备</td>
+</tr>
+<tr>
+<td align="center">b</td>
+<td align="center">代表块设备</td>
+</tr>
+<tr>
+<td align="center">n</td>
+<td align="center">n代表网络设备</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>后面9个字符，每三个为一组              </p>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">含义</th>
+<th align="center">每一组对应的安全级别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">r</td>
+<td align="center">代表对象是可读的</td>
+<td align="center">文件属主的权限</td>
+</tr>
+<tr>
+<td align="center">w</td>
+<td align="center">代表对象是可写的</td>
+<td align="center">属主成员的权限</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center">代表对象是可执行的</td>
+<td align="center">其他用户的权限</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>若没有某种权限，在该权限位会出现单破折线。</p>
+<p>属主成员指的是与文件属主在同一个用户组的成员</p>
+<p>其他用户指的是与文件属主不在同一个用户组的成员</p>
+</blockquote>
+</li>
+</ul>
+<img src="E:\typora img\image-20220927165623523.png" alt="image-20220927165623523" style="zoom:67%;" />
+
+
+
+<h4 id="改变权限"><a href="#改变权限" class="headerlink" title="改变权限"></a>改变权限</h4><p>chmod</p>
+<img src="E:\typora img\image-20221030190551191.png" alt="image-20221030190551191" style="zoom: 67%;" />
+
+<p>八进制法</p>
+<p><code>sudo  chmod 777  filename</code></p>
+<blockquote>
+<p>777由上图可知是赋予全部权限</p>
+</blockquote>
+<h4 id="设置默认权限"><a href="#设置默认权限" class="headerlink" title="设置默认权限"></a>设置默认权限</h4><p>umask</p>
+<p>![image-20230318143219603](..&#x2F;..&#x2F;..&#x2F;..&#x2F;typora img&#x2F;image-20230318143219603.png)</p>
+<p>![image-20230318143232817](..&#x2F;..&#x2F;..&#x2F;..&#x2F;typora img&#x2F;image-20230318143232817.png)</p>
+<p>文件权限&#x3D;777-umask&#x3D;755</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h3 id="查看目录下的文件"><a href="#查看目录下的文件" class="headerlink" title="查看目录下的文件"></a>查看目录下的文件</h3><ul>
+<li><code>ls</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">可选参数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-l</td>
+<td align="center">查看详细信息</td>
+</tr>
+<tr>
+<td align="center">-a</td>
+<td align="center">显示所有文件（包括隐藏文件）</td>
+</tr>
+<tr>
+<td align="center">-R</td>
+<td align="center">展示当前目录下的所有子目录和文件</td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">展示文件的索引节点</td>
+</tr>
+<tr>
+<td align="center">-F</td>
+<td align="center">展示文件类型</td>
+</tr>
+</tbody></table>
+<p>-F</p>
+<p>目录后加上<code>/</code></p>
+<p>可执行文件后加上<code>*</code></p>
+<p>![image-20220819201845329](E:\typora img\image-20220819201845329.png)</p>
+<ul>
+<li><code>dir</code></li>
+<li><code>vdir</code> 等价于 <code>ls -l</code></li>
+</ul>
+<h3 id="查看目录结构"><a href="#查看目录结构" class="headerlink" title="查看目录结构"></a>查看目录结构</h3><p><code>tree dir</code></p>
+<p>![image-20220818190348296](E:\typora img\image-20220818190348296.png)</p>
+<h3 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h3><ul>
+<li><p><code>mkdir dir_name</code>：创建单个目录</p>
+</li>
+<li><p><code>mkdir dir1/dir2/dir3</code>：创建多个目录</p>
+<p>![image-20220920223042434](E:\typora img\image-20220920223042434.png)</p>
+</li>
+</ul>
+<h3 id="删除目录"><a href="#删除目录" class="headerlink" title="删除目录"></a>删除目录</h3><ul>
+<li><p><code>rmdir dir_name</code>：删除空目录</p>
+</li>
+<li><p><code>rm  -rf  dir_name</code>：删除非空目录</p>
+<blockquote>
+<p>不使用-f参数的话，需要一一确定是否删除子目录和文件</p>
+<p>更安全，但是更麻烦</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="切换到某个目录"><a href="#切换到某个目录" class="headerlink" title="切换到某个目录"></a>切换到某个目录</h3><p><code>cd dir_path</code></p>
+<h3 id="显示当前所在目录"><a href="#显示当前所在目录" class="headerlink" title="显示当前所在目录"></a>显示当前所在目录</h3><p><code>pwd</code></p>
+<h2 id="进程–process"><a href="#进程–process" class="headerlink" title="进程–process"></a>进程–process</h2><h3 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h3><ul>
+<li>ps</li>
+</ul>
+<p>![image-20220819201116476](E:\typora img\image-20220819201116476.png)</p>
+<p>显示了程序的进程ID（Process ID，PID），它们运行在哪个终端（TTY），以及进程已用的CPU时间。</p>
+<p>参数风格</p>
+<p> Unix风格的参数，前面加单破折线；</p>
+<p> BSD风格的参数，前面不加破折线；</p>
+<p> GNU风格的长参数，前面加双破折线。</p>
+<blockquote>
+<p>我喜欢用Unix的</p>
+</blockquote>
+<p>常用参数</p>
+<p>通常使用<code>ps -ef</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-e</td>
+<td align="center">显示所有运行在系统上的进程</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">显示进程的更多信息</td>
+</tr>
+<tr>
+<td align="center">-l</td>
+<td align="center">进一步显示进程的更多信息</td>
+</tr>
+<tr>
+<td align="center">–forest</td>
+<td align="center">显示进程间的父子关系</td>
+</tr>
+</tbody></table>
+<ul>
+<li>top</li>
+</ul>
+<img src="E:\typora img\image-20220922144049498.png" alt="image-20220922144049498" style="zoom: 67%;" />
+
+<blockquote>
+<p>与ps不同的点在于，ps只能显示一个时间点的进程信息，而top是实时更新，就像windows的任务管理器。</p>
+</blockquote>
+<p>交互命令：输入q退出top命令。</p>
+<ul>
+<li><p>lsof</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lsof -p pid   //查看进程打开了哪些文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="结束进程"><a href="#结束进程" class="headerlink" title="结束进程"></a>结束进程</h3><blockquote>
+<p>在Linux中，进程之间通过信号来通信。</p>
+</blockquote>
+<img src="E:\typora img\image-20220922144615297.png" alt="image-20220922144615297" style="zoom: 67%;" />
+
+<ul>
+<li><p><code>kill pid</code>：通过进程的pid来结束进程</p>
+</li>
+<li><p><code>kill -9 pid</code>：强制结束</p>
+</li>
+<li><p><code>killall  process_name</code>：通过进程名结束进程（支持通配符）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">killall http*</span><br><span class="line">上面的命令结束了所有以http开头的进程</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h2><h3 id="切换用户"><a href="#切换用户" class="headerlink" title="切换用户"></a>切换用户</h3><p>su  -  用户名</p>
+<p>高权限切换低权限无需密码，反之需要。</p>
+<h3 id="查看第一次登录到系统的用户"><a href="#查看第一次登录到系统的用户" class="headerlink" title="查看第一次登录到系统的用户"></a>查看第一次登录到系统的用户</h3><p>who am i</p>
+<h2 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h2><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">#</td>
+<td align="center">注释后面的命令</td>
+</tr>
+<tr>
+<td align="center">；</td>
+<td align="center">依次执行命令</td>
+</tr>
+<tr>
+<td align="center">|</td>
+<td align="center">管道，前一个命令的输出作为后一个命令的输入</td>
+</tr>
+<tr>
+<td align="center">||</td>
+<td align="center">如果前一条命令执行不成功则执行下一条命令</td>
+</tr>
+<tr>
+<td align="center">&amp;</td>
+<td align="center">后台执行命令</td>
+</tr>
+<tr>
+<td align="center">&amp;&amp;</td>
+<td align="center">如果前一条命令执行成功则执行下一条命令</td>
+</tr>
+<tr>
+<td align="center">$?</td>
+<td align="center">存储上一条命令的执行结果</td>
+</tr>
+</tbody></table>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><h3 id="查看ip"><a href="#查看ip" class="headerlink" title="查看ip"></a>查看ip</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ip address show</span><br><span class="line"></span><br><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="抓取服务流量"><a href="#抓取服务流量" class="headerlink" title="抓取服务流量"></a>抓取服务流量</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo tcpdump -i lo port 6379 -w redis.pcapng</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="查找命令"><a href="#查找命令" class="headerlink" title="查找命令"></a>查找命令</h2><p>![image-20221007162424354](E:\typora img\image-20221007162424354.png)</p>
+<ul>
+<li><p><code>find</code></p>
+<p>![image-20230221171347974](..&#x2F;..&#x2F;..&#x2F;..&#x2F;typora img&#x2F;image-20230221171347974.png)</p>
+<p>![image-20230324204821642](..&#x2F;..&#x2F;..&#x2F;..&#x2F;typora img&#x2F;image-20230324204821642.png)</p>
+</li>
+<li><p><code>locate</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">更新索引数据库</span></span><br><span class="line">sudo updatedb</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2><blockquote>
+<p>端口是通过端口号来标记的，端口号只有整数，范围是从0~65535 </p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/linux-check-port-usage.html">https://www.runoob.com/w3cnote/linux-check-port-usage.html</a></p>
+<ul>
+<li><p>lsof</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">lsof -i:8000  //查看8000端口占用情况</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>netstat</code> </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">netstat -ntlp   //查看当前所有tcp端口</span><br><span class="line">netstat -ntulp | grep 80   //查看所有80端口使用情况</span><br><span class="line">netstat -ntulp | grep 3306   //查看所有3306端口使用情况</span><br></pre></td></tr></table></figure>
+
+<p>![image-20220804194025228](E:\typora img\image-20220804194025228.png)</p>
+</li>
+</ul>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">systemctl  command  服务</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">command</th>
+<th align="center">mean</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">status</td>
+<td align="center">查看服务状态</td>
+</tr>
+<tr>
+<td align="center">start</td>
+<td align="center">启动服务</td>
+</tr>
+<tr>
+<td align="center">restart</td>
+<td align="center">重启服务</td>
+</tr>
+<tr>
+<td align="center">stop</td>
+<td align="center">停止服务</td>
+</tr>
+<tr>
+<td align="center">enable</td>
+<td align="center">开机自启服务</td>
+</tr>
+<tr>
+<td align="center">disable</td>
+<td align="center">取消开机自启服务</td>
+</tr>
+</tbody></table>
+<p>reload:不关闭unit的情况下,重新载入配置文件,让设置生效。<br>is- active:目前有没有正在运行中。<br>is- enabled:开机时有没有默认要启用这个unit。<br>kill:不要被kill这个名字吓着了,它其实是向运行unit的进程发送信号<br>show:列出unit的配置。<br>mask:禁用服务<br>unmask:取消对服务的禁用</p>
+<p>list-unit-files|grep enable:列出所有自启动服务</p>
+<p>![image-20221024194730467](E:\typora img\image-20221024194730467.png)</p>
+<p>loaded：开机是否自启动，enabled说明是自启动的</p>
+<p>active：现在是否启动，active（running)说明正在</p>
+<h2 id="使用技巧"><a href="#使用技巧" class="headerlink" title="使用技巧"></a>使用技巧</h2><p><img src="/../../../../blog/source/images/image-20230221171851141-1693403138821.png" alt="image-20230221171851141"></p>
+<p><img src="/../../../../blog/source/images/image-20230221171905266-1693403138820.png" alt="image-20230221171905266"></p>
+<h3 id="为命令起别名"><a href="#为命令起别名" class="headerlink" title="为命令起别名"></a>为命令起别名</h3><blockquote>
+<p><code>alias</code>命令是另一个shell的内建命令。命令别名允许你为常用的命令（及其参数）创建另一</p>
+<p>个名称，从而将输入量减少到最低。</p>
+</blockquote>
+<p><code>alias 别名=&#39;原命令&#39;</code></p>
+<p>下面为展示隐藏文件的ls命令起别名<code>la</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@izwz99bgx9y93dmv0mir0ez ~]# alias la=&#x27;ls -a&#x27;</span><br><span class="line">[root@izwz99bgx9y93dmv0mir0ez ~]# la</span><br><span class="line">.  ..  .bash_history  .bash_logout  .bash_profile  .bashrc  .cache  .cshrc  H1ve  .pip  .pki  .pydistutils.cfg  .ssh  .tcshrc  .viminfo  web</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意命令别名属于内部命令，一个别名仅在它所被定义的shell进程中才有效。</p>
+<p>可以通过在~&#x2F;.bashrc文件内编写，已达到永久生效的效果</p>
+</blockquote>
+<h3 id="执行历史命令"><a href="#执行历史命令" class="headerlink" title="执行历史命令"></a>执行历史命令</h3><p>先用<code>history</code>命令查看历史命令记录，再用<code>！+ 命令编号</code>执行历史命令。</p>
+<p><img src="/../../../../blog/source/images/image-20220923183323571-1693403159124.png" alt="image-20220923183323571"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://Fgtbnc.github.io">Khaz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fgtbnc.github.io/2023/05/31/Linux%E5%91%BD%E4%BB%A4/">http://fgtbnc.github.io/2023/05/31/Linux%E5%91%BD%E4%BB%A4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Fgtbnc.github.io" target="_blank">Khaz</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/31/PHP%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">代码执行绕过</div></div></a></div><div class="next-post pull-right"><a href="/2023/05/30/%E6%A6%82%E5%BF%B5/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">计算机名词解释</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s1.ax1x.com/2023/05/31/p9x0Eg1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">52</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">记录一些自己的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">查看系统信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">后台运行程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">创建文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6-x2F-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.2.</span> <span class="toc-text">复制文件&#x2F;目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E9%93%BE%E6%8E%A5"><span class="toc-number">3.3.</span> <span class="toc-text">文件链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6-x2F-%E7%9B%AE%E5%BD%95"><span class="toc-number">3.4.</span> <span class="toc-text">重命名文件&#x2F;目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="toc-number">3.5.</span> <span class="toc-text">删除文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">3.6.</span> <span class="toc-text">读取文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-number">3.7.</span> <span class="toc-text">搜索文件内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B-x2F-%E7%8A%B6%E6%80%81"><span class="toc-number">3.8.</span> <span class="toc-text">查看文件类型&#x2F;状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B%E7%BC%A9%E6%96%87%E4%BB%B6"><span class="toc-number">3.9.</span> <span class="toc-text">解压缩文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-number">3.10.</span> <span class="toc-text">文件权限</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%B9%E5%8F%98%E6%9D%83%E9%99%90"><span class="toc-number">3.10.1.</span> <span class="toc-text">改变权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90"><span class="toc-number">3.10.2.</span> <span class="toc-text">设置默认权限</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">4.</span> <span class="toc-text">目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">4.1.</span> <span class="toc-text">查看目录下的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">4.2.</span> <span class="toc-text">查看目录结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="toc-number">4.3.</span> <span class="toc-text">创建目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95"><span class="toc-number">4.4.</span> <span class="toc-text">删除目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E5%88%B0%E6%9F%90%E4%B8%AA%E7%9B%AE%E5%BD%95"><span class="toc-number">4.5.</span> <span class="toc-text">切换到某个目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E5%BD%93%E5%89%8D%E6%89%80%E5%9C%A8%E7%9B%AE%E5%BD%95"><span class="toc-number">4.6.</span> <span class="toc-text">显示当前所在目录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E2%80%93process"><span class="toc-number">5.</span> <span class="toc-text">进程–process</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B"><span class="toc-number">5.1.</span> <span class="toc-text">查看进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9D%9F%E8%BF%9B%E7%A8%8B"><span class="toc-number">5.2.</span> <span class="toc-text">结束进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7"><span class="toc-number">6.</span> <span class="toc-text">用户</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="toc-number">6.1.</span> <span class="toc-text">切换用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%99%BB%E5%BD%95%E5%88%B0%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%A8%E6%88%B7"><span class="toc-number">6.2.</span> <span class="toc-text">查看第一次登录到系统的用户</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7"><span class="toc-number">7.</span> <span class="toc-text">特殊符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C"><span class="toc-number">8.</span> <span class="toc-text">网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bip"><span class="toc-number">8.1.</span> <span class="toc-text">查看ip</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%93%E5%8F%96%E6%9C%8D%E5%8A%A1%E6%B5%81%E9%87%8F"><span class="toc-number">8.2.</span> <span class="toc-text">抓取服务流量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%91%BD%E4%BB%A4"><span class="toc-number">9.</span> <span class="toc-text">查找命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3"><span class="toc-number">10.</span> <span class="toc-text">端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1"><span class="toc-number">11.</span> <span class="toc-text">服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">12.</span> <span class="toc-text">使用技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E5%91%BD%E4%BB%A4%E8%B5%B7%E5%88%AB%E5%90%8D"><span class="toc-number">12.1.</span> <span class="toc-text">为命令起别名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4"><span class="toc-number">12.2.</span> <span class="toc-text">执行历史命令</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/08/27/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E7%BB%93/" title="随记"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="随记"/></a><div class="content"><a class="title" href="/2023/08/27/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E7%BB%93/" title="随记">随记</a><time datetime="2023-08-27T02:26:00.000Z" title="发表于 2023-08-27 10:26:00">2023-08-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/25/openfire/" title="Openfire身份认证绕过+插件Getshell漏洞复现"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Openfire身份认证绕过+插件Getshell漏洞复现"/></a><div class="content"><a class="title" href="/2023/06/25/openfire/" title="Openfire身份认证绕过+插件Getshell漏洞复现">Openfire身份认证绕过+插件Getshell漏洞复现</a><time datetime="2023-06-25T15:00:25.000Z" title="发表于 2023-06-25 23:00:25">2023-06-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/24/Apache%20Druid/" title="Apache Druid RCE漏洞复现(QVD-2023-9629)"><img src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Apache Druid RCE漏洞复现(QVD-2023-9629)"/></a><div class="content"><a class="title" href="/2023/06/24/Apache%20Druid/" title="Apache Druid RCE漏洞复现(QVD-2023-9629)">Apache Druid RCE漏洞复现(QVD-2023-9629)</a><time datetime="2023-06-24T08:00:25.000Z" title="发表于 2023-06-24 16:00:25">2023-06-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/22/spring%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="Spring框架漏洞"><img src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring框架漏洞"/></a><div class="content"><a class="title" href="/2023/06/22/spring%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="Spring框架漏洞">Spring框架漏洞</a><time datetime="2023-06-22T02:40:25.000Z" title="发表于 2023-06-22 10:40:25">2023-06-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/21/%E8%8B%A5%E4%BE%9D%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="若依漏洞"><img src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="若依漏洞"/></a><div class="content"><a class="title" href="/2023/06/21/%E8%8B%A5%E4%BE%9D%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="若依漏洞">若依漏洞</a><time datetime="2023-06-21T13:11:25.000Z" title="发表于 2023-06-21 21:11:25">2023-06-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
