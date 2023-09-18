@@ -42,25 +42,6 @@
     
     
     <entry>
-      <title>小结</title>
-      <link href="/2023/08/03/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E7%BB%93/"/>
-      <url>/2023/08/03/%E5%AE%9E%E4%B9%A0%E5%B0%8F%E7%BB%93/</url>
-      
-        <content type="html"><![CDATA[<h1 id="感受"><a href="#感受" class="headerlink" title="感受"></a>感受</h1><ul><li><p>靶场和实际环境</p><p>感觉靶场和实际渗透的环境一个很大的差别就是实际环境中有各种安全设备和其他防护。靶场中的各种应用环境都是默认的，直接拿着原本的payload就可以了，但在实际中开发很可能会进行二次开发，又或者做出一些防御手段，这就导致了payload应该怎么变化去打，又或者是知道某种情况下对方已经从源头防御了，无需花费精力去尝试。</p></li><li><p>渗透测试（我太菜了😭）</p><p>测试测试就是要勇于尝试，细心和耐心（还是整个checklist好了，有些老是忘）</p><p>自动化提升效率（一些常用的操作就应该脚本自动化）</p><p>一定的开发能力（开发或者二开工具脚本的能力）</p><p>多看报告，文章来拓展思路</p><p>多复现漏洞</p></li></ul><h1 id="部分记录的问题"><a href="#部分记录的问题" class="headerlink" title="部分记录的问题"></a>部分记录的问题</h1><ul><li><p>被动扫描工具</p><ul><li><p>cookie</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">没cookie，单靠爬虫扫不动</span><br><span class="line">有cookie，危险操作怎么办</span><br></pre></td></tr></table></figure></li><li><p>静态文件路径应该排除扫描</p></li></ul></li><li><p>直接进入后台，但是没有数据&#x2F;有一点数据，然后需要重新登录</p><p><a href="https://www.t00ls.com/articles-70325.html">求助对未授权的“登录过期，请重新登录”站点利用方式 - T00ls.Com</a></p></li><li><p>通过jar包启动的Java Web</p><p>无法直接上传jsp脚本文件来getshell</p><p><a href="https://mp.weixin.qq.com/s/QCfqO2BJuhSOr58rldZzxA?ref=www.ctfiot.com">Java Web —— 从内存中Dump JDBC数据库明文密码 (qq.com)</a></p></li><li><p>微信小程序反编译无法还原出最原始的代码</p><blockquote><p>使用该工具<a href="https://pan.baidu.com/s/1N3ZR3djSaS8g_RXc0Hsa5Q?login_type=qzone&pwd=f79y&_at_=1693833286263">unveilr@2.0.1-win-x64.exe_免费高速下载|百度网盘-分享无限制 (baidu.com)</a>更方便，而且可以分包</p></blockquote></li><li><p>shiro的绕过</p></li><li><p>403bypass</p></li><li><p>接口测试</p></li><li><p>poc脚本应该整一个框架来进行调用，不然太散了（或者nulei，xray？）</p></li><li><p>洗IP：现在的做法是子域名聚合C段，感觉打歪很多。（ASN？）</p></li><li><p>一些网站会检测Burp，一开burp代理就被waf拦了</p><p>可以用yakit</p></li><li><p>目录扫描</p><p>我想整个轻量的</p><p>还有漏洞表里的url路径的提取</p></li><li><p>信息收集的工具自动化</p></li><li><p>现在app和小程序有备案查询，有什么用吗？</p></li></ul><h1 id="工具箱"><a href="#工具箱" class="headerlink" title="工具箱"></a>工具箱</h1><p><a href="https://github.com/Khazing/PenKitGui_V2">Khazing&#x2F;PenKitGui_V2: 在 PenKitGui V1 的基础上改进了配置文件的写入方式，更加优雅。 (github.com)</a></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 渗透测试 </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Sql注入详解--Mysql</title>
       <link href="/2023/06/26/Sql%E6%B3%A8%E5%85%A5-Mysql/"/>
       <url>/2023/06/26/Sql%E6%B3%A8%E5%85%A5-Mysql/</url>
@@ -1034,7 +1015,7 @@
       <link href="/2023/05/01/%E5%90%8E%E6%B8%97%E9%80%8F%E4%B9%8B%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/"/>
       <url>/2023/05/01/%E5%90%8E%E6%B8%97%E9%80%8F%E4%B9%8B%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/</url>
       
-        <content type="html"><![CDATA[<h1 id="判断是否存在域"><a href="#判断是否存在域" class="headerlink" title="判断是否存在域"></a>判断是否存在域</h1><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure><p><img src="/../images/image-20230320152802672-1693107475017.png" alt="image-20230320152802672"></p><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">systeminfo | findstr 域</span><br><span class="line">systeminfo | findstr Domain</span><br></pre></td></tr></table></figure><p><img src="/../images/image-20230320152858151-1693107475019.png" alt="image-20230320152858151"></p><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">net config workstation | findstr 域</span><br><span class="line">net config workstation | findstr Domain</span><br></pre></td></tr></table></figure><p><img src="/../images/image-20230320153121788-1693107475019.png" alt="image-20230320153121788"></p><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">net time /domain</span><br></pre></td></tr></table></figure><ul><li>存在域，但当前用户不是域用户</li></ul><p><img src="/../images/6-1694794044688.png" alt="6"></p><ul><li><p>存在域，且当前用户是域用户。</p><p><img src="/../images/5-1694794093177.png" alt="5"></p></li><li><p>当前网络环境为工作组，提示不存在域</p><p><img src="/../images/7-1694794120868.png" alt="7"></p></li></ul><h1 id="定位域控"><a href="#定位域控" class="headerlink" title="定位域控"></a>定位域控</h1><h1 id="探测域内存活主机"><a href="#探测域内存活主机" class="headerlink" title="探测域内存活主机"></a>探测域内存活主机</h1><ul><li><p>Fscan</p></li><li><p>ARP-SCAN</p></li><li><p>ping命令</p></li></ul><h1 id="探测存活主机端口"><a href="#探测存活主机端口" class="headerlink" title="探测存活主机端口"></a>探测存活主机端口</h1><ul><li>Fscan</li><li>Telnet </li><li>nc</li></ul><h1 id="定位域管理员"><a href="#定位域管理员" class="headerlink" title="定位域管理员"></a>定位域管理员</h1>]]></content>
+        <content type="html"><![CDATA[<h1 id="判断是否存在域"><a href="#判断是否存在域" class="headerlink" title="判断是否存在域"></a>判断是否存在域</h1><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">ipconfig /all</span><br></pre></td></tr></table></figure><p><img src="/../images/image-20230320152802672-1693107475017.png" alt="image-20230320152802672"></p><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">systeminfo | findstr 域</span><br><span class="line">systeminfo | findstr Domain</span><br></pre></td></tr></table></figure><p><img src="/../images/image-20230320152858151-1693107475019.png" alt="image-20230320152858151"></p><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">net config workstation | findstr 域</span><br><span class="line">net config workstation | findstr Domain</span><br></pre></td></tr></table></figure><p><img src="/../images/image-20230320153121788-1693107475019.png" alt="image-20230320153121788"></p><figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">net time /domain</span><br></pre></td></tr></table></figure><ul><li>存在域，但当前用户不是域用户</li></ul><p><img src="/../images/6-1694794044688.png" alt="6"></p><ul><li><p>存在域，且当前用户是域用户</p><p><img src="/../images/5-1694794093177.png" alt="5"></p></li><li><p>当前网络环境为工作组，提示不存在域</p><p><img src="/../images/7-1694794120868.png" alt="7"></p></li></ul><h1 id="定位域控"><a href="#定位域控" class="headerlink" title="定位域控"></a>定位域控</h1><h1 id="探测域内存活主机"><a href="#探测域内存活主机" class="headerlink" title="探测域内存活主机"></a>探测域内存活主机</h1><ul><li><p>Fscan</p></li><li><p>ARP-SCAN</p></li><li><p>ping命令</p></li></ul><h1 id="探测存活主机端口"><a href="#探测存活主机端口" class="headerlink" title="探测存活主机端口"></a>探测存活主机端口</h1><ul><li>Fscan</li><li>Telnet </li><li>nc</li></ul><h1 id="定位域管理员"><a href="#定位域管理员" class="headerlink" title="定位域管理员"></a>定位域管理员</h1>]]></content>
       
       
       <categories>
