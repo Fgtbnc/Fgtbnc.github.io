@@ -1,16 +1,16 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>面试记录 | Khaz's Blog</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="HW 大概是三次面试的集合   自我介绍  之前护网主要做什么  设备使用 用过哪些安全设备，具体产商，具体怎么用（语法是什么）  负责外网还是内网，有很多误报怎么办  如何判断攻击成功  sql注入 sql注入原理，方式，防御手段宽字节注入原理sql写shell的条件，具体的语句（追问：除了直接写入还有其他方法吗)sqlmap写shell的参数和原理使用sqlmap post注入的参数sql注入">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>面试记录 | Khaz's Blog</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="HW 大概是三次面试的集合，结果还是去了实习   自我介绍  之前护网主要做什么  设备使用 用过哪些安全设备，具体产商，具体怎么用（语法是什么）  负责外网还是内网，有很多误报怎么办  如何判断攻击成功  sql注入 sql注入原理，方式，防御手段宽字节注入原理sql写shell的条件，具体的语句（追问：除了直接写入还有其他方法吗)sqlmap写shell的参数和原理使用sqlmap post注">
 <meta property="og:type" content="article">
 <meta property="og:title" content="面试记录">
 <meta property="og:url" content="http://fgtbnc.github.io/2023/06/21/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Khaz&#39;s Blog">
-<meta property="og:description" content="HW 大概是三次面试的集合   自我介绍  之前护网主要做什么  设备使用 用过哪些安全设备，具体产商，具体怎么用（语法是什么）  负责外网还是内网，有很多误报怎么办  如何判断攻击成功  sql注入 sql注入原理，方式，防御手段宽字节注入原理sql写shell的条件，具体的语句（追问：除了直接写入还有其他方法吗)sqlmap写shell的参数和原理使用sqlmap post注入的参数sql注入">
+<meta property="og:description" content="HW 大概是三次面试的集合，结果还是去了实习   自我介绍  之前护网主要做什么  设备使用 用过哪些安全设备，具体产商，具体怎么用（语法是什么）  负责外网还是内网，有很多误报怎么办  如何判断攻击成功  sql注入 sql注入原理，方式，防御手段宽字节注入原理sql写shell的条件，具体的语句（追问：除了直接写入还有其他方法吗)sqlmap写shell的参数和原理使用sqlmap post注">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg">
 <meta property="article:published_time" content="2023-06-21T09:00:25.000Z">
-<meta property="article:modified_time" content="2023-09-22T04:47:47.252Z">
+<meta property="article:modified_time" content="2023-10-08T14:42:32.625Z">
 <meta property="article:author" content="Khaz">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/06/21/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/06/21/%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: undefined,
   localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
@@ -52,7 +52,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2023-09-22 12:47:47'
+  postUpdate: '2023-10-08 22:42:32'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -141,8 +141,8 @@
       }
     }
     detectApple()
-    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-21T09:00:25.000Z" title="发表于 2023-06-21 17:00:25">2023-06-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-09-22T04:47:47.252Z" title="更新于 2023-09-22 12:47:47">2023-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">967</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="面试记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="HW"><a href="#HW" class="headerlink" title="HW"></a>HW</h1><blockquote>
-<p>大概是三次面试的集合</p>
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">面试记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-21T09:00:25.000Z" title="发表于 2023-06-21 17:00:25">2023-06-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-08T14:42:32.625Z" title="更新于 2023-10-08 22:42:32">2023-10-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9D%A2%E8%AF%95/">面试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="面试记录"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="HW"><a href="#HW" class="headerlink" title="HW"></a>HW</h1><blockquote>
+<p>大概是三次面试的集合，结果还是去了实习</p>
 </blockquote>
 <ul>
 <li><p>自我介绍</p>
@@ -184,11 +184,6 @@
 <li><p>如果可以rce，但是无回显并且不出网怎么办</p>
 </li>
 <li><p>如果机子被上了cs木马，怎么检测出木马进程</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="http://weizn.net/?p=439">通过Sysmon日志检测Cobalt Strike木马 - Wayne’s Blog</a></p>
-<p>心跳包</p>
-<p>命令执行格式：cmd.exe的完整路径 + <span style="color: #ff0000;">大写&#x2F;C</span>参数 + 实际执行命令。</p>
-</blockquote>
 </li>
 <li><p>wireshark用过吗</p>
 </li>
@@ -238,7 +233,79 @@
 <li>你了解我们公司吗</li>
 <li>你怎么看待加班</li>
 </ul>
-<h1 id="安服-x2F-渗透校招笔试"><a href="#安服-x2F-渗透校招笔试" class="headerlink" title="安服&#x2F;渗透校招笔试"></a>安服&#x2F;渗透校招笔试</h1><blockquote>
+<h1 id="Web安全工程师笔试"><a href="#Web安全工程师笔试" class="headerlink" title="Web安全工程师笔试"></a>Web安全工程师笔试</h1><ul>
+<li><p>“&#96;”符号（反单引号）在PHP语言以及SQL语言中的作用分别是什么</p>
+</li>
+<li><p>Python语句’int’.__class__的含义是什么，该语句和什么漏洞有关</p>
+</li>
+<li><p>Java中的反射有什么作用</p>
+</li>
+<li><p>Java反序列化的基本原理</p>
+</li>
+<li><p>SSRF漏洞有什么漏洞利用思路？</p>
+</li>
+<li><p>利用XSS漏洞可以达到什么效果？有哪些防御XSS漏洞的手段&#x2F;机制？</p>
+</li>
+<li><p>联合查询注入如何判断表中列的数量（除了使用order by）</p>
+</li>
+<li><p>描述一下SQL二次注入漏洞的原理</p>
+</li>
+<li><p>描述一下PHP反序列化漏洞的原理</p>
+</li>
+<li><p>JWT是什么；Cookie和Session的区别是什么</p>
+</li>
+<li><p>描述一下Shiro550漏洞的原理</p>
+</li>
+<li><p>sqlmap –os-shell参数分别在面对MySQL和MSSQL数据库中执行的原理</p>
+</li>
+<li><p>sqlmap中–technique和–dbms参数的含义是什么</p>
+</li>
+<li><p>nmap使用哪个参数可以做到对目标只探测存活，但不进行端口扫描</p>
+</li>
+<li><p>22、1433、1521、2375、3306、3389、6379、7001端口对应的服务名称分别是什么</p>
+</li>
+<li><p>描述一下Redis未授权访问漏洞的利用方式</p>
+</li>
+<li><p>想通过SQL注入漏洞写shell（被攻击目标是MySQL、Apache、PHP），需要被攻击方满足什么条件？MySQL中，可以写入文件的两条指令分别是什么，这两条指令的区别是什么？</p>
+</li>
+<li><p>凭印象列举几个举世闻名的漏洞名称及其CVE编号</p>
+</li>
+<li><p>对于渗透中常见的中间件、框架或组件，你会用什么工具去对他进行漏洞扫描？(具体到中间件、框架或组件及对应工具的名称)</p>
+</li>
+<li><p>如果发现了网站有任意文件读取漏洞，你接下来有什么测试思路？</p>
+</li>
+<li><p>对于链接demo.do?DATA&#x3D;dWlkPTE2&#x3D;&#x3D;，你有什么测试思路？</p>
+</li>
+<li><p>扫目录发现swagger.json，你有什么测试思路？</p>
+</li>
+<li><p>遇到只有一个登录框页面的网站，你有哪些测试思路</p>
+</li>
+<li><p>描述对手机App（Android&#x2F;IOS）进行测试的思路和做法</p>
+</li>
+<li><p>具体到工具的名称</p>
+</li>
+<li><p>描述对微信小程序进行测试的思路和做法</p>
+</li>
+<li><p>给你单个IP地址，让你对它进行全面的渗透测试，你的思路和做法是什么？（此处写明你会使用到的工具的名称。比如不要只说“使用工具进行漏洞扫描”，具体到：“使用xxx工具进行漏洞扫描” ）</p>
+</li>
+<li><p>获取到边界服务器的权限后，有哪些方法可以快速找出内网中可能存活的主机</p>
+</li>
+<li><p>Windows和Linux使用命令行下载文件的方式分别有哪些？（可以只写命令的名称，不用写全命令完整参数）</p>
+</li>
+<li><p>描述你常用的端口转发及代理隧道的搭建方式</p>
+</li>
+<li><p>xray是哪家公司开发的，是用什么语言编写的？goby是哪家公司开发的，是用什么语言写的？</p>
+</li>
+<li><p>描述一下你的优势 ，以及能为公司创造什么价值</p>
+</li>
+<li><p>请谈一谈你的职业规划</p>
+</li>
+<li><p>请介绍下你的性格</p>
+</li>
+<li><p>请介绍一下你对于网络安全学习的热情</p>
+</li>
+</ul>
+<h1 id="安服-x2F-渗透笔试"><a href="#安服-x2F-渗透笔试" class="headerlink" title="安服&#x2F;渗透笔试"></a>安服&#x2F;渗透笔试</h1><blockquote>
 <p>绿盟80题，其中不定项选择题少选，错选都不得分，10道简答题</p>
 <p>深信服30道选择题</p>
 <p>奇安信40道选择题</p>
@@ -263,4 +330,25 @@
 <li>应急响应思路（绿盟）</li>
 <li>恶意样本分析思路（绿盟）</li>
 </ul>
-</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/06/21/%E8%8B%A5%E4%BE%9D%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">若依漏洞</div></div></a></div><div class="next-post pull-right"><a href="/2023/06/01/JWT%E4%BB%A4%E7%89%8C/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JWT安全</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">脚本小子的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HW"><span class="toc-number">1.</span> <span class="toc-text">HW</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AE%9E%E4%B9%A0"><span class="toc-number">2.</span> <span class="toc-text">渗透测试实习</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E6%9C%8D-x2F-%E6%B8%97%E9%80%8F%E6%A0%A1%E6%8B%9B%E7%AC%94%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">安服&#x2F;渗透校招笔试</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="近源渗透之BadUSB"/></a><div class="content"><a class="title" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB">近源渗透之BadUSB</a><time datetime="2023-10-07T11:48:25.000Z" title="发表于 2023-10-07 19:48:25">2023-10-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JSONP与CORS"/></a><div class="content"><a class="title" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS">JSONP与CORS</a><time datetime="2023-10-05T14:00:25.000Z" title="发表于 2023-10-05 22:00:25">2023-10-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E7%82%B9%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%B0%8F%E7%BB%93/" title="Pentest Note"><img src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pentest Note"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E7%82%B9%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%B0%8F%E7%BB%93/" title="Pentest Note">Pentest Note</a><time datetime="2023-08-03T11:48:25.000Z" title="发表于 2023-08-03 19:48:25">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E8%AE%B0%E5%BD%95/" title="常见应用记录"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常见应用记录"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E8%AE%B0%E5%BD%95/" title="常见应用记录">常见应用记录</a><time datetime="2023-08-03T11:46:25.000Z" title="发表于 2023-08-03 19:46:25">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/26/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E6%B3%A8%E5%85%A5/" title="Sql注入详解--Mysql"><img src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sql注入详解--Mysql"/></a><div class="content"><a class="title" href="/2023/06/26/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E6%B3%A8%E5%85%A5/" title="Sql注入详解--Mysql">Sql注入详解--Mysql</a><time datetime="2023-06-26T11:52:40.000Z" title="发表于 2023-06-26 19:52:40">2023-06-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+<h1 id="绿盟一面"><a href="#绿盟一面" class="headerlink" title="绿盟一面"></a>绿盟一面</h1><blockquote>
+<p>面了差不多20min，感觉面试官有事要忙，我觉得答的不咋地，不过最后问了我入职实习3个月可不可以来</p>
+</blockquote>
+<ul>
+<li>自我介绍</li>
+<li>做过哪些系统</li>
+<li>比较难忘的渗透测试经历或者说学到东西的</li>
+<li>shiro是什么</li>
+<li>shiro权限绕过的原理</li>
+<li>shiro权限校验是怎么做的，看过相关代码吗</li>
+<li>讲讲其他越权</li>
+<li>怎么做权限绕过的修复（面试官还引导了很多，太菜了具体的实现不会）</li>
+<li>常见waf绕过的方式</li>
+<li>文件上传哪一个点可以尝试绕过waf</li>
+<li>APP渗透IOS的接触过嘛</li>
+<li>APP有壳怎么办</li>
+<li>APP测试讲一下，客户端和本地端来讲</li>
+<li>抓包怎么抓的</li>
+<li>HTTP双向认证怎么绕过</li>
+<li>反问</li>
+</ul>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/06/21/%E8%8B%A5%E4%BE%9D%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">若依漏洞</div></div></a></div><div class="next-post pull-right"><a href="/2023/06/01/JWT%E4%BB%A4%E7%89%8C/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JWT安全</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">71</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">脚本小子的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HW"><span class="toc-number">1.</span> <span class="toc-text">HW</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%AE%9E%E4%B9%A0"><span class="toc-number">2.</span> <span class="toc-text">渗透测试实习</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web%E5%AE%89%E5%85%A8%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%AC%94%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">Web安全工程师笔试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E6%9C%8D-x2F-%E6%B8%97%E9%80%8F%E7%AC%94%E8%AF%95"><span class="toc-number">4.</span> <span class="toc-text">安服&#x2F;渗透笔试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%BF%E7%9B%9F%E4%B8%80%E9%9D%A2"><span class="toc-number">5.</span> <span class="toc-text">绿盟一面</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="近源渗透之BadUSB"/></a><div class="content"><a class="title" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB">近源渗透之BadUSB</a><time datetime="2023-10-07T11:48:25.000Z" title="发表于 2023-10-07 19:48:25">2023-10-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JSONP与CORS"/></a><div class="content"><a class="title" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS">JSONP与CORS</a><time datetime="2023-10-05T14:00:25.000Z" title="发表于 2023-10-05 22:00:25">2023-10-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E7%82%B9%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%B0%8F%E7%BB%93/" title="Pentest Note"><img src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pentest Note"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E7%82%B9%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%B0%8F%E7%BB%93/" title="Pentest Note">Pentest Note</a><time datetime="2023-08-03T11:48:25.000Z" title="发表于 2023-08-03 19:48:25">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E8%AE%B0%E5%BD%95/" title="常见应用记录"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常见应用记录"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E8%AE%B0%E5%BD%95/" title="常见应用记录">常见应用记录</a><time datetime="2023-08-03T11:46:25.000Z" title="发表于 2023-08-03 19:46:25">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/26/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E6%B3%A8%E5%85%A5/" title="Sql注入详解--Mysql"><img src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sql注入详解--Mysql"/></a><div class="content"><a class="title" href="/2023/06/26/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E6%B3%A8%E5%85%A5/" title="Sql注入详解--Mysql">Sql注入详解--Mysql</a><time datetime="2023-06-26T11:52:40.000Z" title="发表于 2023-06-26 19:52:40">2023-06-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
