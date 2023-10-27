@@ -61,16 +61,10 @@
         <content type="html"><![CDATA[<blockquote><p>好多年前的电脑了，内存有点不够，内网靶场开不起来😭</p></blockquote><h2 id="如何选择适合电脑的内存条"><a href="#如何选择适合电脑的内存条" class="headerlink" title="如何选择适合电脑的内存条"></a>如何选择适合电脑的内存条</h2><p><strong>工具</strong></p><ul><li><p><a href="https://www.cpuid.com/softwares/cpu-z.htm">CPU-Z | Softwares | CPUID</a></p></li><li><p><a href="https://www.ghxi.com/aida64e.html">AIDA64 v6.92.6600 便携版 - 果核剥壳 (ghxi.com)</a></p></li></ul><p><strong>关注信息</strong></p><p><img src="/../images/image-20231013172841674.png" alt="image-20231013172841674"></p><p><img src="/../images/image-20231013173124433.png" alt="image-20231013173124433"></p><ul><li><p>支持的内存条类型和最大内存大小</p></li><li><p>几个插槽（支持几条内存条）</p></li><li><p>内存条频率</p><p>这里看到的是800MHZ，实际上是1600MHZ，在任务管理器中可以看到</p><p><img src="/../images/image-20231013171158829.png" alt="image-20231013171158829"></p><p><a href="https://zhuanlan.zhihu.com/p/462005732">内存频率只有一半？别急 系统只是告诉了你事实 - 知乎 (zhihu.com)</a></p></li><li><p>制造商：组双通道最好一致</p></li><li><p>电压</p><p>低电压：1.35V</p><p>标准电压：1.5V</p></li></ul><p>综上我最好去京东上购买DDR3规格，海力士品牌，内存条频率为1600MHZ，低电压，内存大小&lt;&#x3D;24GB（32-8）的内存条</p><h2 id="装内存条"><a href="#装内存条" class="headerlink" title="装内存条"></a>装内存条</h2><p><img src="/../images/image-20231013173501162.png" alt="image-20231013173501162"></p><p><img src="/../images/image-20231013173651787.png" alt="image-20231013173651787"></p><p>红框处即为内存条</p><p><img src="/../images/image-20231013173919923.png" alt="image-20231013173919923"></p><p>红框处向外拉，取出内存条，然后新内存条30°插入箭头所指后，用点力向下压，听到哒的一声就OK了</p><p>内存成功变为16GB</p><p><img src="/../images/image-20231013174123502.png" alt="image-20231013174123502"></p>]]></content>
       
       
-      <categories>
-          
-          <category> 计算机基础 </category>
-          
-      </categories>
-      
       
         <tags>
             
-            <tag> 内存条 </tag>
+            <tag> 装机 </tag>
             
         </tags>
       
@@ -95,7 +89,7 @@
       
         <tags>
             
-            <tag> 安卓 </tag>
+            <tag> 安卓渗透 </tag>
             
         </tags>
       
@@ -274,12 +268,12 @@
         <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>经过深信服的面试，让我去更加认识自己吧（没有怎么问技术相关的，更多的是性格品质习惯，行业认知，职业规划等的考察，当然我技术也只是一般般😂）。</p><p><img src="/../images/2510A44577A33E340D197DE0D6DBBA7A.jpg" alt="img"></p><p>虽然在大一的时候已经意识到了（是以前的经历导致的），但是到现在大四了，只能说变好了，但没有完全消除这种心理。</p><h1 id="好习惯"><a href="#好习惯" class="headerlink" title="好习惯"></a>好习惯</h1><h2 id="重要的事情都要尽力而为之"><a href="#重要的事情都要尽力而为之" class="headerlink" title="重要的事情都要尽力而为之"></a>重要的事情都要尽力而为之</h2><blockquote><p>只要自己认为<strong>重要的事情</strong>，就在<strong>自己能力范围内</strong>做到位。这样，无论是否坚持下来，是否随着见识的提升，有了新的选择，都不会后悔。况且，当认真对待自己认为重要的事情，并且做到位的时候，往往就会从中发现乐趣，坚持起来也就没那么难了。</p></blockquote><h2 id="构建笔记"><a href="#构建笔记" class="headerlink" title="构建笔记"></a>构建笔记</h2><p>这个GTD工作流学到了</p><p>我有一个问题，资源有点找的太多了，很多都没吸收完</p><p><img src="/../images/v2-30e62eda1a5708b882269c27fe416175_r.jpg" alt="img"></p><h2 id="消费主义"><a href="#消费主义" class="headerlink" title="消费主义"></a>消费主义</h2><p><a href="https://www.bilibili.com/video/BV1624y1z72P/?spm_id_from=333.337.search-card.all.click&vd_source=09b7dbe7a7fc964ca09096bdd79f031d">【高分纪录片】《无节制消费的元凶》(全集完整）豆瓣8.8分_哔哩哔哩_bilibili</a></p><h1 id="思维"><a href="#思维" class="headerlink" title="思维"></a>思维</h1><h2 id="金字塔思维"><a href="#金字塔思维" class="headerlink" title="金字塔思维"></a>金字塔思维</h2><p><img src="/../images/v2-9420dbf416f318f64da308128b0d4828_720w.jpg" alt="img"></p><p>实际生活中的案例</p><blockquote><p>1<a href="https://www.zhihu.com/search?q=%E5%A4%B4%E8%84%91%E9%A3%8E%E6%9A%B4&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:807859986%7D">头脑风暴</a>：把自己脑袋里面闪过的碎片想法全都写下来。<br>2 分类和抽象：<br>3 问一句所以呢？</p></blockquote><p>下面以我的一个亲身经历来看看怎么实战吧。</p><p>在我以前读大二的时候，马院（马克思主义学院）老师在班上提了这样一个问题：你印象中的中国是个什么样的国家，给你们1分钟思考后找个同学起来回答。这个问题没有结构化思维就很容易漏到很多东西，往往只能答出1,2个点。当时我是这么做的：</p><p><strong>1头脑风暴</strong>：把自己脑袋里面闪过的碎片想法全都写下来。</p><p>那一分钟内我所有的想法如下:</p><p>1中国是历史没有中断过<a href="https://www.zhihu.com/search?q=%E5%9B%9B%E5%A4%A7%E6%96%87%E6%98%8E%E5%8F%A4%E5%9B%BD&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:807859986%7D">四大文明古国</a>之一。2中国文化丰富多彩，有这春节等等节日与习俗。</p><p>3GDP一直处于世界前三的甚至第一的水平。4改革开发后经济触底反弹，直至成为世界上第二大经济体。</p><p>5世界上为数不多的拥有航天技术的国家。6研发原子弹和氢弹用时最短的国家。 当然当时时间紧急，我只记了几个关键词。</p><p><strong>2抽象与分类</strong>：1,2都是讲文化和历史的，3,4都是讲经济的。5,6都是讲科技的。能抽象出什么理由呢？1,2说明中国历史悠久等等。5,6说明中国科技进步很大，位于世界前列。</p><p><strong>3 所以呢</strong>？ 所以我认为中国是一个充满希望与奇迹的国家。</p><h2 id="如何提问"><a href="#如何提问" class="headerlink" title="如何提问"></a>如何提问</h2><p>入门安全时候就看的</p><p><a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md">How-To-Ask-Questions-The-Smart-Way&#x2F;README-zh_CN.md at main · ryanhanwu&#x2F;How-To-Ask-Questions-The-Smart-Way (github.com)</a></p><h2 id="如何分析问题"><a href="#如何分析问题" class="headerlink" title="如何分析问题"></a>如何分析问题</h2><p><a href="https://xueqiu.com/1487587487/124613944">知乎10万赞回答：真正厉害的人，是怎么分析问题的？ 作 者：谢春霖 来 源：富研社（ID: dontletmeplay）公司业绩下滑，怎么办？ 我先来举一个例子。 假设，你… - 雪球 (xueqiu.com)</a></p><p>学到了，总结的思维导图如下</p><p><img src="/../images/%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90%E9%97%AE%E9%A2%98.png" alt="如何分析问题"></p><h1 id="职业与工作"><a href="#职业与工作" class="headerlink" title="职业与工作"></a>职业与工作</h1><h2 id="一些需要知道的"><a href="#一些需要知道的" class="headerlink" title="一些需要知道的"></a>一些需要知道的</h2><p>相关的名词与政策</p><ul><li><p><a href="https://zhuanlan.zhihu.com/p/149051616">HC、JD、OC 是啥…求职、工作过程中可能遇到的英文缩略语整理 - 知乎</a></p></li><li><p><a href="https://www.ncss.cn/ncss/zt">特别策划-国家大学生就业服务平台</a></p></li><li><p><a href="http://www.mohrss.gov.cn/SYrlzyhshbzb/dongtaixinwen/buneiyaowen/rsxw/">中华人民共和国人力资源和社会保障部</a></p></li></ul><p>思维的转变</p><ul><li><p><a href="https://juejin.cn/post/7290475242274603042">别傻啦！工作这件事就是你拿钱实现别人的梦想！ - 掘金 (juejin.cn)</a></p></li><li><p><a href="https://www.bilibili.com/video/BV1Yr4y1o7Pi/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click">我希望每个上班的人都明白_哔哩哔哩_bilibili</a></p></li></ul><p>法律相关</p><h2 id=""><a href="#" class="headerlink" title="- "></a>- </h2><h2 id="职业规划"><a href="#职业规划" class="headerlink" title="职业规划"></a>职业规划</h2><blockquote><p><a href="https://zhuanlan.zhihu.com/p/83620510">至关重要：如何做好我们的职业规划 - 知乎 (zhihu.com)</a></p><p><a href="https://camo.githubusercontent.com/395abd12dfa250891cfb306acf65615cac4a3f446355cc5b0f1f41ab323322f2/68747470733a2f2f692e696d6775722e636f6d2f793435564a72492e706e67"><img src="/../images/68747470733a2f2f692e696d6775722e636f6d2f793435564a72492e706e67" alt="img"></a></p><ol><li>认清自己，确认方向。按照<strong>职业规划探寻模型</strong>来思考</li><li>收集信息，心中有数。校招&#x2F;社招&#x2F;JD</li><li><strong>目标设远，步步拆解</strong>。拆解框架：时间&#x2F;目标&#x2F;准备(技术能力、汇报能力|领导能力、沟通能力、团队建设能力)</li><li><strong>盘点能力，补足短板</strong>。盘点软实力：沟通能力、执行能力、谈判能力、情绪管理、时间管理、分解能力、汇报能力、演讲能力、协作能力、组织能力、快速学习能力、PPT撰写能力、文字总结能力、聆听技巧、同事关系、与上司之间关系，盘点短板：沟通能力、汇报能力、演讲能力、PPT撰写、文字总结能力，对短板再按多个维度分类，比如是否易于评估并得到反馈和培养难度</li><li>学会展望，调整方向。唯一不可阻挡的是时间</li></ol></blockquote><h2 id="安全人员所需要的思维和素质"><a href="#安全人员所需要的思维和素质" class="headerlink" title="安全人员所需要的思维和素质"></a>安全人员所需要的思维和素质</h2><ul><li><p>保持学习，提高理解速度</p></li><li><p>对技术和知识的追求，理解原理</p><blockquote><p>计算机的所有都是人设计的，所以都是可以通过人的思路来理解的，多问自己几个为什么就可以知道</p></blockquote></li><li><p>黑客精神→探索未知</p></li><li><p>对抗的思维，要站在对方的角度去思考：</p><ul><li>代码是不会出错的，漏洞都是出在人身上的，他为什么写了这个有漏洞的代码，或者说知道有漏洞但是过滤不全</li><li>漏洞的利用场景，漏洞的产生点对应的功能是什么，他为什么要写这个功能呢</li></ul></li></ul><h2 id="安全人员发展方向"><a href="#安全人员发展方向" class="headerlink" title="安全人员发展方向"></a>安全人员发展方向</h2><p>安研&gt;攻防&gt;渗透&gt;安服</p><p><a href="https://zhuanlan.zhihu.com/p/54936058">安全人员发展方向杂谈 - 知乎 (zhihu.com)</a></p><blockquote><p>甲方乙方的工作，差别还是很大的，乙方的工作岗位(安服、攻防、安研、售前、安全项目经理、安全运营),主要技术侧就是(内网、外网、免杀、钓鱼、应急、云安全)，在工作前面一两年，通过项目实战和内部分享技术会提升很快，后面就是不停的做项目，不停的hw，可能会发现用到的技术和知识都没怎么变，自己提升也遇到瓶颈了，大多数人会在这个节点开始考虑换方向和赛道；甲方的安全工作，可能有几块，安全运营(soc、siem)、基础安全(基础安全设施建设维护)、云安全、安全合规(数据安全)、应用安全(sdl、devseops)、竞赛输出(安全研究、hw、ctf、论文、专利)。</p></blockquote><ul><li><p>安全运营工程师</p><p><a href="https://www.cloudflare.com/zh-cn/learning/security/glossary/what-is-a-security-operations-center-soc/">什么是安全运营中心 (SOC)？ | Cloudflare</a></p><p><a href="https://zhuanlan.zhihu.com/p/39467201">我理解的安全运营 - 知乎 (zhihu.com)</a></p><p><a href="https://zhuanlan.zhihu.com/p/84591095">再谈安全运营 - 知乎 (zhihu.com)</a></p><p><a href="https://wiki.y1ng.org/"><a href="https://wiki.y1ng.org/0x0_%E7%90%86%E8%A7%A3/0x0_%E5%AF%B9%E5%AE%89%E5%85%A8%E8%BF%90%E8%90%A5%E7%9A%84%E7%90%86%E8%A7%A3/">对安全运营的理解 - 安全运营之路 (y1ng.org)</a></a></p><p><a href="https://cloud.tencent.com/developer/article/1580837">如何做一个好的安全运营工程师-腾讯云开发者社区-腾讯云 (tencent.com)</a></p></li><li><p>安全服务工程师</p><p>安服是一个宽泛的名词，有很多个方向比如安全运营（安服裁掉，全部变成安全运营？），应急响应，攻防</p><p><a href="https://www.sec-wiki.com/skill/11">安全服务工程师（乙方）-安全技能 -SecWiki (sec-wiki.com)</a></p></li><li><p>ReadTeam</p><p><a href="https://www.secrss.com/articles/12168">谈谈渗透测试和红队的区别 - 安全内参 | 决策者的网络安全知识库 (secrss.com)</a></p></li><li><p>安全研究员</p><p>必要JAVA</p></li></ul><h2 id="安全行业发展"><a href="#安全行业发展" class="headerlink" title="安全行业发展"></a>安全行业发展</h2><blockquote><p>自己感觉虽然国家在大力提倡，自媒体也在那造势。确实行业在发展，营收在提高，但是公司的利润甚至是负的（数说安全上有2023年上半年的数据）。然后一是大佬跟普通人的差距太大了，怎么说呢越学越觉得要学习的东西越多，安全需要积累，疯狂地吸收前人的知识，但是是真的多；二是越来越卷，安服渗透攻防之间的界限越来越模糊吧；三是裁员，对于甲方，安全是隐形成本，只有当出现问题的时候才能看到安全的价值，对于乙方，安全是业务</p><p>哎，没啥用太菜了，坚持学习吧🤐</p></blockquote><p><a href="https://www.yuque.com/feei/sig/security-industry">1.1 理解安全行业现状 (yuque.com)</a></p><p><a href="https://files.zsxq.com/lkhodDS_VvWxmr2vFSjOkms4IJ-G?attname=2023%E5%B9%B4%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%B8%82%E5%9C%BA%E8%B6%8B%E5%8A%BF%E5%B1%95%E6%9C%9B.pdf&amp;e=1698324928&amp;token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zD:k8dlJNw43kvIJEVY3vE9pvy70lg=">https://files.zsxq.com/lkhodDS_VvWxmr2vFSjOkms4IJ-G?attname=2023%E5%B9%B4%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%B8%82%E5%9C%BA%E8%B6%8B%E5%8A%BF%E5%B1%95%E6%9C%9B.pdf&amp;e=1698324928&amp;token=kIxbL07-8jAj8w1n4s9zv64FuZZNEATmlU_Vm6zD:k8dlJNw43kvIJEVY3vE9pvy70lg=</a></p><p>公众号：数说安全，用数据说话，比如营收，利润，项目中标</p>]]></content>
       
       
-      <categories>
-          
-          <category> 随想 </category>
-          
-      </categories>
       
+        <tags>
+            
+            <tag> 随想 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -302,7 +296,9 @@
       
         <tags>
             
-            <tag> Mysql注入 </tag>
+            <tag> 数据库攻防 </tag>
+            
+            <tag> 注入漏洞 </tag>
             
         </tags>
       
@@ -409,7 +405,7 @@
       
         <tags>
             
-            <tag> Spring </tag>
+            <tag> 框架漏洞 </tag>
             
         </tags>
       
@@ -434,7 +430,7 @@
       
         <tags>
             
-            <tag> 若依 </tag>
+            <tag> 框架漏洞 </tag>
             
         </tags>
       
@@ -478,7 +474,7 @@
       
         <tags>
             
-            <tag> JWT </tag>
+            <tag> 身份校验 </tag>
             
         </tags>
       
@@ -501,6 +497,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 注入漏洞 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -519,6 +521,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 注入漏洞 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -691,7 +699,7 @@
       
         <tags>
             
-            <tag> 计算机网络 </tag>
+            <tag> 虚拟机网络 </tag>
             
         </tags>
       
@@ -764,6 +772,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> CISCN </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -826,6 +840,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> HNCTF </tag>
+            
+        </tags>
       
     </entry>
     
@@ -1060,6 +1080,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 文件操作漏洞 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -1078,6 +1104,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 文件操作漏洞 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -1142,6 +1174,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 注入漏洞 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -1163,7 +1201,7 @@
       
         <tags>
             
-            <tag> Mysql Client 任意文件读取 </tag>
+            <tag> 数据库攻防 </tag>
             
         </tags>
       
@@ -1213,7 +1251,7 @@
       
         <tags>
             
-            <tag> Redis </tag>
+            <tag> 数据库攻防 </tag>
             
         </tags>
       
@@ -1238,7 +1276,7 @@
       
         <tags>
             
-            <tag> Shiro </tag>
+            <tag> 框架漏洞 </tag>
             
         </tags>
       
@@ -1247,7 +1285,7 @@
     
     
     <entry>
-      <title>Mysql基础知识</title>
+      <title>Mysql基础操作</title>
       <link href="/2023/05/01/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E5%9F%BA%E7%A1%80/"/>
       <url>/2023/05/01/Web%E5%AE%89%E5%85%A8%E4%B9%8BMysql%E5%9F%BA%E7%A1%80/</url>
       
@@ -1256,7 +1294,7 @@
       
       <categories>
           
-          <category> Web安全 </category>
+          <category> 计算机基础 </category>
           
       </categories>
       
@@ -1282,7 +1320,9 @@
       
         <tags>
             
-            <tag> MSSQL注入 </tag>
+            <tag> 数据库攻防 </tag>
+            
+            <tag> 注入漏洞 </tag>
             
         </tags>
       
@@ -1354,12 +1394,6 @@
           
       </categories>
       
-      
-        <tags>
-            
-            <tag> 计算机网络 </tag>
-            
-        </tags>
       
     </entry>
     
@@ -1716,7 +1750,7 @@
       
         <tags>
             
-            <tag> Web开发 </tag>
+            <tag> Web开发相关 </tag>
             
         </tags>
       
