@@ -1,0 +1,345 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Django框架 | Khaz's Blog</title><meta name="author" content="Khaz"><meta name="copyright" content="Khaz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MVC设计模式 创建创建django项目 django-admin startproject 项目名  创建app python manage.py startapp 应用名  创建完后需要在settings.py中进行注册 运行djangopython  manage.py runserver host:port    目录结构生成管理员账号python manage.py createsupe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django框架">
+<meta property="og:url" content="http://fgtbnc.github.io/2023/05/01/django/index.html">
+<meta property="og:site_name" content="Khaz&#39;s Blog">
+<meta property="og:description" content="MVC设计模式 创建创建django项目 django-admin startproject 项目名  创建app python manage.py startapp 应用名  创建完后需要在settings.py中进行注册 运行djangopython  manage.py runserver host:port    目录结构生成管理员账号python manage.py createsupe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg">
+<meta property="article:published_time" content="2023-05-01T11:48:25.000Z">
+<meta property="article:modified_time" content="2023-10-29T04:43:40.209Z">
+<meta property="article:author" content="Khaz">
+<meta property="article:tag" content="Web开发相关">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://fgtbnc.github.io/2023/05/01/django/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":250},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'mediumZoom',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Django框架',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-29 12:43:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/beauty.css" media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">88</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Khaz's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Django框架</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-01T11:48:25.000Z" title="发表于 2023-05-01 19:48:25">2023-05-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-29T04:43:40.209Z" title="更新于 2023-10-29 12:43:40">2023-10-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/">Python</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Django框架"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h2 id="MVC设计模式"><a href="#MVC设计模式" class="headerlink" title="MVC设计模式"></a>MVC设计模式</h2><p><img src="/../images/image-20221024170929469-1698554575868.png" alt="image-20211127142838372"></p>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><p>创建django项目</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">django-admin startproject 项目名</span><br></pre></td></tr></table></figure>
+
+<p>创建app</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python manage.py startapp 应用名</span><br></pre></td></tr></table></figure>
+
+<p>创建完后需要在settings.py中进行注册</p>
+<h2 id="运行django"><a href="#运行django" class="headerlink" title="运行django"></a>运行django</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python  manage.py runserver host:port</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h2 id="生成管理员账号"><a href="#生成管理员账号" class="headerlink" title="生成管理员账号"></a>生成管理员账号</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="数据库交互"><a href="#数据库交互" class="headerlink" title="数据库交互"></a>数据库交互</h2><blockquote>
+<p>通过ORM模型来操作数据库</p>
+<p>一个模型类代表一张数据表，一个模型类的实例代表数据库表中的一行记录。</p>
+</blockquote>
+<h3 id="常用查询"><a href="#常用查询" class="headerlink" title="常用查询"></a>常用查询</h3><blockquote>
+<p>创建查询集（QuerySet）不会带来任何数据库的访问，直到调用数据时，才会访问数据库</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/4.1/topics/db/queries/#one-to-one-relationships">https://docs.djangoproject.com/zh-hans/4.1/topics/db/queries/#one-to-one-relationships</a></p>
+<p><img src="/../images/image-20230112145842035.png" alt="image-20230112145842035"></p>
+<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><h4 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h4><ul>
+<li>实例化模型类</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">b = Blog(name=<span class="string">&#x27;Beatles Blog&#x27;</span>, tagline=<span class="string">&#x27;All the latest Beatles news.&#x27;</span>)</span><br><span class="line">b.save()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Django 在你显式调用 <code>save()</code>才操作数据库。所以操作语句后一定要加上<code>save</code>方法才能生效。</p>
+</blockquote>
+<ul>
+<li>create</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">UserInfo.objects.create(username=<span class="string">&quot;khaz&quot;</span>,passwd=<span class="string">&quot;666&quot;</span>,age=<span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+
+<p>删除 delete</p>
+<p>更新update</p>
+<h2 id="静态文件配置"><a href="#静态文件配置" class="headerlink" title="静态文件配置"></a>静态文件配置</h2><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1741406">https://cloud.tencent.com/developer/article/1741406</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/4.1/howto/static-files/">https://docs.djangoproject.com/zh-hans/4.1/howto/static-files/</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">STATIC_URL = <span class="string">&#x27;/static/&#x27;</span></span><br><span class="line">STATIC_ROOT = os.path. join (BASE_DIR, <span class="string">&#x27;static&#x27;</span> )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传的图片路径 = MEDIA_ROOT + modles中定义的upload_to</span></span><br><span class="line">MEDIA_ROOT = <span class="string">&#x27;static/&#x27;</span></span><br><span class="line"><span class="comment"># 映射,前端看到的路径为MEDIA_URL + upload_to + image</span></span><br><span class="line">MEDIA_URL = <span class="string">&#x27;media/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>收集静态文件（会把所有静态目录下的所有文件拷贝至 STATIC_ROOT目录。）</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">python  manage.py  collectstatic</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="请求处理"><a href="#请求处理" class="headerlink" title="请求处理"></a>请求处理</h2><blockquote>
+<p>Django 会按顺序遍历每个 URL 模式（遍历<strong>urlpatterns</strong>），然后会在所请求的URL匹配到第一个模式后停止，</p>
+<p>并调用相关的视图函数进行处理。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> xxx <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">&#x27;articles/&lt;int:year&gt;/&#x27;</span>, views.year_archive, name=<span class="string">&#x27;article_year&#x27;</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>这里的name的用处是可以在模板中使用<code>&#123;% static 'name' %&#125;</code>来代替对应的url模式，这样尽管改变url模式，也无需修改模板中的url。</p>
+<h3 id="如何获取参数"><a href="#如何获取参数" class="headerlink" title="如何获取参数"></a>如何获取参数</h3><ol>
+<li><p>URL路径参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">path(<span class="string">&#x27;articles/&lt;int:year&gt;/&#x27;</span>, views.year_archive)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">year_archive</span>(<span class="params">request,year</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>URL关键字形式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>/articles/?year=xxx</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">year_archive</span>(<span class="params">request</span>):</span><br><span class="line">	year = request.GET.get(<span class="string">&#x27;year&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h2><ul>
+<li>使用传递过来的参数</li>
+</ul>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="template-variable">&#123;&#123;  xx  &#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>静态文件</li>
+</ul>
+<p>app中需注册<code>&#39;django.contrib.staticfiles&#39;,</code></p>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">load</span></span> static %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=</span></span><span class="template-tag">&#123;% <span class="name"><span class="name">static</span></span> &#x27;images/xx.jpg&#x27; %&#125;</span><span class="language-xml"><span class="tag">&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>继承</li>
+</ul>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">extends</span></span> xxx.html %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">block</span></span> block_name1 %&#125;</span><span class="language-xml"> </span><span class="template-tag">&#123;% <span class="name"><span class="name">endblock</span></span> %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">block</span></span> block_name2 %&#125;</span><span class="language-xml"> </span><span class="template-tag">&#123;% <span class="name"><span class="name">endblock</span></span> %&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">....</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>url</li>
+</ul>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&#x27;</span></span></span><span class="template-tag">&#123;% <span class="name"><span class="name">url</span></span> &#x27;name&#x27; %&#125;</span><span class="language-xml"><span class="tag"><span class="string">&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>数学运算</li>
+</ul>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="language-xml">// 加减法使用add过滤器</span></span><br><span class="line"><span class="language-xml"></span><span class="template-variable">&#123;&#123; value|<span class="name">add</span>:10 &#125;&#125;</span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">// 除法,乘法</span></span><br><span class="line"><span class="language-xml"></span><span class="template-tag">&#123;% <span class="name"><span class="name">widthratio</span></span> arg1 arg2 arg3 %&#125;</span><span class="language-xml"> ---&gt;  arg1 / arg2 * arg3</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="前后端交互"><a href="#前后端交互" class="headerlink" title="前后端交互"></a>前后端交互</h2><h3 id="传递模板参数"><a href="#传递模板参数" class="headerlink" title="传递模板参数"></a>传递模板参数</h3><p>必须以字典的形式进行传递</p>
+<h3 id="ajax请求"><a href="#ajax请求" class="headerlink" title="ajax请求"></a>ajax请求</h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">   <span class="keyword">function</span> <span class="title function_">create_order</span>(<span class="params"></span>)&#123;</span></span><br><span class="line"><span class="language-javascript">		<span class="keyword">let</span> name = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;buyer_name&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">           <span class="keyword">let</span> _address = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;address&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">           <span class="keyword">let</span> phone = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;buyer_phone&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">           <span class="variable language_">console</span>.<span class="title function_">log</span>(name,_address,phone)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">           $.<span class="title function_">ajax</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">		 	    <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">		 	    <span class="attr">url</span>:<span class="string">&quot;/catalog/order/create/&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">		 	    <span class="attr">data</span>:&#123;</span></span><br><span class="line"><span class="language-javascript">                       <span class="attr">buyer_name</span>:name,</span></span><br><span class="line"><span class="language-javascript">                       <span class="attr">address</span>:_address,</span></span><br><span class="line"><span class="language-javascript">                       <span class="attr">buyer_phone</span>:phone</span></span><br><span class="line"><span class="language-javascript">                   &#125;,</span></span><br><span class="line"><span class="language-javascript">		 	  	<span class="attr">success</span>: <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">				<span class="keyword">if</span> (data.<span class="property">status</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">					<span class="title function_">alert</span>(<span class="string">&#x27;false&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">				&#125;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="language-javascript">              <span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&quot;/catalog/orders/&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">               &#125;</span></span><br><span class="line"><span class="language-javascript">		 	    &#125;</span></span><br><span class="line"><span class="language-javascript">		 &#125;);     	</span></span><br><span class="line"><span class="language-javascript">   &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="查询数据并展示"><a href="#查询数据并展示" class="headerlink" title="查询数据并展示"></a>查询数据并展示</h3><p><code>ListView</code>方法</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4ab3eea0758a">https://www.jianshu.com/p/4ab3eea0758a</a></p>
+<h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><ul>
+<li>流程图</li>
+</ul>
+<p><img src="/../images/image-20211127142838372-1698554520198.png" alt="image-20211127142838372"></p>
+<ul>
+<li><p>定义中间件</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.utils.deprecation <span class="keyword">import</span> MiddlewareMixin</span><br><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="comment">#继承MiddlewareMixin中间件</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">M1</span>(<span class="title class_ inherited__">MiddlewareMixin</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 中间件1 &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_request</span>(<span class="params">self, request</span>):</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果方法中没有返回值（返回None），继续向后走</span></span><br><span class="line">        <span class="comment"># 如果有返回值 HttpResponse、render 、redirect</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;M1.process_request&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> HttpResponse(<span class="string">&quot;无权访问&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_response</span>(<span class="params">self, request, response</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;M1.process_response&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> response</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">M2</span>(<span class="title class_ inherited__">MiddlewareMixin</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot; 中间件2 &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_request</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;M2.process_request&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_response</span>(<span class="params">self, request, response</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;M2.process_response&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>应用中间件 setings.py</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#按照先后顺序执行中间件</span></span><br><span class="line">MIDDLEWARE = [</span><br><span class="line">    <span class="string">&#x27;django.middleware.security.SecurityMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.sessions.middleware.SessionMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.middleware.common.CommonMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.middleware.csrf.CsrfViewMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.auth.middleware.AuthenticationMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.contrib.messages.middleware.MessageMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;django.middleware.clickjacking.XFrameOptionsMiddleware&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;app01.middleware.auth.M1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;app01.middleware.auth.M2&#x27;</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>中间件的process_request方法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果方法中没有返回值（返回None），继续执行下一个中间件</span></span><br><span class="line"><span class="comment"># 如果有返回值 HttpResponse、render 、redirect，则执行process_response返回。</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="用户认证"><a href="#用户认证" class="headerlink" title="用户认证"></a>用户认证</h2><h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><ol>
+<li><p>装饰器</p>
+<blockquote>
+<p>为需要用户登录后才能访问的方法添加<code>@login_required</code> 装饰器。</p>
+<p>当用户访问这个方法时，会检查用户是否已经成功登陆，如果没有则重定向到登陆页面。</p>
+<p>登陆页面地址是通过 <code>settings.LOGIN_URL</code> 来获取的，默认为 <code>/accounts/login/</code> 页面，当然你也可以在settings配置文件中通过添加 <code>LOGIN_URL</code> 配置来改掉他，同时 <code>@login_required</code> 也接收参数 <code>login_url</code> 来指定登陆页面</p>
+</blockquote>
+</li>
+<li><p>中间件</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AuthMiddleware</span>(<span class="title class_ inherited__">MiddlewareMixin</span>):</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">process_request</span>(<span class="params">self, request</span>):</span><br><span class="line">        <span class="comment"># 0.白名单排除那些不需要登录就能访问的页面</span></span><br><span class="line">        <span class="comment"># request.path_info 获取当前用户请求的URL /login/</span></span><br><span class="line">        white_list=[</span><br><span class="line">            <span class="string">&#x27;/login/&#x27;</span>,<span class="string">&#x27;/register/&#x27;</span>,<span class="string">&#x27;/img/code/&#x27;</span></span><br><span class="line">        ]</span><br><span class="line">        <span class="keyword">if</span> request.path_info <span class="keyword">in</span> white_list:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 1.读取当前访问的用户的session信息，并进行校验，说明已登陆过，就可以继续向后走。</span></span><br><span class="line">        info_dict = request.session.get(<span class="string">&quot;info&quot;</span>)</span><br><span class="line">        <span class="comment"># print(info_dict)</span></span><br><span class="line">        <span class="keyword">if</span> info_dict:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 2.没有登录过，重新回到登录页面</span></span><br><span class="line">        <span class="keyword">return</span> redirect(<span class="string">&#x27;/login/&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>django会自动设置setcookie[‘sessionid’],让客户端保存</p>
+<p>并将数据加密保存到数据库中的django_session表中</p>
+</blockquote>
+<p><img src="/../images/image-20220722154306499.png" alt="image-20220722154306499"></p>
+</li>
+</ol>
+<h3 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h3><blockquote>
+<p>防止密码爆破，占用服务器资源</p>
+<p>还有如果是短信验证码，也要保证接口安全，不被滥用，被人用来轰炸</p>
+</blockquote>
+<ul>
+<li><p>生成验证码</p>
+<blockquote>
+<p>注意字体是否安装</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw, ImageFont, ImageFilter</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_code</span>(<span class="params">width=<span class="number">120</span>, height=<span class="number">30</span>, char_length=<span class="number">5</span>, font_file=<span class="string">&#x27;Monaco.ttf&#x27;</span>, font_size=<span class="number">28</span></span>):</span><br><span class="line">    code = []</span><br><span class="line">    img = Image.new(mode=<span class="string">&#x27;RGB&#x27;</span>, size=(width, height), color=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    draw = ImageDraw.Draw(img, mode=<span class="string">&#x27;RGB&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rndChar</span>():</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        生成随机字母</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">chr</span>(random.randint(<span class="number">65</span>, <span class="number">90</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rndColor</span>():</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        生成随机颜色</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> (random.randint(<span class="number">0</span>, <span class="number">255</span>), random.randint(<span class="number">10</span>, <span class="number">255</span>), random.randint(<span class="number">64</span>, <span class="number">255</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 写文字</span></span><br><span class="line">    font = ImageFont.truetype(font_file, font_size)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(char_length):</span><br><span class="line">        char = rndChar()</span><br><span class="line">        code.append(char)</span><br><span class="line">        h = random.randint(<span class="number">0</span>, <span class="number">4</span>)</span><br><span class="line">        draw.text([i * width / char_length, h], char, font=font, fill=rndColor())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 写干扰点</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">40</span>):</span><br><span class="line">        draw.point([random.randint(<span class="number">0</span>, width), random.randint(<span class="number">0</span>, height)], fill=rndColor())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 写干扰圆圈</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">40</span>):</span><br><span class="line">        draw.point([random.randint(<span class="number">0</span>, width), random.randint(<span class="number">0</span>, height)], fill=rndColor())</span><br><span class="line">        x = random.randint(<span class="number">0</span>, width)</span><br><span class="line">        y = random.randint(<span class="number">0</span>, height)</span><br><span class="line">        draw.arc((x, y, x + <span class="number">4</span>, y + <span class="number">4</span>), <span class="number">0</span>, <span class="number">90</span>, fill=rndColor())</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 画干扰线</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        x1 = random.randint(<span class="number">0</span>, width)</span><br><span class="line">        y1 = random.randint(<span class="number">0</span>, height)</span><br><span class="line">        x2 = random.randint(<span class="number">0</span>, width)</span><br><span class="line">        y2 = random.randint(<span class="number">0</span>, height)</span><br><span class="line"></span><br><span class="line">        draw.line((x1, y1, x2, y2), fill=rndColor())</span><br><span class="line"></span><br><span class="line">    img = img.<span class="built_in">filter</span>(ImageFilter.EDGE_ENHANCE_MORE)</span><br><span class="line">    <span class="keyword">return</span> img, <span class="string">&#x27;&#x27;</span>.join(code)</span><br></pre></td></tr></table></figure>
+
+<p>验证码渲染</p>
+<ul>
+<li><p>逻辑</p>
+<blockquote>
+<p>在login页面增加img标签，在路由中注册标签的src，再写对应的视图函数</p>
+<p>当访问login页面时，就会加载验证码图像的src，从而触发视图函数，将验证码渲染  </p>
+<p>这个验证码请求就是302状态码</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt;!-- img标签 --&gt;</span><br><span class="line">&lt;img <span class="built_in">id</span>=<span class="string">&quot;image_code&quot;</span> src=<span class="string">&quot;/img/code/&quot;</span> style=<span class="string">&quot;width: 125px;&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#注册路由</span></span><br><span class="line">path(<span class="string">&#x27;img/code&#x27;</span>,views.img_code)</span><br><span class="line"></span><br><span class="line"><span class="comment">#视图函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">image_code</span>(<span class="params">request</span>):</span><br><span class="line">    <span class="comment"># 调用pillow函数，生成图片</span></span><br><span class="line">    img, code_string = check_code()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 写入到自己的session中（以便于后续获取验证码再进行校验）</span></span><br><span class="line">    request.session[<span class="string">&#x27;image_code&#x27;</span>] = code_string</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 给Session设置60s超时</span></span><br><span class="line">    request.session.set_expiry(<span class="number">60</span>)</span><br><span class="line">    </span><br><span class="line">    stream = BytesIO()</span><br><span class="line">    img.save(stream, <span class="string">&#x27;png&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> HttpResponse(stream.getvalue())</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="auth-user表的拓展"><a href="#auth-user表的拓展" class="headerlink" title="auth_user表的拓展"></a>auth_user表的拓展</h2><ul>
+<li><p>auth_user表没有被创建；（不能执行过创建用户操作，如管理员用户）</p>
+<p>注：如果创建过了，需要将对应的数据库文件删除后，重新执行数据库迁移命令。</p>
+</li>
+<li><p>继承的类里面不能覆盖AbstractUser类原有字段名称，只扩展额外的字段即可；</p>
+</li>
+<li><p>在配置文件settings.py中，告诉django使用User_Info替换auth_user:<br> AUTH_USER_MODEL &#x3D; ‘app01.UserInfo’  # ‘应用名.表名</p>
+</li>
+</ul>
+<p>在models.py中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> AbstractUser</span><br><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(<span class="title class_ inherited__">AbstractUser</span>):</span><br><span class="line">    phone_num = models.CharField(max_length=<span class="number">20</span>, unique=<span class="literal">True</span>, blank=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在views.py中将<code>from django.contrib.auth.models import User</code>替换为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line">User = settings.AUTH_USER_MODEL</span><br></pre></td></tr></table></figure>
+
+<p>执行数据库迁移命令生成User表。</p>
+<h2 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h2><h4 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h4><p>推荐</p>
+<figure class="highlight django"><table><tr><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">csrf_token</span></span> %&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>不推荐–注释中间件</p>
+<p><img src="/../images/image-20230112183333668.png" alt="image-20230112183333668"></p>
+<h4 id="ImportError-cannot-import-name-‘url‘-from-‘django-conf-urls‘"><a href="#ImportError-cannot-import-name-‘url‘-from-‘django-conf-urls‘" class="headerlink" title="ImportError: cannot import name ‘url‘ from ‘django.conf.urls‘"></a>ImportError: cannot import name ‘url‘ from ‘django.conf.urls‘</h4><p><img src="/../images/image-20230112143720900.png" alt="image-20230112143720900"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf.urls <span class="keyword">import</span> url 改为</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> re_path <span class="keyword">as</span> url</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="django-db-migrations-exceptions-InconsistentMigrationHistory"><a href="#django-db-migrations-exceptions-InconsistentMigrationHistory" class="headerlink" title="django.db.migrations.exceptions.InconsistentMigrationHistory"></a>django.db.migrations.exceptions.InconsistentMigrationHistory</h4><p>删除</p>
+<p><img src="/../images/image-20230112182634846.png" alt="image-20230112182634846"></p>
+<p>执行</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">python manage.py makemigrations (appname)</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Web%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">Web开发相关</a></div><div class="post_share"><div class="social-share" data-image="https://fgtbnc.github.io/images/wallhaven-xlz933.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/01/Falsk/"><img class="prev-cover" src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Flask相关</div></div></a></div><div class="next-post pull-right"><a href="/2023/05/01/python%E8%84%9A%E6%9C%AC/"><img class="next-cover" src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">POC编写</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/05/01/Java%20Web%E4%BA%86%E8%A7%A3/" title="Java Web"><img class="cover" src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-01</div><div class="title">Java Web</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://raw.githubusercontent.com/Khazing/typora-img/main/16870577801892f4a9c5aac2e9e5422a6ccd26db10dd88c73.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Khaz</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">88</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">MVC设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text">创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8Cdjango"><span class="toc-number">3.</span> <span class="toc-text">运行django</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">4.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E7%AE%A1%E7%90%86%E5%91%98%E8%B4%A6%E5%8F%B7"><span class="toc-number">5.</span> <span class="toc-text">生成管理员账号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%A4%E4%BA%92"><span class="toc-number">6.</span> <span class="toc-text">数据库交互</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%9F%A5%E8%AF%A2"><span class="toc-number">6.1.</span> <span class="toc-text">常用查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">6.2.</span> <span class="toc-text">常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">6.2.1.</span> <span class="toc-text">插入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">7.</span> <span class="toc-text">静态文件配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86"><span class="toc-number">8.</span> <span class="toc-text">请求处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E5%8F%82%E6%95%B0"><span class="toc-number">8.1.</span> <span class="toc-text">如何获取参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF"><span class="toc-number">9.</span> <span class="toc-text">模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92"><span class="toc-number">10.</span> <span class="toc-text">前后端交互</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E9%80%92%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0"><span class="toc-number">10.1.</span> <span class="toc-text">传递模板参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ajax%E8%AF%B7%E6%B1%82"><span class="toc-number">10.2.</span> <span class="toc-text">ajax请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%B9%B6%E5%B1%95%E7%A4%BA"><span class="toc-number">10.3.</span> <span class="toc-text">查询数据并展示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-number">11.</span> <span class="toc-text">中间件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81"><span class="toc-number">12.</span> <span class="toc-text">用户认证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">12.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-number">12.2.</span> <span class="toc-text">验证码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#auth-user%E8%A1%A8%E7%9A%84%E6%8B%93%E5%B1%95"><span class="toc-number">13.</span> <span class="toc-text">auth_user表的拓展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E9%94%99"><span class="toc-number">14.</span> <span class="toc-text">报错</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CSRF"><span class="toc-number">14.0.1.</span> <span class="toc-text">CSRF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ImportError-cannot-import-name-%E2%80%98url%E2%80%98-from-%E2%80%98django-conf-urls%E2%80%98"><span class="toc-number">14.0.2.</span> <span class="toc-text">ImportError: cannot import name ‘url‘ from ‘django.conf.urls‘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#django-db-migrations-exceptions-InconsistentMigrationHistory"><span class="toc-number">14.0.3.</span> <span class="toc-text">django.db.migrations.exceptions.InconsistentMigrationHistory</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/10/29/Java%E4%BB%A3%E5%AE%A1--%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="Java代码审计--命令执行"><img src="https://fgtbnc.github.io/images/wallhaven-r29l9q.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java代码审计--命令执行"/></a><div class="content"><a class="title" href="/2023/10/29/Java%E4%BB%A3%E5%AE%A1--%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/" title="Java代码审计--命令执行">Java代码审计--命令执行</a><time datetime="2023-10-29T07:00:25.000Z" title="发表于 2023-10-29 15:00:25">2023-10-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/29/java%E4%BB%A3%E5%AE%A1--SSRF/" title="Java代码审计--SSRF"><img src="https://fgtbnc.github.io/images/wallhaven-wyg7g6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java代码审计--SSRF"/></a><div class="content"><a class="title" href="/2023/10/29/java%E4%BB%A3%E5%AE%A1--SSRF/" title="Java代码审计--SSRF">Java代码审计--SSRF</a><time datetime="2023-10-29T07:00:25.000Z" title="发表于 2023-10-29 15:00:25">2023-10-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/28/Java-Thymeleaf%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" title="Thymeleaf 模板注入"><img src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Thymeleaf 模板注入"/></a><div class="content"><a class="title" href="/2023/10/28/Java-Thymeleaf%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/" title="Thymeleaf 模板注入">Thymeleaf 模板注入</a><time datetime="2023-10-28T07:00:25.000Z" title="发表于 2023-10-28 15:00:25">2023-10-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/28/Java-sec-code%E5%AD%A6%E4%B9%A0/" title="Java-sec-code学习"><img src="https://fgtbnc.github.io/images/wallhaven-xl8gq3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java-sec-code学习"/></a><div class="content"><a class="title" href="/2023/10/28/Java-sec-code%E5%AD%A6%E4%B9%A0/" title="Java-sec-code学习">Java-sec-code学习</a><time datetime="2023-10-28T07:00:25.000Z" title="发表于 2023-10-28 15:00:25">2023-10-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/21/Java%E4%BB%A3%E5%AE%A1--Sql%E6%B3%A8%E5%85%A5/" title="Java代码审计--Sql注入"><img src="https://fgtbnc.github.io/images/wallhaven-vg3qk8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Java代码审计--Sql注入"/></a><div class="content"><a class="title" href="/2023/10/21/Java%E4%BB%A3%E5%AE%A1--Sql%E6%B3%A8%E5%85%A5/" title="Java代码审计--Sql注入">Java代码审计--Sql注入</a><time datetime="2023-10-21T07:00:25.000Z" title="发表于 2023-10-21 15:00:25">2023-10-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Khaz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/js/chocolate.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
